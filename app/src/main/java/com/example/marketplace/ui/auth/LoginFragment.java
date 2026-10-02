@@ -10,16 +10,22 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.marketplace.BuildConfig;
 import com.example.marketplace.R;
+import com.example.marketplace.data.api.ApiClient;
 import com.example.marketplace.data.model.auth.AuthResponse;
 import com.example.marketplace.data.model.auth.User;
+import com.example.marketplace.databinding.DialogServerUrlBinding;
 import com.example.marketplace.databinding.FragmentLoginBinding;
 import com.example.marketplace.utils.Resource;
 import com.example.marketplace.utils.ResourceMessages;
+import com.example.marketplace.utils.SessionManager;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -28,6 +34,8 @@ public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
     private AuthViewModel viewModel;
+    @Nullable
+    private AlertDialog serverUrlDialog;
 
     @Nullable
     @Override
@@ -65,6 +73,16 @@ public class LoginFragment extends Fragment {
         binding.btnForgot.setOnClickListener(notAvailable);
         binding.btnGoogle.setOnClickListener(notAvailable);
         binding.btnSso.setOnClickListener(notAvailable);
+
+        // Developer tool: long-press SUPPORT or the logo to change the backend address (debug builds only).
+        if (BuildConfig.DEBUG) {
+            View.OnLongClickListener openServerDialog = v -> {
+                showServerUrlDialog();
+                return true;
+            };
+            binding.btnSupport.setOnLongClickListener(openServerDialog);
+            binding.imgLogo.setOnLongClickListener(openServerDialog);
+        }
 
         viewModel.getFormErrors().observe(getViewLifecycleOwner(), errors -> {
             binding.layoutEmail.setError(errors.email == null ? null : getString(errors.email));
@@ -107,6 +125,48 @@ public class LoginFragment extends Fragment {
         binding.portalSelector.cardOperator.setEnabled(!loading);
     }
 
+    /** Lets a developer view and change the backend address, e.g. localhost (adb reverse) or a Wi-Fi IP. */
+    private void showServerUrlDialog() {
+        if (serverUrlDialog != null && serverUrlDialog.isShowing()) {
+            return;
+        }
+        SessionManager session = SessionManager.getInstance();
+        DialogServerUrlBinding dialogBinding = DialogServerUrlBinding.inflate(getLayoutInflater());
+        dialogBinding.etServerUrl.setText(session.getBaseUrl());
+
+        serverUrlDialog = new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.server_url_title)
+                .setView(dialogBinding.getRoot())
+                .setPositiveButton(R.string.server_url_save, null)
+                .setNeutralButton(R.string.server_url_reset, null)
+                .setNegativeButton(R.string.cancel, null)
+                .create();
+        serverUrlDialog.setOnShowListener(d -> {
+            // Set the listeners here so an invalid address keeps the dialog open.
+            serverUrlDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+                CharSequence typed = dialogBinding.etServerUrl.getText();
+                String url = typed == null ? "" : typed.toString().trim();
+                if (ApiClient.toApiBaseUrl(url) == null || url.isEmpty()) {
+                    dialogBinding.layoutServerUrl.setError(getString(R.string.server_url_invalid));
+                    return;
+                }
+                applyServerUrl(session, url);
+                serverUrlDialog.dismiss();
+            });
+            serverUrlDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> {
+                applyServerUrl(session, null);
+                serverUrlDialog.dismiss();
+            });
+        });
+        serverUrlDialog.show();
+    }
+
+    private void applyServerUrl(SessionManager session, @Nullable String url) {
+        session.setBaseUrl(url);
+        ApiClient.reset();
+        showMessage(getString(R.string.server_url_saved, session.getBaseUrl()));
+    }
+
     private void showMessage(String message) {
         if (binding != null) {
             Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG).show();
@@ -134,6 +194,10 @@ public class LoginFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (serverUrlDialog != null) {
+            serverUrlDialog.dismiss();
+            serverUrlDialog = null;
+        }
         binding = null;
     }
 }

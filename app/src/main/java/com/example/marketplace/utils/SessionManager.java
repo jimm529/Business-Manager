@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
+import com.example.marketplace.BuildConfig;
 import com.example.marketplace.data.model.auth.User;
 
 /**
@@ -23,6 +24,8 @@ public class SessionManager {
     private static final String KEY_USER_ID = "user_id";
     private static final String KEY_NAME = "name";
     private static final String KEY_EMAIL = "email";
+    // Developer setting (debug builds): the backend address. It is NOT part of the login session.
+    private static final String KEY_BASE_URL = "base_url";
 
     private static SessionManager instance;
 
@@ -100,8 +103,36 @@ public class SessionManager {
         return token != null && !token.isEmpty();
     }
 
+    /** Signs out. Only the login data is removed; the chosen backend address is kept. */
     public synchronized void clear() {
-        prefs.edit().clear().apply();
+        prefs.edit()
+                .remove(KEY_TOKEN)
+                .remove(KEY_ROLE)
+                .remove(KEY_USER_ID)
+                .remove(KEY_NAME)
+                .remove(KEY_EMAIL)
+                .apply();
+    }
+
+    /**
+     * Server address the app talks to, e.g. "http://localhost:5000/" (no "/api" needed).
+     * Defaults to BuildConfig.BASE_URL. Release builds always use BuildConfig.BASE_URL.
+     */
+    public synchronized String getBaseUrl() {
+        if (!BuildConfig.DEBUG) {
+            return BuildConfig.BASE_URL;
+        }
+        String saved = prefs.getString(KEY_BASE_URL, null);
+        return (saved == null || saved.trim().isEmpty()) ? BuildConfig.BASE_URL : saved;
+    }
+
+    /** Saves a new server address (debug builds). Passing null or empty goes back to the default. */
+    public synchronized void setBaseUrl(@Nullable String url) {
+        if (url == null || url.trim().isEmpty()) {
+            prefs.edit().remove(KEY_BASE_URL).apply();
+        } else {
+            prefs.edit().putString(KEY_BASE_URL, url.trim()).apply();
+        }
     }
 
     /** Called by the network layer when the server answers 401 to a signed-in request. */

@@ -10,7 +10,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.marketplace.BuildConfig;
 import com.example.marketplace.R;
 import com.example.marketplace.data.api.ApiClient;
-import com.example.marketplace.data.api.ApiService;
 import com.example.marketplace.data.model.auth.AuthResponse;
 import com.example.marketplace.data.model.auth.LoginRequest;
 import com.example.marketplace.data.model.auth.RegisterRequest;
@@ -38,27 +37,25 @@ public class AuthRepository {
 
     private static AuthRepository instance;
 
-    private final ApiService api;
     private final SessionManager sessionManager;
 
-    private AuthRepository(ApiService api, SessionManager sessionManager) {
-        this.api = api;
+    private AuthRepository(SessionManager sessionManager) {
         this.sessionManager = sessionManager;
     }
 
     public static synchronized AuthRepository getInstance() {
         if (instance == null) {
-            instance = new AuthRepository(ApiClient.getApiService(), SessionManager.getInstance());
+            instance = new AuthRepository(SessionManager.getInstance());
         }
         return instance;
     }
 
     public LiveData<Resource<AuthResponse>> login(LoginRequest request) {
-        return execute(api.login(request));
+        return execute(ApiClient.getApiService().login(request));
     }
 
     public LiveData<Resource<AuthResponse>> register(RegisterRequest request) {
-        return execute(api.register(request));
+        return execute(ApiClient.getApiService().register(request));
     }
 
     private LiveData<Resource<AuthResponse>> execute(Call<AuthResponse> call) {
@@ -86,8 +83,9 @@ public class AuthRepository {
         if (t instanceof UnknownHostException || t instanceof ConnectException || t instanceof IOException) {
             // Debug builds show which address was tried; that is the first thing to check.
             if (BuildConfig.DEBUG) {
-                HttpUrl base = HttpUrl.parse(BuildConfig.BASE_URL);
-                String address = base == null ? BuildConfig.BASE_URL : base.host() + ":" + base.port();
+                String url = sessionManager.getBaseUrl();
+                HttpUrl base = HttpUrl.parse(url);
+                String address = base == null ? url : base.host() + ":" + base.port();
                 return Resource.errorWithArgs(R.string.error_cannot_reach_server_debug, address);
             }
             return Resource.error(R.string.error_network);

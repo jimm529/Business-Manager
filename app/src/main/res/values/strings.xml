@@ -70,6 +70,16 @@
     <string name="error_two_factor_unsupported">This account uses two-step verification, which the app does not support yet.</string>
     <string name="retry">Retry</string>
 
+    <!-- Developer server-address dialog (debug builds) -->
+    <string name="server_url_title">Backend server address</string>
+    <string name="server_url_help">Use http://localhost:5000/ with \"adb reverse tcp:5000 tcp:5000\" (USB), or the Wi-Fi address of your PC, such as http://192.168.1.20:5000/. Do not add /api.</string>
+    <string name="server_url_hint">http://192.168.1.20:5000/</string>
+    <string name="server_url_save">Save</string>
+    <string name="server_url_reset">Use default</string>
+    <string name="cancel">Cancel</string>
+    <string name="server_url_invalid">Enter a valid address starting with http:// or https://</string>
+    <string name="server_url_saved">Server set to %1$s</string>
+
     <!-- Icon descriptions -->
     <string name="cd_logo">Marketplace logo</string>
     <string name="cd_vendor_portal">Vendor portal</string>

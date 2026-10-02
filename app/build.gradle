@@ -2,16 +2,17 @@ plugins {
     id 'com.android.application'
 }
 
-// Backend address comes from a Gradle property so nothing is hardcoded in Java code.
-// The backend listens on port 5000 and every route starts with /api (see API_NOTES.md), so the
-// base URL ends in "/api/" and the Retrofit paths are written without it (e.g. "auth/login").
-//   Emulator (default):      http://10.0.2.2:5000/api/
-//   Real phone over USB:     run "adb reverse tcp:5000 tcp:5000" and set marketplaceBaseUrl=http://localhost:5000/api/
-//   Real phone over Wi-Fi:   set marketplaceBaseUrl=http://<your PC's IPv4 address>:5000/api/
-// Put the property in ~/.gradle/gradle.properties (or pass -PmarketplaceBaseUrl=...).
-def debugBaseUrl = (project.findProperty('marketplaceBaseUrl') ?: 'http://10.0.2.2:5000/api/').toString()
+// Backend address (BuildConfig.BASE_URL) comes from a Gradle property, so nothing is hardcoded in Java.
+// It is the server root WITHOUT "/api": the app adds "/api/" itself (every route starts with /api).
+//   Default:                 http://localhost:5000/
+//     - real phone over USB: run "adb reverse tcp:5000 tcp:5000" once (re-run after replugging)
+//     - emulator:            the same adb reverse command works, or use http://10.0.2.2:5000/
+//   Real phone over Wi-Fi:   set marketplaceBaseUrl=http://<your PC's IPv4 address>:5000/
+// Put the property in ~/.gradle/gradle.properties or pass -PmarketplaceBaseUrl=...
+// In debug builds the address can also be changed on the Login screen (long-press SUPPORT or the logo).
+def debugBaseUrl = (project.findProperty('marketplaceBaseUrl') ?: 'http://localhost:5000/').toString()
 // ".invalid" is a reserved name that never resolves: release builds must set marketplaceReleaseBaseUrl.
-def releaseBaseUrl = (project.findProperty('marketplaceReleaseBaseUrl') ?: 'https://marketplace.invalid/api/').toString()
+def releaseBaseUrl = (project.findProperty('marketplaceReleaseBaseUrl') ?: 'https://marketplace.invalid/').toString()
 
 android {
     namespace 'com.example.marketplace'
