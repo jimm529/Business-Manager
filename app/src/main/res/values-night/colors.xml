@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark-mode versions of the same names. Brand greens get lighter so they stay readable. -->
+    <color name="colorPrimary">#4CC38A</color>
+    <color name="colorPrimaryVariant">#00875A</color>
+    <color name="colorSecondary">#34D399</color>
+    <color name="colorSecondaryLight">#12342A</color>
+
+    <color name="colorSurface">#111827</color>
+    <color name="colorBackground">#0B1220</color>
+    <color name="colorTextPrimary">#F1F5F9</color>
+    <color name="colorTextSecondary">#94A3B8</color>
+    <color name="colorBorder">#334155</color>
+    <color name="colorError">#F87171</color>
+</resources>

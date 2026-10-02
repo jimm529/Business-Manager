@@ -1,0 +1,69 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Backend address comes from a Gradle property so nothing is hardcoded in Java code.
+def debugBaseUrl = (project.findProperty('marketplaceBaseUrl') ?: 'http://10.0.2.2:5000/api/').toString()
+// ".invalid" is a reserved name that never resolves: release builds must set marketplaceReleaseBaseUrl.
+def releaseBaseUrl = (project.findProperty('marketplaceReleaseBaseUrl') ?: 'https://marketplace.invalid/api/').toString()
+
+android {
+    namespace 'com.example.marketplace'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'com.example.marketplace'
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName '1.0'
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField 'String', 'BASE_URL', "\"${debugBaseUrl}\""
+        }
+        release {
+            minifyEnabled false
+            buildConfigField 'String', 'BASE_URL', "\"${releaseBaseUrl}\""
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    buildFeatures {
+        viewBinding true
+        buildConfig true
+    }
+}
+
+dependencies {
+    // Material Components (Material 3 theme)
+    implementation 'com.google.android.material:material:1.12.0'
+
+    // AndroidX basics
+    implementation 'androidx.core:core:1.13.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    // Lifecycle (ViewModel + LiveData)
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.8.7'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.8.7'
+
+    // Navigation Component
+    implementation 'androidx.navigation:navigation-fragment:2.8.5'
+    implementation 'androidx.navigation:navigation-ui:2.8.5'
+
+    // Networking
+    implementation 'com.squareup.retrofit2:retrofit:2.11.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
+
+    // Images
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+}

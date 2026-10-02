@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand greens -->
+    <color name="colorPrimary">#00593B</color>
+    <color name="colorPrimaryVariant">#00402A</color>
+    <color name="colorSecondary">#00875A</color>
+    <color name="colorSecondaryLight">#E8F5E9</color>
+
+    <!-- Surfaces and text -->
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorBackground">#F8FAFC</color>
+    <color name="colorTextPrimary">#0F172A</color>
+    <color name="colorTextSecondary">#64748B</color>
+    <color name="colorBorder">#D1D5DB</color>
+    <color name="colorError">#DC2626</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <!-- Google "G" logo brand colours (only used by ic_google) -->
+    <color name="google_blue">#4285F4</color>
+    <color name="google_green">#34A853</color>
+    <color name="google_yellow">#FBBC05</color>
+    <color name="google_red">#EA4335</color>
+</resources>
