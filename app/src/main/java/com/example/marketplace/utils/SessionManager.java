@@ -98,6 +98,24 @@ public class SessionManager {
         return prefs.getString(KEY_ROLE, null);
     }
 
+    @Nullable
+    public synchronized String getFullName() {
+        return prefs.getString(KEY_NAME, null);
+    }
+
+    /** Refreshes the saved profile details (role, name, email) without touching the token. */
+    public synchronized void updateUser(User user) {
+        if (user == null) {
+            return;
+        }
+        prefs.edit()
+                .putString(KEY_ROLE, user.getRole())
+                .putString(KEY_USER_ID, user.getId())
+                .putString(KEY_NAME, user.getFullName())
+                .putString(KEY_EMAIL, user.getEmail())
+                .apply();
+    }
+
     public synchronized boolean isLoggedIn() {
         String token = getToken();
         return token != null && !token.isEmpty();

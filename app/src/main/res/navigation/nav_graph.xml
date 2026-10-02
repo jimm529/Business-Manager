@@ -25,10 +25,44 @@
             app:popUpToInclusive="true" />
     </fragment>
 
-    <!-- Used when the server rejects the saved token (401): clear everything and show Login. -->
+    <!-- The four bottom-navigation tabs -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.marketplace.ui.home.HomeFragment"
+        android:label="@string/nav_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/ordersFragment"
+        android:name="com.example.marketplace.ui.home.ComingSoonFragment"
+        android:label="@string/nav_orders"
+        tools:layout="@layout/fragment_coming_soon" />
+
+    <fragment
+        android:id="@+id/messagesFragment"
+        android:name="com.example.marketplace.ui.home.ComingSoonFragment"
+        android:label="@string/nav_messages"
+        tools:layout="@layout/fragment_coming_soon" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.marketplace.ui.home.ComingSoonFragment"
+        android:label="@string/nav_profile"
+        tools:layout="@layout/fragment_coming_soon" />
+
+    <!-- Used when the server rejects the saved token (401) or the user logs out:
+         show Login and forget every other screen. -->
     <action
         android:id="@+id/action_global_loginFragment"
         app:destination="@id/loginFragment"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true" />
+
+    <!-- Used after login/register and when the app starts with a saved login:
+         show Home and forget Login, so Back does not return to it. -->
+    <action
+        android:id="@+id/action_global_homeFragment"
+        app:destination="@id/homeFragment"
         app:popUpTo="@id/nav_graph"
         app:popUpToInclusive="true" />
 </navigation>

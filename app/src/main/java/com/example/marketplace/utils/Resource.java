@@ -40,6 +40,11 @@ public class Resource<T> {
         return new Resource<>(Status.LOADING, null, null, 0, new Object[0]);
     }
 
+    /** Loading again while the previous data is still on screen (pull-to-refresh). */
+    public static <T> Resource<T> loading(@Nullable T previousData) {
+        return new Resource<>(Status.LOADING, previousData, null, 0, new Object[0]);
+    }
+
     public static <T> Resource<T> success(@Nullable T data) {
         return new Resource<>(Status.SUCCESS, data, null, 0, new Object[0]);
     }

@@ -19,7 +19,6 @@ import com.example.marketplace.BuildConfig;
 import com.example.marketplace.R;
 import com.example.marketplace.data.api.ApiClient;
 import com.example.marketplace.data.model.auth.AuthResponse;
-import com.example.marketplace.data.model.auth.User;
 import com.example.marketplace.databinding.DialogServerUrlBinding;
 import com.example.marketplace.databinding.FragmentLoginBinding;
 import com.example.marketplace.utils.Resource;
@@ -101,12 +100,9 @@ public class LoginFragment extends Fragment {
         setLoading(result.status == Resource.Status.LOADING);
         switch (result.status) {
             case SUCCESS:
-                User user = result.data == null ? null : result.data.getUser();
-                String name = user == null ? null : user.getFullName();
-                showMessage(name == null || name.isEmpty()
-                        ? getString(R.string.signed_in)
-                        : getString(R.string.signed_in_as, name));
+                // The token is saved; open Home and drop this screen so Back does not return here.
                 viewModel.consumeAuthResult();
+                NavHostFragment.findNavController(this).navigate(R.id.action_global_homeFragment);
                 break;
             case ERROR:
                 showMessage(ResourceMessages.errorText(requireContext(), result));

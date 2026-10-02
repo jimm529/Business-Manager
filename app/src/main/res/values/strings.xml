@@ -80,6 +80,43 @@
     <string name="server_url_invalid">Enter a valid address starting with http:// or https://</string>
     <string name="server_url_saved">Server set to %1$s</string>
 
+    <!-- Bottom navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_orders">Orders</string>
+    <string name="nav_messages">Messages</string>
+    <string name="nav_profile">Profile</string>
+    <string name="coming_soon">Coming soon.</string>
+    <string name="coming_soon_screen">%1$s is coming soon.</string>
+
+    <!-- Home header -->
+    <string name="welcome_user">Welcome, %1$s</string>
+    <string name="welcome_generic">Welcome</string>
+    <string name="role_vendor">VENDOR</string>
+    <string name="role_operator">OPERATOR</string>
+    <string name="logout">Log out</string>
+
+    <!-- Vendor dashboard -->
+    <string name="metric_active_listings">Active listings</string>
+    <string name="metric_pending_approvals">Pending approvals</string>
+    <string name="metric_total_sales">Total sales</string>
+    <string name="action_new_listing">New listing</string>
+    <string name="action_order_approvals">Order approvals</string>
+    <string name="recent_orders">Recent orders</string>
+    <string name="empty_recent_orders">No recent orders yet.</string>
+    <string name="no_value">—</string>
+    <string name="order_quantity">%1$s %2$s</string>
+    <string name="unknown_buyer">Unknown buyer</string>
+
+    <!-- Operator marketplace -->
+    <string name="search_hint">Search listings</string>
+    <string name="category_all">All</string>
+    <string name="marketplace_listings">Active marketplace listings</string>
+    <string name="empty_products">No items available</string>
+    <string name="price_per_kg">%1$s / kg</string>
+    <string name="listing_volume_purity">%1$s · %2$s%% purity</string>
+    <string name="unknown_vendor">Unknown vendor</string>
+    <string name="cd_product_image">Listing photo</string>
+
     <!-- Icon descriptions -->
     <string name="cd_logo">Marketplace logo</string>
     <string name="cd_vendor_portal">Vendor portal</string>
