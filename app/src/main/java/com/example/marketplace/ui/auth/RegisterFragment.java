@@ -19,6 +19,7 @@ import com.example.marketplace.data.model.auth.AuthResponse;
 import com.example.marketplace.data.model.auth.User;
 import com.example.marketplace.databinding.FragmentRegisterBinding;
 import com.example.marketplace.utils.Resource;
+import com.example.marketplace.utils.ResourceMessages;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -98,9 +99,7 @@ public class RegisterFragment extends Fragment {
                 viewModel.consumeAuthResult();
                 break;
             case ERROR:
-                showMessage(result.message != null && !result.message.isEmpty()
-                        ? result.message
-                        : getString(result.messageRes != 0 ? result.messageRes : R.string.error_generic));
+                showMessage(ResourceMessages.errorText(requireContext(), result));
                 viewModel.consumeAuthResult();
                 break;
             default:

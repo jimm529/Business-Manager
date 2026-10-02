@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Release rule: only https is allowed, except for these local development hosts.
+  Android cannot whitelist address ranges such as 192.168.*.* here, so a real phone on
+  Wi-Fi needs the debug version of this file (src/debug/res/xml), which allows http everywhere.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">localhost</domain>
+        <domain includeSubdomains="false">127.0.0.1</domain>
+        <domain includeSubdomains="false">10.0.2.2</domain>
+    </domain-config>
+</network-security-config>

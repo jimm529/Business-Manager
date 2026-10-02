@@ -64,6 +64,8 @@
     <string name="empty_state">Nothing to show yet.</string>
     <string name="error_generic">Something went wrong. Please try again.</string>
     <string name="error_network">Can\'t reach the server. Check your connection.</string>
+    <string name="error_timeout">The server took too long to answer. Please try again.</string>
+    <string name="error_cannot_reach_server_debug">Cannot reach the server at %1$s. Check that the backend is running and that this address is reachable from the device.</string>
     <string name="error_session_expired">Your session has expired. Please sign in again.</string>
     <string name="error_two_factor_unsupported">This account uses two-step verification, which the app does not support yet.</string>
     <string name="retry">Retry</string>

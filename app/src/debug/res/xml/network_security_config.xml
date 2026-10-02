@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Debug builds only: plain http:// is allowed to any address, so the phone can reach the
+  backend on your PC's Wi-Fi IP (192.168.x.x, 10.x.x.x, ...). This file is NOT part of release builds.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

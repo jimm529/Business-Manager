@@ -19,31 +19,40 @@ public class Resource<T> {
     /** String resource to show when there is no server message (0 = none). */
     @StringRes
     public final int messageRes;
+    /** Values to fill into messageRes (for strings that contain %1$s and so on). */
+    @NonNull
+    public final Object[] messageArgs;
 
-    private Resource(@NonNull Status status, @Nullable T data, @Nullable String message, @StringRes int messageRes) {
+    private Resource(@NonNull Status status, @Nullable T data, @Nullable String message,
+                     @StringRes int messageRes, @NonNull Object[] messageArgs) {
         this.status = status;
         this.data = data;
         this.message = message;
         this.messageRes = messageRes;
+        this.messageArgs = messageArgs;
     }
 
     public static <T> Resource<T> idle() {
-        return new Resource<>(Status.IDLE, null, null, 0);
+        return new Resource<>(Status.IDLE, null, null, 0, new Object[0]);
     }
 
     public static <T> Resource<T> loading() {
-        return new Resource<>(Status.LOADING, null, null, 0);
+        return new Resource<>(Status.LOADING, null, null, 0, new Object[0]);
     }
 
     public static <T> Resource<T> success(@Nullable T data) {
-        return new Resource<>(Status.SUCCESS, data, null, 0);
+        return new Resource<>(Status.SUCCESS, data, null, 0, new Object[0]);
     }
 
     public static <T> Resource<T> error(@Nullable String message, @StringRes int fallbackRes) {
-        return new Resource<>(Status.ERROR, null, message, fallbackRes);
+        return new Resource<>(Status.ERROR, null, message, fallbackRes, new Object[0]);
     }
 
     public static <T> Resource<T> error(@StringRes int messageRes) {
-        return new Resource<>(Status.ERROR, null, null, messageRes);
+        return new Resource<>(Status.ERROR, null, null, messageRes, new Object[0]);
+    }
+
+    public static <T> Resource<T> errorWithArgs(@StringRes int messageRes, Object... args) {
+        return new Resource<>(Status.ERROR, null, null, messageRes, args);
     }
 }
