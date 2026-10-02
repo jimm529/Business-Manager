@@ -6,11 +6,23 @@
 
     <!-- Cleartext (http://) is allowed so the app can talk to the local dev backend. -->
     <application
+        android:name=".MarketplaceApp"
         android:allowBackup="false"
         android:icon="@drawable/ic_marketplace_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Marketplace"
-        android:usesCleartextTraffic="true" />
+        android:usesCleartextTraffic="true">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
 
 </manifest>

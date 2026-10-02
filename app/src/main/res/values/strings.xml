@@ -13,6 +13,7 @@
     <string name="email_address">EMAIL ADDRESS</string>
     <string name="email_hint">name@company.com</string>
     <string name="password">PASSWORD</string>
+    <string name="password_hint">Enter your password</string>
     <string name="forgot">Forgot?</string>
     <string name="keep_signed_in">Keep me signed in for 30 days</string>
     <string name="access_portal">ACCESS PORTAL</string>
@@ -22,12 +23,41 @@
     <string name="new_to_marketplace">New to Marketplace?</string>
     <string name="register_an_account">Register an Account</string>
 
-    <!-- Branding panel -->
+    <!-- Register screen labels -->
+    <string name="create_an_account">Create an Account</string>
+    <string name="choose_portal_subtitle">Choose your portal to get started.</string>
+    <string name="full_name">FULL NAME</string>
+    <string name="full_name_hint">Your full name</string>
+    <string name="job_title">JOB TITLE</string>
+    <string name="job_title_hint">Your job title</string>
+    <string name="confirm_password">CONFIRM PASSWORD</string>
+    <string name="confirm_password_hint">Re-enter your password</string>
+    <string name="create_account">CREATE ACCOUNT</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="sign_in">Sign In</string>
+
+    <!-- Branding panel (wide screens) -->
     <string name="tagline_title">Empowering the Circular Lead Economy</string>
     <string name="tagline_body">Joining the most transparent and efficient marketplace for industrial lead extraction and battery recycling.</string>
     <string name="badge_iso">ISO 14001 CERTIFIED</string>
     <string name="badge_custody">SECURE CUSTODY</string>
     <string name="badge_settlement">REAL-TIME SETTLEMENT</string>
+
+    <!-- Form validation -->
+    <string name="error_name_required">Please enter your full name.</string>
+    <string name="error_job_title_required">Please enter your job title.</string>
+    <string name="error_email_required">Please enter your email address.</string>
+    <string name="error_email_invalid">Please enter a valid email address.</string>
+    <string name="error_password_required">Please enter your password.</string>
+    <string name="error_password_rule">Use at least 8 characters with an uppercase letter, a number and a symbol.</string>
+    <string name="error_confirm_mismatch">Passwords do not match.</string>
+
+    <!-- Results -->
+    <string name="signed_in">Signed in.</string>
+    <string name="signed_in_as">Signed in as %1$s.</string>
+    <string name="account_created">Account created.</string>
+    <string name="account_created_for">Account created. Welcome, %1$s.</string>
+    <string name="feature_unavailable">This feature is not available yet.</string>
 
     <!-- Generic screen states -->
     <string name="loading">Loading…</string>
@@ -35,6 +65,7 @@
     <string name="error_generic">Something went wrong. Please try again.</string>
     <string name="error_network">Can\'t reach the server. Check your connection.</string>
     <string name="error_session_expired">Your session has expired. Please sign in again.</string>
+    <string name="error_two_factor_unsupported">This account uses two-step verification, which the app does not support yet.</string>
     <string name="retry">Retry</string>
 
     <!-- Icon descriptions -->
