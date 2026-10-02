@@ -2,15 +2,15 @@ package com.example.marketplace.data.api;
 
 import android.util.Log;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 
 import com.example.marketplace.BuildConfig;
+import com.example.marketplace.utils.ServerUrls;
 import com.example.marketplace.utils.SessionManager;
 
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -38,12 +38,7 @@ public final class ApiClient {
     public static synchronized ApiService getApiService() {
         String url = resolveApiBaseUrl();
         if (apiService == null || !url.equals(builtForUrl)) {
-            apiService = new Retrofit.Builder()
-                    .baseUrl(url)
-                    .client(getClient())
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                    .create(ApiService.class);
+            apiService = buildRetrofit(url, getClient()).create(ApiService.class);
             builtForUrl = url;
         }
         return apiService;
@@ -56,31 +51,35 @@ public final class ApiClient {
     }
 
     /**
-     * Turns a server address into the Retrofit base URL: "http://localhost:5000/" becomes
-     * "http://localhost:5000/api/". An address that already ends in "/api" is kept as is.
-     * Returns null when the text is not a valid http/https address.
+     * A separate, short-lived client for one server address, used to test a connection before saving it.
+     * It never sends the login token. Throws IllegalArgumentException when the address is not valid.
      */
-    @Nullable
-    public static String toApiBaseUrl(@Nullable String serverUrl) {
-        if (serverUrl == null) {
-            return null;
+    public static ApiService createService(@NonNull String serverUrl, int timeoutSeconds) {
+        String apiUrl = ServerUrls.toApiBaseUrl(serverUrl);
+        if (apiUrl == null) {
+            throw new IllegalArgumentException("Not a valid server address: " + serverUrl);
         }
-        String trimmed = serverUrl.trim();
-        while (trimmed.endsWith("/")) {
-            trimmed = trimmed.substring(0, trimmed.length() - 1);
-        }
-        if (!trimmed.endsWith("/api")) {
-            trimmed = trimmed + "/api";
-        }
-        HttpUrl parsed = HttpUrl.parse(trimmed + "/");
-        return parsed == null ? null : parsed.toString();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .connectTimeout(timeoutSeconds, TimeUnit.SECONDS)
+                .readTimeout(timeoutSeconds, TimeUnit.SECONDS)
+                .writeTimeout(timeoutSeconds, TimeUnit.SECONDS);
+        addLogging(builder);
+        return buildRetrofit(apiUrl, builder.build()).create(ApiService.class);
+    }
+
+    private static Retrofit buildRetrofit(String apiBaseUrl, OkHttpClient httpClient) {
+        return new Retrofit.Builder()
+                .baseUrl(apiBaseUrl)
+                .client(httpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
     }
 
     /** The saved address, or the build default when the saved one is not usable. */
     private static String resolveApiBaseUrl() {
-        String url = toApiBaseUrl(SessionManager.getInstance().getBaseUrl());
+        String url = ServerUrls.toApiBaseUrl(SessionManager.getInstance().getBaseUrl());
         if (url == null) {
-            url = toApiBaseUrl(BuildConfig.BASE_URL);
+            url = ServerUrls.toApiBaseUrl(BuildConfig.BASE_URL);
         }
         if (url == null) {
             throw new IllegalStateException("BuildConfig.BASE_URL is not a valid address: " + BuildConfig.BASE_URL);
@@ -95,17 +94,20 @@ public final class ApiClient {
                     .readTimeout(30, TimeUnit.SECONDS)
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .addInterceptor(new AuthInterceptor(SessionManager.getInstance()));
-
-            // Full request/response logging, debug builds only.
-            if (BuildConfig.DEBUG) {
-                HttpLoggingInterceptor logging = new HttpLoggingInterceptor(
-                        message -> Log.d(LOG_TAG, SECRET_FIELDS.matcher(message).replaceAll("$1***$2")));
-                logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-                logging.redactHeader("Authorization");
-                builder.addInterceptor(logging);
-            }
+            addLogging(builder);
             client = builder.build();
         }
         return client;
+    }
+
+    /** Full request/response logging, debug builds only. */
+    private static void addLogging(OkHttpClient.Builder builder) {
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor(
+                    message -> Log.d(LOG_TAG, SECRET_FIELDS.matcher(message).replaceAll("$1***$2")));
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            logging.redactHeader("Authorization");
+            builder.addInterceptor(logging);
+        }
     }
 }

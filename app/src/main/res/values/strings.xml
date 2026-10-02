@@ -65,20 +65,35 @@
     <string name="error_generic">Something went wrong. Please try again.</string>
     <string name="error_network">Can\'t reach the server. Check your connection.</string>
     <string name="error_timeout">The server took too long to answer. Please try again.</string>
-    <string name="error_cannot_reach_server_debug">Cannot reach the server at %1$s. Check that the backend is running and that this address is reachable from the device.</string>
+    <string name="error_cannot_reach_server_debug">Cannot reach the server at %1$s. Is the backend running?</string>
     <string name="error_session_expired">Your session has expired. Please sign in again.</string>
     <string name="error_two_factor_unsupported">This account uses two-step verification, which the app does not support yet.</string>
     <string name="retry">Retry</string>
 
-    <!-- Developer server-address dialog (debug builds) -->
-    <string name="server_url_title">Backend server address</string>
-    <string name="server_url_help">Use http://localhost:5000/ with \"adb reverse tcp:5000 tcp:5000\" (USB), or the Wi-Fi address of your PC, such as http://192.168.1.20:5000/. Do not add /api.</string>
+    <!-- Developer Server Connection sheet (debug builds) -->
+    <string name="server_url_title">Server connection</string>
+    <string name="server_url_help">Choose how this device reaches the backend, then test it before saving. Do not add /api.</string>
     <string name="server_url_hint">http://192.168.1.20:5000/</string>
-    <string name="server_url_save">Save</string>
     <string name="server_url_reset">Use default</string>
-    <string name="cancel">Cancel</string>
-    <string name="server_url_invalid">Enter a valid address starting with http:// or https://</string>
+    <string name="server_url_invalid">Enter a valid address, for example http://192.168.1.20:5000/</string>
     <string name="server_url_saved">Server set to %1$s</string>
+    <string name="server_chip_usb">USB / ADB Reverse (%1$s)</string>
+    <string name="server_chip_emulator">Android Emulator (%1$s)</string>
+    <string name="server_chip_lan">Custom LAN Wi-Fi IP (%1$s)</string>
+    <string name="server_test">Test connection</string>
+    <string name="server_save_apply">Save and apply</string>
+    <string name="server_testing">Testing connection…</string>
+    <string name="server_test_ok">Connected to server (DB: %1$s)</string>
+    <string name="server_test_db_down">Server reachable, but its database is %1$s</string>
+    <string name="server_test_unreachable">Cannot reach server at this address</string>
+    <string name="server_test_http">This address answered with HTTP %1$d. Is it the Marketplace server?</string>
+    <string name="change_server_ip">Change server IP</string>
+    <string name="cd_server_settings">Server connection settings</string>
+    <!-- Addresses, not text for people: never translated -->
+    <string name="server_preset_usb_url" translatable="false">http://localhost:5000/</string>
+    <string name="server_preset_emulator_url" translatable="false">http://10.0.2.2:5000/</string>
+    <string name="server_preset_lan_example" translatable="false">http://192.168.x.x:5000/</string>
+    <string name="server_preset_lan_prefix" translatable="false">http://192.168.</string>
 
     <!-- Bottom navigation -->
     <string name="nav_home">Home</string>

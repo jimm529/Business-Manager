@@ -36,6 +36,17 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
+            <!-- Developer shortcut to the Server Connection sheet. Shown in debug builds only. -->
+            <ImageButton
+                android:id="@+id/btnServer"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cd_server_settings"
+                android:src="@drawable/ic_server"
+                android:visibility="gone"
+                app:tint="?attr/colorOnSurfaceVariant" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSupport"
                 style="@style/Widget.Material3.Button.TextButton"

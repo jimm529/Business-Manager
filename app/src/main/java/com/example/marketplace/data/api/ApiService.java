@@ -4,6 +4,7 @@ import com.example.marketplace.data.model.auth.AuthResponse;
 import com.example.marketplace.data.model.auth.LoginRequest;
 import com.example.marketplace.data.model.auth.MeResponse;
 import com.example.marketplace.data.model.auth.RegisterRequest;
+import com.example.marketplace.data.model.common.HealthResponse;
 import com.example.marketplace.data.model.dashboard.OrderApprovalsResponse;
 import com.example.marketplace.data.model.dashboard.ProductsResponse;
 import com.example.marketplace.data.model.dashboard.VendorOverviewResponse;
@@ -20,6 +21,10 @@ import retrofit2.http.Query;
  * so they must NOT start with "api/".
  */
 public interface ApiService {
+
+    /** Is the server up, and did it reach its database? Public, needs no login. */
+    @GET("health")
+    Call<HealthResponse> getHealth();
 
     @POST("auth/login")
     Call<AuthResponse> login(@Body LoginRequest request);

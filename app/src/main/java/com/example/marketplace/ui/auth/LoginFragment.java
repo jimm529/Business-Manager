@@ -10,21 +10,16 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.marketplace.BuildConfig;
 import com.example.marketplace.R;
-import com.example.marketplace.data.api.ApiClient;
 import com.example.marketplace.data.model.auth.AuthResponse;
-import com.example.marketplace.databinding.DialogServerUrlBinding;
 import com.example.marketplace.databinding.FragmentLoginBinding;
 import com.example.marketplace.utils.Resource;
 import com.example.marketplace.utils.ResourceMessages;
-import com.example.marketplace.utils.SessionManager;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -33,8 +28,9 @@ public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
     private AuthViewModel viewModel;
+    /** The "cannot reach server" message that stays on screen until the person acts on it. */
     @Nullable
-    private AlertDialog serverUrlDialog;
+    private Snackbar connectionSnackbar;
 
     @Nullable
     @Override
@@ -73,15 +69,7 @@ public class LoginFragment extends Fragment {
         binding.btnGoogle.setOnClickListener(notAvailable);
         binding.btnSso.setOnClickListener(notAvailable);
 
-        // Developer tool: long-press SUPPORT or the logo to change the backend address (debug builds only).
-        if (BuildConfig.DEBUG) {
-            View.OnLongClickListener openServerDialog = v -> {
-                showServerUrlDialog();
-                return true;
-            };
-            binding.btnSupport.setOnLongClickListener(openServerDialog);
-            binding.imgLogo.setOnLongClickListener(openServerDialog);
-        }
+        setUpServerConnectionTool();
 
         viewModel.getFormErrors().observe(getViewLifecycleOwner(), errors -> {
             binding.layoutEmail.setError(errors.email == null ? null : getString(errors.email));
@@ -90,7 +78,38 @@ public class LoginFragment extends Fragment {
         viewModel.getAuthResult().observe(getViewLifecycleOwner(), this::render);
     }
 
+    /**
+     * Developer tool (debug builds only): a server button in the header, or a long-press on SUPPORT
+     * or the logo, opens the Server Connection sheet where the backend address can be tested and changed.
+     */
+    private void setUpServerConnectionTool() {
+        if (!BuildConfig.DEBUG) {
+            return;
+        }
+        binding.btnServer.setVisibility(View.VISIBLE);
+        binding.btnServer.setOnClickListener(v -> openServerSheet());
+        View.OnLongClickListener open = v -> {
+            openServerSheet();
+            return true;
+        };
+        binding.btnSupport.setOnLongClickListener(open);
+        binding.imgLogo.setOnLongClickListener(open);
+
+        getParentFragmentManager().setFragmentResultListener(
+                ServerConfigBottomSheet.RESULT_KEY, getViewLifecycleOwner(), (key, result) ->
+                        showMessage(getString(R.string.server_url_saved,
+                                result.getString(ServerConfigBottomSheet.RESULT_URL, ""))));
+    }
+
+    private void openServerSheet() {
+        dismissConnectionSnackbar();
+        if (getParentFragmentManager().findFragmentByTag(ServerConfigBottomSheet.TAG) == null) {
+            new ServerConfigBottomSheet().show(getParentFragmentManager(), ServerConfigBottomSheet.TAG);
+        }
+    }
+
     private void submit() {
+        dismissConnectionSnackbar();
         viewModel.login(
                 binding.etEmail.getText() == null ? null : binding.etEmail.getText().toString(),
                 binding.etPassword.getText() == null ? null : binding.etPassword.getText().toString());
@@ -105,11 +124,35 @@ public class LoginFragment extends Fragment {
                 NavHostFragment.findNavController(this).navigate(R.id.action_global_homeFragment);
                 break;
             case ERROR:
-                showMessage(ResourceMessages.errorText(requireContext(), result));
+                showError(result);
                 viewModel.consumeAuthResult();
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * Shows the server's own message. When the server could not be reached at all (debug builds),
+     * the message stays up with a "Change server IP" button, and tapping the message does the same.
+     */
+    private void showError(Resource<AuthResponse> result) {
+        String message = ResourceMessages.errorText(requireContext(), result);
+        if (BuildConfig.DEBUG && ResourceMessages.isConnectionProblem(result)) {
+            connectionSnackbar = Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.change_server_ip, v -> openServerSheet())
+                    .setTextMaxLines(4);
+            connectionSnackbar.getView().setOnClickListener(v -> openServerSheet());
+            connectionSnackbar.show();
+        } else {
+            showMessage(message);
+        }
+    }
+
+    private void dismissConnectionSnackbar() {
+        if (connectionSnackbar != null) {
+            connectionSnackbar.dismiss();
+            connectionSnackbar = null;
         }
     }
 
@@ -119,48 +162,6 @@ public class LoginFragment extends Fragment {
         binding.progressLogin.setVisibility(loading ? View.VISIBLE : View.GONE);
         binding.portalSelector.cardVendor.setEnabled(!loading);
         binding.portalSelector.cardOperator.setEnabled(!loading);
-    }
-
-    /** Lets a developer view and change the backend address, e.g. localhost (adb reverse) or a Wi-Fi IP. */
-    private void showServerUrlDialog() {
-        if (serverUrlDialog != null && serverUrlDialog.isShowing()) {
-            return;
-        }
-        SessionManager session = SessionManager.getInstance();
-        DialogServerUrlBinding dialogBinding = DialogServerUrlBinding.inflate(getLayoutInflater());
-        dialogBinding.etServerUrl.setText(session.getBaseUrl());
-
-        serverUrlDialog = new MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.server_url_title)
-                .setView(dialogBinding.getRoot())
-                .setPositiveButton(R.string.server_url_save, null)
-                .setNeutralButton(R.string.server_url_reset, null)
-                .setNegativeButton(R.string.cancel, null)
-                .create();
-        serverUrlDialog.setOnShowListener(d -> {
-            // Set the listeners here so an invalid address keeps the dialog open.
-            serverUrlDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-                CharSequence typed = dialogBinding.etServerUrl.getText();
-                String url = typed == null ? "" : typed.toString().trim();
-                if (ApiClient.toApiBaseUrl(url) == null || url.isEmpty()) {
-                    dialogBinding.layoutServerUrl.setError(getString(R.string.server_url_invalid));
-                    return;
-                }
-                applyServerUrl(session, url);
-                serverUrlDialog.dismiss();
-            });
-            serverUrlDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> {
-                applyServerUrl(session, null);
-                serverUrlDialog.dismiss();
-            });
-        });
-        serverUrlDialog.show();
-    }
-
-    private void applyServerUrl(SessionManager session, @Nullable String url) {
-        session.setBaseUrl(url);
-        ApiClient.reset();
-        showMessage(getString(R.string.server_url_saved, session.getBaseUrl()));
     }
 
     private void showMessage(String message) {
@@ -190,10 +191,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (serverUrlDialog != null) {
-            serverUrlDialog.dismiss();
-            serverUrlDialog = null;
-        }
+        dismissConnectionSnackbar();
         binding = null;
     }
 }

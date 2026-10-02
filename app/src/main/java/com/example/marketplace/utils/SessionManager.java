@@ -144,13 +144,24 @@ public class SessionManager {
         return (saved == null || saved.trim().isEmpty()) ? BuildConfig.BASE_URL : saved;
     }
 
-    /** Saves a new server address (debug builds). Passing null or empty goes back to the default. */
-    public synchronized void setBaseUrl(@Nullable String url) {
+    /**
+     * Saves a new server address (debug builds). The text is cleaned up first, so
+     * "192.168.1.5:5000", "http://192.168.1.5:5000" and "http://192.168.1.5:5000/api" all become
+     * "http://192.168.1.5:5000/". Passing null or empty goes back to the default.
+     *
+     * @return false when the text is not a usable address (nothing is saved then)
+     */
+    public synchronized boolean setBaseUrl(@Nullable String url) {
         if (url == null || url.trim().isEmpty()) {
             prefs.edit().remove(KEY_BASE_URL).apply();
-        } else {
-            prefs.edit().putString(KEY_BASE_URL, url.trim()).apply();
+            return true;
         }
+        String normalized = ServerUrls.normalize(url);
+        if (normalized == null) {
+            return false;
+        }
+        prefs.edit().putString(KEY_BASE_URL, normalized).apply();
+        return true;
     }
 
     /** Called by the network layer when the server answers 401 to a signed-in request. */

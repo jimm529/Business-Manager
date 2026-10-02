@@ -11,6 +11,14 @@ public final class ResourceMessages {
 
     private ResourceMessages() { }
 
+    /** True when the call failed because the server could not be reached (not because it said no). */
+    public static boolean isConnectionProblem(@NonNull Resource<?> resource) {
+        return resource.messageRes != 0
+                && (resource.messageRes == R.string.error_network
+                || resource.messageRes == R.string.error_timeout
+                || resource.messageRes == R.string.error_cannot_reach_server_debug);
+    }
+
     @NonNull
     public static String errorText(@NonNull Context context, @NonNull Resource<?> resource) {
         if (resource.message != null && !resource.message.trim().isEmpty()) {

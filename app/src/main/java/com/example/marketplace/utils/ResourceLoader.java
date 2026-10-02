@@ -23,6 +23,15 @@ public class ResourceLoader<T> {
         return state;
     }
 
+    /** Forgets the current call and its result; the state goes back to idle. */
+    public void reset() {
+        if (currentSource != null) {
+            state.removeSource(currentSource);
+            currentSource = null;
+        }
+        state.setValue(Resource.idle());
+    }
+
     /** Starts (or restarts) the call whose result is given as LiveData. */
     public void load(LiveData<Resource<T>> source) {
         if (currentSource != null) {
