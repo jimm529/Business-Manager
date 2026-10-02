@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Google "G" in its four brand colours (button on the login screen). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <path
+        android:fillColor="@color/google_yellow"
+        android:pathData="M10.5,28.9a14,14 0 0 1 0,-9.8L3.1,13.4a24,24 0 0 0 0,21.2Z" />
+    <path
+        android:fillColor="@color/google_red"
+        android:pathData="M24,9.5c3.5,0 6.6,1.2 9.1,3.6l6.8,-6.8C35.8,2.4 30.3,0 24,0C15,0 7.3,5.1 3.1,13.4l7.4,5.7C12.3,13.8 17.7,9.5 24,9.5Z" />
+    <path
+        android:fillColor="@color/google_green"
+        android:pathData="M24,48c6.3,0 11.8,-2.1 15.7,-5.7l-7.2,-5.6c-2,1.4 -4.6,2.3 -8.5,2.3c-6.3,0 -11.7,-4.3 -13.5,-9.9l-7.4,5.7C7.3,42.9 15,48 24,48Z" />
+    <path
+        android:fillColor="@color/google_blue"
+        android:pathData="M47.5,24.5c0,-1.6 -0.1,-3.2 -0.4,-4.5L24,20v9h13c-0.6,3 -2.3,5.5 -4.8,7.1l7.2,5.6C43.7,37.8 47.5,31.8 47.5,24.5Z" />
+</vector>

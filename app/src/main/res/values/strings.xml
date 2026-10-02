@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Marketplace</string>
+    <string name="brand_name">MARKETPLACE</string>
+    <string name="company_name">LeadTrack Industrial</string>
+    <string name="support">SUPPORT</string>
+
+    <!-- Login screen labels -->
+    <string name="welcome_back">Welcome back</string>
+    <string name="select_portal_subtitle">Select your portal to manage your industrial inventory.</string>
+    <string name="vendor_portal">VENDOR PORTAL</string>
+    <string name="operator_portal">OPERATOR PORTAL</string>
+    <string name="email_address">EMAIL ADDRESS</string>
+    <string name="email_hint">name@company.com</string>
+    <string name="password">PASSWORD</string>
+    <string name="forgot">Forgot?</string>
+    <string name="keep_signed_in">Keep me signed in for 30 days</string>
+    <string name="access_portal">ACCESS PORTAL</string>
+    <string name="or_continue_with">OR CONTINUE WITH</string>
+    <string name="google">GOOGLE</string>
+    <string name="sso">SSO</string>
+    <string name="new_to_marketplace">New to Marketplace?</string>
+    <string name="register_an_account">Register an Account</string>
+
+    <!-- Branding panel -->
+    <string name="tagline_title">Empowering the Circular Lead Economy</string>
+    <string name="tagline_body">Joining the most transparent and efficient marketplace for industrial lead extraction and battery recycling.</string>
+    <string name="badge_iso">ISO 14001 CERTIFIED</string>
+    <string name="badge_custody">SECURE CUSTODY</string>
+    <string name="badge_settlement">REAL-TIME SETTLEMENT</string>
+
+    <!-- Generic screen states -->
+    <string name="loading">Loading…</string>
+    <string name="empty_state">Nothing to show yet.</string>
+    <string name="error_generic">Something went wrong. Please try again.</string>
+    <string name="error_network">Can\'t reach the server. Check your connection.</string>
+    <string name="error_session_expired">Your session has expired. Please sign in again.</string>
+    <string name="retry">Retry</string>
+
+    <!-- Icon descriptions -->
+    <string name="cd_logo">Marketplace logo</string>
+    <string name="cd_vendor_portal">Vendor portal</string>
+    <string name="cd_operator_portal">Operator portal</string>
+    <string name="cd_show_password">Show password</string>
+    <string name="cd_hide_password">Hide password</string>
+</resources>
