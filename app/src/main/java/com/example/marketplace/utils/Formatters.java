@@ -1,6 +1,11 @@
 package com.example.marketplace.utils;
 
+import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.marketplace.R;
 
 import java.text.NumberFormat;
 import java.util.Currency;
@@ -41,5 +46,21 @@ public final class Formatters {
         NumberFormat format = NumberFormat.getNumberInstance(INDIA);
         format.setMaximumFractionDigits(2);
         return format.format(value);
+    }
+
+    /** Short money for big numbers, Indian style: 42800000 -> "₹4.28 Cr", 250000 -> "₹2.5 L", 900 -> "₹900". */
+    @NonNull
+    public static String compactCurrency(@NonNull Context context, double value) {
+        double abs = Math.abs(value);
+        NumberFormat plain = NumberFormat.getNumberInstance(INDIA);
+        plain.setMaximumFractionDigits(2);
+        if (abs >= 10_000_000d) {
+            return "₹" + context.getString(R.string.amount_crore, plain.format(value / 10_000_000d));
+        }
+        if (abs >= 100_000d) {
+            return "₹" + context.getString(R.string.amount_lakh, plain.format(value / 100_000d));
+        }
+        String full = currency(value, null, 0);
+        return full == null ? "" : full;
     }
 }

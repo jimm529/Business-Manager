@@ -14,6 +14,19 @@
     <color name="colorBorder">#D1D5DB</color>
     <color name="colorError">#DC2626</color>
 
+    <!-- Dashboard status colours (badges and shipment dots) -->
+    <color name="badgeTurnBackground">#7DF2BF</color>
+    <color name="badgeTurnText">#00593B</color>
+    <color name="badgePendingBackground">#DDE6FA</color>
+    <color name="badgePendingText">#3B4F7D</color>
+    <color name="badgeUrgentBackground">#FCDADA</color>
+    <color name="badgeUrgentText">#B42318</color>
+    <color name="statusOnTheWay">#00875A</color>
+    <color name="statusProcessing">#F5A524</color>
+    <color name="statusBooked">#64748B</color>
+    <color name="notificationDot">#E5484D</color>
+    <color name="searchBoxBackground">#EAF0FD</color>
+
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 

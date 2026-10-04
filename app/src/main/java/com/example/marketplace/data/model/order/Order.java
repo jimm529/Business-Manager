@@ -29,6 +29,12 @@ public class Order {
     private String buyerName;
     @SerializedName("operator")
     private Person operator;
+    /** Expected delivery, an ISO-8601 date-time string such as "2026-10-02T10:49:00.000Z". */
+    @SerializedName("expectedDate")
+    private String expectedDate;
+    /** When the order was placed (same format). */
+    @SerializedName("createdAt")
+    private String createdAt;
 
     @Nullable public String getId() { return id; }
     @Nullable public String getOrderId() { return orderId; }
@@ -38,6 +44,8 @@ public class Order {
     @Nullable public Double getValue() { return value; }
     @Nullable public String getCurrency() { return currency; }
     @Nullable public String getStatus() { return status; }
+    @Nullable public String getExpectedDate() { return expectedDate; }
+    @Nullable public String getCreatedAt() { return createdAt; }
 
     /** Name of the buyer: the operator's name, or the buyer name stored on the order. */
     @Nullable

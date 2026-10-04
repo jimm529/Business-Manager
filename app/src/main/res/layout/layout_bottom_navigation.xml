@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bottom bar: Home, Market, a raised round Action (+) button in the middle, Messages, Settings.
+     MainActivity marks the current tab with setSelected(true); the colour selector does the rest.
+     The top padding is empty space so the round button can rise above the bar. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:paddingTop="22dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="?attr/colorSurface"
+        android:baselineAligned="false"
+        android:elevation="8dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/tabHome"
+            style="@style/Widget.Marketplace.NavTab">
+
+            <ImageView
+                style="@style/Widget.Marketplace.NavIcon"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_nav_home" />
+
+            <TextView
+                style="@style/Widget.Marketplace.NavLabel"
+                android:text="@string/nav_home" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tabMarket"
+            style="@style/Widget.Marketplace.NavTab">
+
+            <ImageView
+                style="@style/Widget.Marketplace.NavIcon"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_nav_market" />
+
+            <TextView
+                style="@style/Widget.Marketplace.NavLabel"
+                android:text="@string/nav_market" />
+        </LinearLayout>
+
+        <!-- Middle slot: the label sits here, the round button floats above it -->
+        <LinearLayout
+            android:id="@+id/tabAction"
+            style="@style/Widget.Marketplace.NavTab"
+            android:gravity="bottom|center_horizontal"
+            android:paddingBottom="8dp">
+
+            <TextView
+                style="@style/Widget.Marketplace.NavLabel"
+                android:text="@string/nav_action"
+                android:textColor="?attr/colorSecondary"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tabMessages"
+            style="@style/Widget.Marketplace.NavTab">
+
+            <ImageView
+                style="@style/Widget.Marketplace.NavIcon"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_nav_messages" />
+
+            <TextView
+                style="@style/Widget.Marketplace.NavLabel"
+                android:text="@string/nav_messages" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tabSettings"
+            style="@style/Widget.Marketplace.NavTab">
+
+            <ImageView
+                style="@style/Widget.Marketplace.NavIcon"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_nav_settings" />
+
+            <TextView
+                style="@style/Widget.Marketplace.NavLabel"
+                android:text="@string/nav_settings" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:contentDescription="@string/cd_action"
+        android:elevation="12dp"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="?attr/colorSecondary"
+        app:elevation="12dp"
+        app:fabSize="normal"
+        app:tint="?attr/colorOnSecondary" />
+</FrameLayout>

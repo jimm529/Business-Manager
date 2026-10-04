@@ -33,9 +33,9 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/ordersFragment"
+        android:id="@+id/marketFragment"
         android:name="com.example.marketplace.ui.home.ComingSoonFragment"
-        android:label="@string/nav_orders"
+        android:label="@string/nav_market"
         tools:layout="@layout/fragment_coming_soon" />
 
     <fragment
@@ -45,9 +45,9 @@
         tools:layout="@layout/fragment_coming_soon" />
 
     <fragment
-        android:id="@+id/profileFragment"
+        android:id="@+id/settingsFragment"
         android:name="com.example.marketplace.ui.home.ComingSoonFragment"
-        android:label="@string/nav_profile"
+        android:label="@string/nav_settings"
         tools:layout="@layout/fragment_coming_soon" />
 
     <!-- Used when the server rejects the saved token (401) or the user logs out:

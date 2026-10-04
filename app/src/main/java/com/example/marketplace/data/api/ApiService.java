@@ -5,9 +5,12 @@ import com.example.marketplace.data.model.auth.LoginRequest;
 import com.example.marketplace.data.model.auth.MeResponse;
 import com.example.marketplace.data.model.auth.RegisterRequest;
 import com.example.marketplace.data.model.common.HealthResponse;
+import com.example.marketplace.data.model.dashboard.ActiveDealsResponse;
 import com.example.marketplace.data.model.dashboard.OrderApprovalsResponse;
 import com.example.marketplace.data.model.dashboard.ProductsResponse;
+import com.example.marketplace.data.model.dashboard.PurchaseHistoryResponse;
 import com.example.marketplace.data.model.dashboard.VendorOverviewResponse;
+import com.example.marketplace.data.model.dashboard.VendorsResponse;
 import com.example.marketplace.data.model.order.OrdersResponse;
 
 import retrofit2.Call;
@@ -51,4 +54,16 @@ public interface ApiService {
     /** Marketplace listings. A null parameter is left out of the request. */
     @GET("lots")
     Call<ProductsResponse> getLots(@Query("search") String search, @Query("materials") String materials);
+
+    /** Buyer only: spending totals plus the newest orders. Dates are YYYY-MM-DD. */
+    @GET("purchase-history")
+    Call<PurchaseHistoryResponse> getPurchaseHistory(@Query("limit") int limit, @Query("startDate") String startDate);
+
+    /** Buyer only: negotiations that are still open, newest activity first. */
+    @GET("bids/active-deals")
+    Call<ActiveDealsResponse> getActiveDeals();
+
+    /** Buyer only: the suppliers this buyer works with. */
+    @GET("vendors")
+    Call<VendorsResponse> getVendors();
 }

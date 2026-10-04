@@ -97,9 +97,10 @@
 
     <!-- Bottom navigation -->
     <string name="nav_home">Home</string>
-    <string name="nav_orders">Orders</string>
+    <string name="nav_market">Market</string>
+    <string name="nav_action">Action</string>
     <string name="nav_messages">Messages</string>
-    <string name="nav_profile">Profile</string>
+    <string name="nav_settings">Settings</string>
     <string name="coming_soon">Coming soon.</string>
     <string name="coming_soon_screen">%1$s is coming soon.</string>
 
@@ -132,7 +133,50 @@
     <string name="unknown_vendor">Unknown vendor</string>
     <string name="cd_product_image">Listing photo</string>
 
+    <!-- Buyer dashboard -->
+    <string name="search_marketplace_hint">Search marketplace…</string>
+    <string name="metric_total_spend">Total Spend</string>
+    <string name="metric_active_orders">Active Orders</string>
+    <string name="metric_monthly_volume">Monthly Volume</string>
+    <string name="metric_volume_value">%1$s MT</string>
+    <string name="amount_crore">%1$s Cr</string>
+    <string name="amount_lakh">%1$s L</string>
+    <string name="monthly_purchase">Monthly Purchase</string>
+    <string name="last_6_months">Last 6 Months</string>
+    <string name="empty_monthly_purchase">No purchases in the last 6 months.</string>
+    <string name="active_deals">Active Deals</string>
+    <string name="view_all">VIEW ALL</string>
+    <string name="empty_active_deals">No active deals right now.</string>
+    <string name="badge_your_turn">YOUR TURN</string>
+    <string name="badge_pending_vendor">PENDING VENDOR</string>
+    <string name="deal_last_offer">Last Offer:</string>
+    <string name="deal_counter_sent">Counter Offer Sent:</string>
+    <string name="deal_material_quantity">%1$s (%2$s MT)</string>
+    <string name="deal_lot">LOT %1$s</string>
+    <string name="price_per_mt">%1$s/MT</string>
+    <string name="action_counter">COUNTER</string>
+    <string name="action_decline">DECLINE</string>
+    <string name="incoming_shipments">Incoming Shipments</string>
+    <string name="track_all">TRACK ALL</string>
+    <string name="empty_shipments">No incoming shipments.</string>
+    <string name="shipment_on_the_way">ON THE WAY</string>
+    <string name="shipment_processing">PROCESSING</string>
+    <string name="shipment_booked">BOOKED</string>
+    <string name="shipment_status_line">• %1$s</string>
+    <string name="shipment_date_weight">%1$s • %2$s</string>
+    <string name="shipment_weight">%1$s %2$s</string>
+    <string name="regular_suppliers">Regular Suppliers</string>
+    <string name="empty_suppliers">No suppliers added yet.</string>
+    <string name="error_tap_to_retry">%1$s\nTap to retry.</string>
+    <string name="logout_confirm_title">Log out?</string>
+
     <!-- Icon descriptions -->
+    <string name="cd_search">Search</string>
+    <string name="cd_notifications">Notifications</string>
+    <string name="cd_profile_menu">Account menu</string>
+    <string name="cd_view_shipment">View shipment</string>
+    <string name="cd_supplier_image">Supplier logo</string>
+    <string name="cd_action">Quick action</string>
     <string name="cd_logo">Marketplace logo</string>
     <string name="cd_vendor_portal">Vendor portal</string>
     <string name="cd_operator_portal">Operator portal</string>

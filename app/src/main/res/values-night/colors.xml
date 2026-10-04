@@ -12,4 +12,16 @@
     <color name="colorTextSecondary">#94A3B8</color>
     <color name="colorBorder">#334155</color>
     <color name="colorError">#F87171</color>
+
+    <color name="badgeTurnBackground">#14573F</color>
+    <color name="badgeTurnText">#7DF2BF</color>
+    <color name="badgePendingBackground">#2A3556</color>
+    <color name="badgePendingText">#C3D2F5</color>
+    <color name="badgeUrgentBackground">#5A1F1F</color>
+    <color name="badgeUrgentText">#FCA5A5</color>
+    <color name="statusOnTheWay">#34D399</color>
+    <color name="statusProcessing">#FBBF24</color>
+    <color name="statusBooked">#94A3B8</color>
+    <color name="notificationDot">#F87171</color>
+    <color name="searchBoxBackground">#1B2740</color>
 </resources>

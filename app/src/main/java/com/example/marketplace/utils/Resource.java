@@ -60,4 +60,9 @@ public class Resource<T> {
     public static <T> Resource<T> errorWithArgs(@StringRes int messageRes, Object... args) {
         return new Resource<>(Status.ERROR, null, null, messageRes, args);
     }
+
+    /** The same state (status and message) carrying different data, e.g. after turning a response into UI models. */
+    public <R> Resource<R> withData(@Nullable R newData) {
+        return new Resource<>(status, newData, message, messageRes, messageArgs);
+    }
 }

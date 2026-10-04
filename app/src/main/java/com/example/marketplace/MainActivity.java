@@ -1,6 +1,7 @@
 package com.example.marketplace;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -69,35 +70,47 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        final int[] tabIds = {R.id.homeFragment, R.id.marketFragment, R.id.messagesFragment, R.id.settingsFragment};
+        final View[] tabViews = {binding.bottomNav.tabHome, binding.bottomNav.tabMarket,
+                binding.bottomNav.tabMessages, binding.bottomNav.tabSettings};
+
         // Tapping a tab opens it on top of Home, so Back always returns to Home and then leaves the app.
-        binding.bottomNav.setOnItemSelectedListener(item -> {
-            NavDestination current = navController.getCurrentDestination();
-            if (current != null && current.getId() == item.getItemId()) {
-                return true;
-            }
-            NavOptions options = new NavOptions.Builder()
-                    .setLaunchSingleTop(true)
-                    .setPopUpTo(R.id.homeFragment, false)
-                    .build();
-            navController.navigate(item.getItemId(), null, options);
-            return true;
-        });
+        for (int i = 0; i < tabIds.length; i++) {
+            final int destinationId = tabIds[i];
+            tabViews[i].setOnClickListener(v -> {
+                NavDestination current = navController.getCurrentDestination();
+                if (current != null && current.getId() == destinationId) {
+                    return;
+                }
+                NavOptions options = new NavOptions.Builder()
+                        .setLaunchSingleTop(true)
+                        .setPopUpTo(R.id.homeFragment, false)
+                        .build();
+                navController.navigate(destinationId, null, options);
+            });
+        }
+
+        // The middle button is a quick action whose screen is built in a later step.
+        View.OnClickListener comingSoon = v ->
+                Snackbar.make(binding.getRoot(), R.string.coming_soon, Snackbar.LENGTH_SHORT).show();
+        binding.bottomNav.fabAction.setOnClickListener(comingSoon);
+        binding.bottomNav.tabAction.setOnClickListener(comingSoon);
 
         // The tab bar shows only on the four main tabs, with the current tab highlighted.
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             boolean isTab = isTab(destination.getId());
-            binding.bottomNav.setVisibility(isTab ? android.view.View.VISIBLE : android.view.View.GONE);
-            if (isTab && binding.bottomNav.getMenu().findItem(destination.getId()) != null) {
-                binding.bottomNav.getMenu().findItem(destination.getId()).setChecked(true);
+            binding.bottomNav.getRoot().setVisibility(isTab ? View.VISIBLE : View.GONE);
+            for (int i = 0; i < tabIds.length; i++) {
+                tabViews[i].setSelected(tabIds[i] == destination.getId());
             }
         });
     }
 
     private static boolean isTab(int destinationId) {
         return destinationId == R.id.homeFragment
-                || destinationId == R.id.ordersFragment
+                || destinationId == R.id.marketFragment
                 || destinationId == R.id.messagesFragment
-                || destinationId == R.id.profileFragment;
+                || destinationId == R.id.settingsFragment;
     }
 
     @Nullable
