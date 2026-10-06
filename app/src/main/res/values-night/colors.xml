@@ -24,4 +24,12 @@
     <color name="statusBooked">#94A3B8</color>
     <color name="notificationDot">#F87171</color>
     <color name="searchBoxBackground">#1B2740</color>
+
+    <color name="marketBadgeReadyBackground">#12342A</color>
+    <color name="marketBadgeReadyText">#7DF2BF</color>
+    <color name="marketBadgeExtractionBackground">#4A3A12</color>
+    <color name="marketBadgeExtractionText">#FBBF24</color>
+    <color name="marketBadgeNeutralBackground">#273449</color>
+    <color name="marketBadgeNeutralText">#CBD5E1</color>
+    <color name="marketQuantityBackground">#1B2740</color>
 </resources>

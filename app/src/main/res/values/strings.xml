@@ -170,7 +170,39 @@
     <string name="error_tap_to_retry">%1$s\nTap to retry.</string>
     <string name="logout_confirm_title">Log out?</string>
 
+    <!-- Market tab -->
+    <string name="market_title">MarketPlace</string>
+    <string name="market_filters_title">Filters</string>
+    <string name="market_filter_weight">Weight</string>
+    <string name="market_filter_material">Material</string>
+    <string name="market_filter_verification">Verification</string>
+    <string name="market_filter_location">Location</string>
+    <string name="market_filter_any">Any</string>
+    <string name="market_filter_verified_only">Verified sellers only</string>
+    <string name="market_filter_no_options">Nothing to choose from yet.</string>
+    <string name="market_filter_apply">Apply</string>
+    <string name="market_filter_clear">Clear all</string>
+    <string name="market_chip_weight">%1$s kg+</string>
+    <string name="market_chip_verified">Verified Only</string>
+    <string name="market_empty">No marketplace lots found</string>
+    <string name="market_total_quantity">TOTAL QUANTITY</string>
+    <string name="market_purity_grade">PURITY GRADE</string>
+    <string name="market_current_bid">CURRENT BID</string>
+    <string name="market_purity_value">%1$s%% Pb</string>
+    <string name="market_place_order">PLACE ORDER</string>
+    <string name="market_order_title">Place this order?</string>
+    <string name="market_order_message">%1$s\n%2$s at %3$s. The seller will answer your request.</string>
+    <string name="market_order_confirm">Place order</string>
+    <string name="market_order_cancel">Cancel</string>
+    <string name="market_order_sent">Order request sent to the seller.</string>
+    <string name="market_untitled_lot">Untitled lot</string>
+    <string name="market_status_unknown">STATUS UNKNOWN</string>
+
     <!-- Icon descriptions -->
+    <string name="cd_back">Back</string>
+    <string name="cd_filters">Open filters</string>
+    <string name="cd_bookmark">Save this lot</string>
+    <string name="cd_remove_filter">Remove filter</string>
     <string name="cd_search">Search</string>
     <string name="cd_notifications">Notifications</string>
     <string name="cd_profile_menu">Account menu</string>

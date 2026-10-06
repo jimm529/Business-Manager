@@ -34,9 +34,9 @@
 
     <fragment
         android:id="@+id/marketFragment"
-        android:name="com.example.marketplace.ui.home.ComingSoonFragment"
+        android:name="com.example.marketplace.ui.market.MarketFragment"
         android:label="@string/nav_market"
-        tools:layout="@layout/fragment_coming_soon" />
+        tools:layout="@layout/fragment_market" />
 
     <fragment
         android:id="@+id/messagesFragment"

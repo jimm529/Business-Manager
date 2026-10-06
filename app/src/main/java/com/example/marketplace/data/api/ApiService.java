@@ -11,12 +11,17 @@ import com.example.marketplace.data.model.dashboard.ProductsResponse;
 import com.example.marketplace.data.model.dashboard.PurchaseHistoryResponse;
 import com.example.marketplace.data.model.dashboard.VendorOverviewResponse;
 import com.example.marketplace.data.model.dashboard.VendorsResponse;
+import com.example.marketplace.data.model.market.BookmarkResponse;
+import com.example.marketplace.data.model.market.MarketplaceResponse;
+import com.example.marketplace.data.model.market.OrderRequest;
+import com.example.marketplace.data.model.market.OrderResponse;
 import com.example.marketplace.data.model.order.OrdersResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -66,4 +71,18 @@ public interface ApiService {
     /** Buyer only: the suppliers this buyer works with. */
     @GET("vendors")
     Call<VendorsResponse> getVendors();
+
+    /** Market tab listings. A null parameter is left out of the request. */
+    @GET("lots")
+    Call<MarketplaceResponse> getMarketLots(@Query("search") String search,
+                                            @Query("materials") String materials,
+                                            @Query("region") String region);
+
+    /** Saves the lot for this buyer, or removes it when it was already saved. */
+    @POST("lots/{id}/bookmark")
+    Call<BookmarkResponse> toggleBookmark(@Path("id") String lotId);
+
+    /** Places an order request on a lot (the seller answers it later). */
+    @POST("lots/{id}/offers")
+    Call<OrderResponse> placeOrder(@Path("id") String lotId, @Body OrderRequest request);
 }

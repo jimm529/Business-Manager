@@ -63,4 +63,18 @@ public final class Formatters {
         String full = currency(value, null, 0);
         return full == null ? "" : full;
     }
+
+    /** "Jane Doe" becomes "JD", "Jane" becomes "J"; a dash when there is no name. */
+    @NonNull
+    public static String initials(@NonNull Context context, @Nullable String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return context.getString(R.string.no_value);
+        }
+        String[] parts = name.trim().split("\\s+");
+        StringBuilder letters = new StringBuilder();
+        for (int i = 0; i < parts.length && letters.length() < 2; i++) {
+            letters.append(parts[i].substring(0, parts[i].offsetByCodePoints(0, 1)));
+        }
+        return letters.toString().toUpperCase(Locale.getDefault());
+    }
 }

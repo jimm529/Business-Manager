@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Smallest lot sizes (in kilograms) offered in the Market filter sheet -->
+    <integer-array name="market_weight_options_kg">
+        <item>500</item>
+        <item>1000</item>
+        <item>5000</item>
+        <item>10000</item>
+    </integer-array>
+</resources>
