@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A message from the signed-in person: right-aligned green bubble with the time under it. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:gravity="end"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_chat_outgoing"
+        android:maxWidth="290dp"
+        android:padding="12dp"
+        android:textColor="?attr/colorOnPrimary"
+        android:textIsSelectable="true"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="11sp" />
+</LinearLayout>

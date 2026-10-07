@@ -40,9 +40,110 @@
 
     <fragment
         android:id="@+id/messagesFragment"
-        android:name="com.example.marketplace.ui.home.ComingSoonFragment"
+        android:name="com.example.marketplace.ui.messages.MessagesFragment"
         android:label="@string/nav_messages"
-        tools:layout="@layout/fragment_coming_soon" />
+        tools:layout="@layout/fragment_messages">
+        <action
+            android:id="@+id/action_messages_to_chat"
+            app:destination="@id/chatFragment" />
+    </fragment>
+
+    <!-- Messages flow: thread -> chat -> deal (Counter Price) -> Offer Accepted -->
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.marketplace.ui.messages.ChatFragment"
+        android:label="@string/nav_messages"
+        tools:layout="@layout/fragment_chat">
+        <argument
+            android:name="conversationId"
+            app:argType="string" />
+        <argument
+            android:name="participantName"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="participantSubtitle"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="batchNumber"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_chat_to_counterPrice"
+            app:destination="@id/counterPriceFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/counterPriceFragment"
+        android:name="com.example.marketplace.ui.messages.CounterPriceFragment"
+        android:label="@string/counter_title"
+        tools:layout="@layout/fragment_counter_price">
+        <argument
+            android:name="bidId"
+            app:argType="string" />
+        <argument
+            android:name="conversationId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="batchNumber"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <!-- After accepting, Back from the confirmation returns to the chat, not to the finished deal. -->
+        <action
+            android:id="@+id/action_counterPrice_to_offerAccepted"
+            app:destination="@id/offerAcceptedFragment"
+            app:popUpTo="@id/counterPriceFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/offerAcceptedFragment"
+        android:name="com.example.marketplace.ui.messages.OfferAcceptedFragment"
+        android:label="@string/offer_accepted_title"
+        tools:layout="@layout/fragment_offer_accepted">
+        <argument
+            android:name="transactionId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="itemDetail"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="quantity"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="agreedRate"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="totalContractValue"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="status"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="batchNumber"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/settingsFragment"

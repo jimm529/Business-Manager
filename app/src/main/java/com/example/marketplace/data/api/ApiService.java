@@ -4,7 +4,16 @@ import com.example.marketplace.data.model.auth.AuthResponse;
 import com.example.marketplace.data.model.auth.LoginRequest;
 import com.example.marketplace.data.model.auth.MeResponse;
 import com.example.marketplace.data.model.auth.RegisterRequest;
+import com.example.marketplace.data.model.bid.BidActionResponse;
+import com.example.marketplace.data.model.bid.BidsResponse;
+import com.example.marketplace.data.model.bid.CounterOfferRequest;
+import com.example.marketplace.data.model.bid.DocumentsResponse;
 import com.example.marketplace.data.model.common.HealthResponse;
+import com.example.marketplace.data.model.messages.ConversationResponse;
+import com.example.marketplace.data.model.messages.ConversationsResponse;
+import com.example.marketplace.data.model.messages.MessagesResponse;
+import com.example.marketplace.data.model.messages.SendMessageRequest;
+import com.example.marketplace.data.model.messages.SendMessageResponse;
 import com.example.marketplace.data.model.dashboard.ActiveDealsResponse;
 import com.example.marketplace.data.model.dashboard.OrderApprovalsResponse;
 import com.example.marketplace.data.model.dashboard.ProductsResponse;
@@ -17,10 +26,13 @@ import com.example.marketplace.data.model.market.OrderRequest;
 import com.example.marketplace.data.model.market.OrderResponse;
 import com.example.marketplace.data.model.order.OrdersResponse;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -85,4 +97,36 @@ public interface ApiService {
     /** Places an order request on a lot (the seller answers it later). */
     @POST("lots/{id}/offers")
     Call<OrderResponse> placeOrder(@Path("id") String lotId, @Body OrderRequest request);
+
+    /** The signed-in person's conversation threads, newest activity first. */
+    @GET("conversations")
+    Call<ConversationsResponse> getConversations();
+
+    /** One thread, including the documents shared in it. */
+    @GET("conversations/{id}")
+    Call<ConversationResponse> getConversation(@Path("id") String conversationId);
+
+    /** Message history of a thread, oldest first. */
+    @GET("conversations/{id}/messages")
+    Call<MessagesResponse> getMessages(@Path("id") String conversationId);
+
+    @POST("conversations/{id}/messages")
+    Call<SendMessageResponse> sendMessage(@Path("id") String conversationId, @Body SendMessageRequest request);
+
+    /** Shares a PDF or image in the thread. The file goes in the part named "file". */
+    @Multipart
+    @POST("conversations/{id}/documents")
+    Call<DocumentsResponse> uploadDocument(@Path("id") String conversationId, @Part MultipartBody.Part file);
+
+    /** Buyer only: all deals of this buyer (there is no single-deal call on the server). */
+    @GET("bids")
+    Call<BidsResponse> getBids();
+
+    /** Buyer only: accepts the seller's offer and creates the order. */
+    @POST("bids/{id}/accept")
+    Call<BidActionResponse> acceptBid(@Path("id") String bidId);
+
+    /** Buyer only: answers the deal with a new rate and quantity. */
+    @POST("bids/{id}/counter")
+    Call<BidActionResponse> counterBid(@Path("id") String bidId, @Body CounterOfferRequest request);
 }

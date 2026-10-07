@@ -7,9 +7,15 @@ import androidx.annotation.Nullable;
 
 import com.example.marketplace.R;
 
+import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Currency;
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /** Turns numbers from the backend into text for the screen. Money uses the Indian format by default. */
 public final class Formatters {
@@ -62,6 +68,87 @@ public final class Formatters {
         }
         String full = currency(value, null, 0);
         return full == null ? "" : full;
+    }
+
+    /** Reads a server time such as "2026-10-07T10:15:30.000Z" (UTC). Null when missing or unreadable. */
+    @Nullable
+    public static Date parseIso(@Nullable String iso) {
+        if (iso == null || iso.length() < 19) {
+            return null;
+        }
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+            format.setTimeZone(TimeZone.getTimeZone("UTC"));
+            return format.parse(iso.substring(0, 19));
+        } catch (ParseException unreadable) {
+            return null;
+        }
+    }
+
+    /** Today: the time ("2:15 PM"). Yesterday: the word. Earlier: the day ("Oct 7"). A dash when unknown. */
+    @NonNull
+    public static String listTimestamp(@NonNull Context context, @Nullable String iso) {
+        Date date = parseIso(iso);
+        if (date == null) {
+            return context.getString(R.string.no_value);
+        }
+        Calendar then = Calendar.getInstance();
+        then.setTime(date);
+        Calendar now = Calendar.getInstance();
+        if (sameDay(now, then)) {
+            return DateFormat.getTimeInstance(DateFormat.SHORT).format(date);
+        }
+        now.add(Calendar.DAY_OF_YEAR, -1);
+        if (sameDay(now, then)) {
+            return context.getString(R.string.yesterday);
+        }
+        return new SimpleDateFormat("MMM d", Locale.getDefault()).format(date);
+    }
+
+    /** Chat bubble time: the time today, the day and time before that. A dash when unknown. */
+    @NonNull
+    public static String messageTimestamp(@NonNull Context context, @Nullable String iso) {
+        Date date = parseIso(iso);
+        if (date == null) {
+            return context.getString(R.string.no_value);
+        }
+        String time = DateFormat.getTimeInstance(DateFormat.SHORT).format(date);
+        Calendar then = Calendar.getInstance();
+        then.setTime(date);
+        if (sameDay(Calendar.getInstance(), then)) {
+            return time;
+        }
+        return new SimpleDateFormat("MMM d", Locale.getDefault()).format(date) + ", " + time;
+    }
+
+    /** "Oct 7, 2026", or a dash when unknown. */
+    @NonNull
+    public static String shortDate(@NonNull Context context, @Nullable String iso) {
+        Date date = parseIso(iso);
+        return date == null ? context.getString(R.string.no_value)
+                : new SimpleDateFormat("MMM d, yyyy", Locale.getDefault()).format(date);
+    }
+
+    /** 2400000 -> "2.3 MB". A dash when unknown. */
+    @NonNull
+    public static String fileSize(@NonNull Context context, @Nullable Long bytes) {
+        if (bytes == null || bytes < 0) {
+            return context.getString(R.string.no_value);
+        }
+        NumberFormat one = NumberFormat.getNumberInstance(Locale.getDefault());
+        one.setMaximumFractionDigits(1);
+        if (bytes >= 1024L * 1024L) {
+            return context.getString(R.string.file_size_mb, one.format(bytes / (1024d * 1024d)));
+        }
+        if (bytes >= 1024L) {
+            return context.getString(R.string.file_size_kb, one.format(bytes / 1024d));
+        }
+        return context.getString(R.string.file_size_bytes, one.format(bytes));
+    }
+
+    private static boolean sameDay(Calendar a, Calendar b) {
+        return a.get(Calendar.YEAR) == b.get(Calendar.YEAR)
+                && a.get(Calendar.DAY_OF_YEAR) == b.get(Calendar.DAY_OF_YEAR);
     }
 
     /** "Jane Doe" becomes "JD", "Jane" becomes "J"; a dash when there is no name. */
