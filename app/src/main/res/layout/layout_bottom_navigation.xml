@@ -97,7 +97,7 @@
         android:contentDescription="@string/cd_action"
         android:elevation="12dp"
         android:src="@drawable/ic_add"
-        app:backgroundTint="?attr/colorSecondary"
+        app:backgroundTint="@color/action_fab_tint"
         app:elevation="12dp"
         app:fabSize="normal"
         app:tint="?attr/colorOnSecondary" />

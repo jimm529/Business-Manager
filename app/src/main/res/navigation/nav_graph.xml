@@ -145,6 +145,13 @@
             app:nullable="true" />
     </fragment>
 
+    <!-- Round Action (+) button in the bottom bar: Registered Vendors -->
+    <fragment
+        android:id="@+id/registeredVendorsFragment"
+        android:name="com.example.marketplace.ui.vendors.RegisteredVendorsFragment"
+        android:label="@string/vendors_title"
+        tools:layout="@layout/fragment_registered_vendors" />
+
     <!-- Settings tab: Operator Settings -->
     <fragment
         android:id="@+id/operatorSettingsFragment"

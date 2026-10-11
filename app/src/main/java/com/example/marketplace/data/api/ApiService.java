@@ -30,6 +30,8 @@ import com.example.marketplace.data.model.settings.MessageResponse;
 import com.example.marketplace.data.model.settings.OperatorSettingsResponse;
 import com.example.marketplace.data.model.settings.TwoFactorSetupResponse;
 import com.example.marketplace.data.model.settings.TwoFactorVerifyRequest;
+import com.example.marketplace.data.model.vendor.CreateVendorRequest;
+import com.example.marketplace.data.model.vendor.RegisteredVendorsResponse;
 import com.google.gson.JsonObject;
 
 import okhttp3.MultipartBody;
@@ -156,4 +158,13 @@ public interface ApiService {
     /** Finishes 2FA set-up with the 6-digit code from the authenticator app. */
     @POST("settings/2fa/verify")
     Call<MessageResponse> verifyTwoFactor(@Body TwoFactorVerifyRequest request);
+
+    /** Operator only: the registered vendors. A null parameter is left out of the request. */
+    @GET("vendors")
+    Call<RegisteredVendorsResponse> getRegisteredVendors(@Query("search") String search,
+                                                         @Query("status") String status);
+
+    /** Operator only: registers a new vendor. */
+    @POST("vendors")
+    Call<MessageResponse> createVendor(@Body CreateVendorRequest request);
 }

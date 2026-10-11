@@ -396,4 +396,42 @@
     <string name="settings_discard_message">Your edits have not been saved and will be lost.</string>
     <string name="settings_discard_confirm">Discard</string>
     <string name="settings_keep_editing">Keep editing</string>
+
+    <!-- Registered Vendors -->
+    <string name="vendors_title">Registered Vendors</string>
+    <string name="vendors_search_hint">Search marketplace...</string>
+    <string name="vendors_section_title">All Registered Vendors</string>
+    <string name="vendors_add">+ Add</string>
+    <string name="cd_refresh">Refresh</string>
+    <string name="vendors_empty">No registered vendors found</string>
+    <string name="vendors_empty_filtered">No vendors match your search or filter.</string>
+    <string name="vendors_primary_material">Primary Material</string>
+    <string name="vendors_volume">Volume (T)</string>
+    <string name="vendors_compliance">Compliance</string>
+    <string name="vendors_details">Details &gt;</string>
+    <string name="vendors_location_audit">%1$s • Last Audit: %2$s</string>
+    <string name="vendors_status_active">ACTIVE</string>
+    <string name="vendors_status_pending">PENDING</string>
+    <string name="vendors_status_inactive">INACTIVE</string>
+    <string name="vendors_compliance_compliant">COMPLIANT</string>
+    <string name="vendors_compliance_pending">PENDING</string>
+    <string name="vendors_compliance_expired">EXPIRED</string>
+    <string name="vendors_filter_title">Filter by status</string>
+    <string name="vendors_filter_all">All vendors</string>
+    <string name="vendors_registered">Vendor registered.</string>
+
+    <string name="vendors_add_title">Register Vendor</string>
+    <string name="vendors_add_company">COMPANY NAME</string>
+    <string name="vendors_add_license">INDUSTRIAL LICENSE NUMBER</string>
+    <string name="vendors_add_location">LOCATION</string>
+    <string name="vendors_add_material">PRIMARY MATERIAL</string>
+    <string name="vendors_add_volume">VOLUME (TONS PER MONTH)</string>
+    <string name="vendors_add_certification">CERTIFICATION</string>
+    <string name="vendors_add_compliance_status">COMPLIANCE STATUS</string>
+    <string name="vendors_add_manager">LEAD MANAGER NAME</string>
+    <string name="vendors_add_email">SECURE EMAIL</string>
+    <string name="vendors_add_submit">Register Vendor</string>
+    <string name="vendors_error_required">Fill in this field.</string>
+    <string name="vendors_error_volume">Enter a volume above 0.</string>
+    <string name="vendors_error_email">Enter a valid e-mail address.</string>
 </resources>

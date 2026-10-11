@@ -90,16 +90,28 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        // The middle button is a quick action whose screen is built in a later step.
-        View.OnClickListener comingSoon = v ->
-                Snackbar.make(binding.getRoot(), R.string.coming_soon, Snackbar.LENGTH_SHORT).show();
-        binding.bottomNav.fabAction.setOnClickListener(comingSoon);
-        binding.bottomNav.tabAction.setOnClickListener(comingSoon);
+        // The round middle button opens Registered Vendors, the same way a tab opens.
+        View.OnClickListener openVendors = v -> {
+            NavDestination current = navController.getCurrentDestination();
+            if (current != null && current.getId() == R.id.registeredVendorsFragment) {
+                return;
+            }
+            NavOptions options = new NavOptions.Builder()
+                    .setLaunchSingleTop(true)
+                    .setPopUpTo(R.id.homeFragment, false)
+                    .build();
+            navController.navigate(R.id.registeredVendorsFragment, null, options);
+        };
+        binding.bottomNav.fabAction.setOnClickListener(openVendors);
+        binding.bottomNav.tabAction.setOnClickListener(openVendors);
 
         // The tab bar shows only on the four main tabs, with the current tab highlighted.
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             boolean isTab = isTab(destination.getId());
             binding.bottomNav.getRoot().setVisibility(isTab ? View.VISIBLE : View.GONE);
+            boolean onActionScreen = destination.getId() == R.id.registeredVendorsFragment;
+            binding.bottomNav.fabAction.setSelected(onActionScreen);
+            binding.bottomNav.tabAction.setSelected(onActionScreen);
             for (int i = 0; i < tabIds.length; i++) {
                 tabViews[i].setSelected(tabIds[i] == destination.getId());
             }
@@ -110,7 +122,8 @@ public class MainActivity extends AppCompatActivity {
         return destinationId == R.id.homeFragment
                 || destinationId == R.id.marketFragment
                 || destinationId == R.id.messagesFragment
-                || destinationId == R.id.operatorSettingsFragment;
+                || destinationId == R.id.operatorSettingsFragment
+                || destinationId == R.id.registeredVendorsFragment;
     }
 
     @Nullable
