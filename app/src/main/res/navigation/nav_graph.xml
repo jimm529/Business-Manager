@@ -25,7 +25,7 @@
             app:popUpToInclusive="true" />
     </fragment>
 
-    <!-- The four bottom-navigation tabs -->
+    <!-- The bottom-navigation tabs (Home, Market, Messages, More; the Action (+) button opens Registered Vendors) -->
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.marketplace.ui.home.HomeFragment"
@@ -47,6 +47,35 @@
             android:id="@+id/action_messages_to_chat"
             app:destination="@id/chatFragment" />
     </fragment>
+
+    <!-- More tab: a menu that opens Orders, Purchase History and Operator Settings -->
+    <fragment
+        android:id="@+id/moreFragment"
+        android:name="com.example.marketplace.ui.more.MoreFragment"
+        android:label="@string/more_title"
+        tools:layout="@layout/fragment_more">
+        <action
+            android:id="@+id/action_more_to_orders"
+            app:destination="@id/ordersFragment" />
+        <action
+            android:id="@+id/action_more_to_purchaseHistory"
+            app:destination="@id/purchaseHistoryFragment" />
+        <action
+            android:id="@+id/action_more_to_operatorSettings"
+            app:destination="@id/operatorSettingsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ordersFragment"
+        android:name="com.example.marketplace.ui.orders.OrdersFragment"
+        android:label="@string/orders_title"
+        tools:layout="@layout/fragment_orders" />
+
+    <fragment
+        android:id="@+id/purchaseHistoryFragment"
+        android:name="com.example.marketplace.ui.history.PurchaseHistoryFragment"
+        android:label="@string/history_title"
+        tools:layout="@layout/fragment_purchase_history" />
 
     <!-- Messages flow: thread -> chat -> deal (Counter Price) -> Offer Accepted -->
     <fragment
@@ -152,7 +181,7 @@
         android:label="@string/vendors_title"
         tools:layout="@layout/fragment_registered_vendors" />
 
-    <!-- Settings tab: Operator Settings -->
+    <!-- Opened from the More menu: Operator Settings -->
     <fragment
         android:id="@+id/operatorSettingsFragment"
         android:name="com.example.marketplace.ui.settings.OperatorSettingsFragment"

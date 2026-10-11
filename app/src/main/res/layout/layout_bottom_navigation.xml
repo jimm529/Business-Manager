@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Bottom bar: Home, Market, a raised round Action (+) button in the middle, Messages, Settings.
+<!-- Bottom bar: Home, Market, a raised round Action (+) button in the middle, Messages, More.
      MainActivity marks the current tab with setSelected(true); the colour selector does the rest.
      The top padding is empty space so the round button can rise above the bar. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -75,17 +75,17 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/tabSettings"
+            android:id="@+id/tabMore"
             style="@style/Widget.Marketplace.NavTab">
 
             <ImageView
                 style="@style/Widget.Marketplace.NavIcon"
                 android:importantForAccessibility="no"
-                android:src="@drawable/ic_nav_settings" />
+                android:src="@drawable/ic_nav_more" />
 
             <TextView
                 style="@style/Widget.Marketplace.NavLabel"
-                android:text="@string/nav_settings" />
+                android:text="@string/nav_more" />
         </LinearLayout>
     </LinearLayout>
 

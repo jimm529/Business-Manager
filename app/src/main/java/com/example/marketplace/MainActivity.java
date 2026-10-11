@@ -70,9 +70,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        final int[] tabIds = {R.id.homeFragment, R.id.marketFragment, R.id.messagesFragment, R.id.operatorSettingsFragment};
+        final int[] tabIds = {R.id.homeFragment, R.id.marketFragment, R.id.messagesFragment, R.id.moreFragment};
         final View[] tabViews = {binding.bottomNav.tabHome, binding.bottomNav.tabMarket,
-                binding.bottomNav.tabMessages, binding.bottomNav.tabSettings};
+                binding.bottomNav.tabMessages, binding.bottomNav.tabMore};
 
         // Tapping a tab opens it on top of Home, so Back always returns to Home and then leaves the app.
         for (int i = 0; i < tabIds.length; i++) {
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNav.fabAction.setOnClickListener(openVendors);
         binding.bottomNav.tabAction.setOnClickListener(openVendors);
 
-        // The tab bar shows only on the four main tabs, with the current tab highlighted.
+        // The tab bar shows only on the main tabs, with the current tab highlighted.
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             boolean isTab = isTab(destination.getId());
             binding.bottomNav.getRoot().setVisibility(isTab ? View.VISIBLE : View.GONE);
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         return destinationId == R.id.homeFragment
                 || destinationId == R.id.marketFragment
                 || destinationId == R.id.messagesFragment
-                || destinationId == R.id.operatorSettingsFragment
+                || destinationId == R.id.moreFragment
                 || destinationId == R.id.registeredVendorsFragment;
     }
 

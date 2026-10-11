@@ -7,6 +7,7 @@ import com.example.marketplace.R;
 import com.example.marketplace.data.api.ApiClient;
 import com.example.marketplace.data.model.auth.AuthResponse;
 import com.example.marketplace.data.model.auth.LoginRequest;
+import com.example.marketplace.data.model.auth.MeResponse;
 import com.example.marketplace.data.model.auth.RegisterRequest;
 import com.example.marketplace.utils.Resource;
 import com.example.marketplace.utils.SessionManager;
@@ -35,6 +36,11 @@ public class AuthRepository {
 
     public LiveData<Resource<AuthResponse>> register(RegisterRequest request) {
         return ApiResults.enqueue(ApiClient.getApiService().register(request), this::saveSession);
+    }
+
+    /** The signed-in person's profile (GET auth/me). */
+    public LiveData<Resource<MeResponse>> getMe() {
+        return ApiResults.enqueue(ApiClient.getApiService().getMe());
     }
 
     private Resource<AuthResponse> saveSession(@NonNull AuthResponse body) {
