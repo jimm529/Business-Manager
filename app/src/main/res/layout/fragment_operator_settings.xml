@@ -756,6 +756,8 @@
                             <TextView
                                 android:id="@+id/btnManageList"
                                 style="@style/Widget.Marketplace.TextLink"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:paddingStart="8dp"
                                 android:paddingEnd="8dp"
                                 android:text="@string/settings_manage_list" />
