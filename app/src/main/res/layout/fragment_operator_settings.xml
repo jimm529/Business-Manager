@@ -1,0 +1,908 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Operator Settings: header, then a pull-to-refresh scroll of 8 cards, then a sticky Cancel / Save bar.
+     The loading, empty and error messages sit on top of the scroll area (view_screen_states). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
+    android:orientation="vertical">
+
+    <!-- Header: back, title, bell with dot, avatar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/cd_back"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="?attr/colorOnSurface" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/settings_title"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <FrameLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp">
+
+            <ImageButton
+                android:id="@+id/btnNotifications"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cd_notifications"
+                android:src="@drawable/ic_notifications"
+                app:tint="?attr/colorOnSurface" />
+
+            <View
+                android:id="@+id/dotNotifications"
+                android:layout_width="9dp"
+                android:layout_height="9dp"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/bg_notification_dot"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tvAvatar"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/bg_avatar"
+            android:clickable="true"
+            android:contentDescription="@string/cd_profile_menu"
+            android:focusable="true"
+            android:gravity="center"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scroll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fillViewport="true"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="@string/settings_subtitle"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="14sp" />
+
+                    <!-- 1. Procurement Profile -->
+                    <LinearLayout style="@style/Widget.Marketplace.SettingsCard">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                style="@style/Widget.Marketplace.CardIcon"
+                                android:src="@drawable/ic_briefcase" />
+
+                            <TextView
+                                style="@style/Widget.Marketplace.CardTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:layout_weight="1"
+                                android:text="@string/settings_profile_title" />
+
+                            <TextView
+                                android:id="@+id/btnUpdateProfile"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_pill_green"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:minHeight="32dp"
+                                android:gravity="center"
+                                android:paddingStart="12dp"
+                                android:paddingEnd="12dp"
+                                android:text="@string/settings_update_profile"
+                                android:textColor="?attr/colorOnSecondary"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/Widget.Marketplace.SettingsLabel"
+                            android:text="@string/settings_facility_name" />
+
+                        <com.google.android.material.textfield.TextInputLayout style="@style/Widget.Marketplace.SettingsField">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etFacility"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:importantForAutofill="no"
+                                android:inputType="textCapWords"
+                                android:maxLines="1" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            style="@style/Widget.Marketplace.SettingsLabel"
+                            android:text="@string/settings_procurement_limit" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilLimit"
+                            style="@style/Widget.Marketplace.SettingsField">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etLimit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:importantForAutofill="no"
+                                android:inputType="numberDecimal"
+                                android:maxLines="1" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="6dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    style="@style/Widget.Marketplace.SettingsLabel"
+                                    android:text="@string/settings_payment_terms" />
+
+                                <com.google.android.material.textfield.TextInputLayout style="@style/Widget.Marketplace.SettingsDropdown">
+
+                                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                                        android:id="@+id/ddTerms"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="@string/settings_select_hint"
+                                        android:inputType="none"
+                                        android:maxLines="2" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    style="@style/Widget.Marketplace.SettingsLabel"
+                                    android:text="@string/settings_billing_currency" />
+
+                                <com.google.android.material.textfield.TextInputLayout style="@style/Widget.Marketplace.SettingsDropdown">
+
+                                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                                        android:id="@+id/ddCurrency"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="@string/settings_select_hint"
+                                        android:inputType="none"
+                                        android:maxLines="2" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- 2. Approval Workflows -->
+                    <LinearLayout style="@style/Widget.Marketplace.SettingsCard">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                style="@style/Widget.Marketplace.CardIcon"
+                                android:src="@drawable/ic_check_circle" />
+
+                            <TextView
+                                style="@style/Widget.Marketplace.CardTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:text="@string/settings_workflows_title" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="bottom"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/Widget.Marketplace.SettingsLabel"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:text="@string/settings_signoff_threshold" />
+
+                            <TextView
+                                android:id="@+id/tvSignoffBadge"
+                                style="@style/Widget.Marketplace.StatusBadge"
+                                android:background="@drawable/bg_badge_market_ready"
+                                android:textColor="@color/marketBadgeReadyText"
+                                android:visibility="gone" />
+                        </LinearLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout style="@style/Widget.Marketplace.SettingsField">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etSignoff"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:importantForAutofill="no"
+                                android:inputType="numberDecimal"
+                                android:maxLines="1" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            style="@style/Widget.Marketplace.SettingsLabel"
+                            android:text="@string/settings_approvers" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvApprovers"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false" />
+
+                        <TextView
+                            android:id="@+id/tvApproversEmpty"
+                            style="@style/Widget.Marketplace.SettingsHint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/settings_approvers_empty"
+                            android:visibility="gone" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAddApprover"
+                            style="@style/Widget.Marketplace.OutlineAction"
+                            android:text="@string/settings_add_approver" />
+                    </LinearLayout>
+
+                    <!-- 3. Material Preferences -->
+                    <LinearLayout style="@style/Widget.Marketplace.SettingsCard">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                style="@style/Widget.Marketplace.CardIcon"
+                                android:src="@drawable/ic_tune" />
+
+                            <TextView
+                                style="@style/Widget.Marketplace.CardTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:text="@string/settings_materials_title" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="6dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    style="@style/Widget.Marketplace.SettingsLabel"
+                                    android:text="@string/settings_min_purity" />
+
+                                <com.google.android.material.textfield.TextInputLayout style="@style/Widget.Marketplace.SettingsField">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/etPurity"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:importantForAutofill="no"
+                                        android:inputType="numberDecimal"
+                                        android:maxLines="1" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    style="@style/Widget.Marketplace.SettingsLabel"
+                                    android:text="@string/settings_target_volume" />
+
+                                <com.google.android.material.textfield.TextInputLayout style="@style/Widget.Marketplace.SettingsField">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/etVolume"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:importantForAutofill="no"
+                                        android:inputType="numberDecimal"
+                                        android:maxLines="1" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:background="@drawable/bg_search_box"
+                            android:gravity="center_vertical"
+                            android:minHeight="56dp"
+                            android:orientation="horizontal"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:importantForAccessibility="no"
+                                android:src="@drawable/ic_notifications"
+                                app:tint="?attr/colorPrimary" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/settings_low_stock_title"
+                                    android:textColor="?attr/colorOnSurface"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    style="@style/Widget.Marketplace.SettingsHint"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/settings_low_stock_desc" />
+                            </LinearLayout>
+
+                            <com.google.android.material.materialswitch.MaterialSwitch
+                                android:id="@+id/switchLowStock"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/settings_low_stock_title" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- 4. Logistics Partners -->
+                    <LinearLayout style="@style/Widget.Marketplace.SettingsCard">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                style="@style/Widget.Marketplace.CardIcon"
+                                android:src="@drawable/ic_truck" />
+
+                            <TextView
+                                style="@style/Widget.Marketplace.CardTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:text="@string/settings_logistics_title" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/llPartners"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:orientation="vertical" />
+
+                        <TextView
+                            android:id="@+id/tvPartnersEmpty"
+                            style="@style/Widget.Marketplace.SettingsHint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/settings_logistics_empty"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <!-- 5. Security & Access -->
+                    <LinearLayout style="@style/Widget.Marketplace.SettingsCard">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                style="@style/Widget.Marketplace.CardIcon"
+                                android:src="@drawable/ic_shield" />
+
+                            <TextView
+                                style="@style/Widget.Marketplace.CardTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:text="@string/settings_security_title" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/settings_2fa_title"
+                                        android:textColor="?attr/colorOnSurface"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/tvTwoFaBadge"
+                                        style="@style/Widget.Marketplace.StatusBadge"
+                                        android:layout_marginStart="8dp"
+                                        android:background="@drawable/bg_badge_market_ready"
+                                        android:text="@string/settings_2fa_on"
+                                        android:textColor="@color/marketBadgeReadyText"
+                                        android:visibility="gone" />
+                                </LinearLayout>
+
+                                <TextView
+                                    style="@style/Widget.Marketplace.SettingsHint"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/settings_2fa_desc" />
+                            </LinearLayout>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnConfigure2fa"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:text="@string/settings_configure"
+                                android:textColor="?attr/colorOnSurface"
+                                app:strokeColor="?attr/colorOutline" />
+                        </LinearLayout>
+
+                        <!-- ERP API key (dark banner) -->
+                        <TextView
+                            style="@style/Widget.Marketplace.SettingsLabel"
+                            android:text="@string/settings_erp_label" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_settings_banner"
+                            android:orientation="vertical"
+                            android:padding="14dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:importantForAccessibility="no"
+                                    android:src="@drawable/ic_key"
+                                    app:tint="@color/settingsBannerSubtext" />
+
+                                <TextView
+                                    android:id="@+id/tvErpKey"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="12dp"
+                                    android:layout_weight="1"
+                                    android:fontFamily="monospace"
+                                    android:textColor="@color/settingsBannerText"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+
+                                <ImageButton
+                                    android:id="@+id/btnCopyKey"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:contentDescription="@string/cd_copy_key"
+                                    android:src="@drawable/ic_copy"
+                                    app:tint="@color/settingsBannerText" />
+
+                                <ImageButton
+                                    android:id="@+id/btnRotateKey"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:contentDescription="@string/cd_rotate_key"
+                                    android:src="@drawable/ic_refresh"
+                                    app:tint="@color/settingsBannerText" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tvErpIntegration"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="36dp"
+                                android:layout_marginTop="4dp"
+                                android:textColor="@color/settingsBannerSubtext"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- 6. Price Fixing -->
+                    <LinearLayout style="@style/Widget.Marketplace.SettingsCard">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                style="@style/Widget.Marketplace.CardIcon"
+                                android:src="@drawable/ic_tag" />
+
+                            <TextView
+                                style="@style/Widget.Marketplace.CardTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:text="@string/settings_pricing_title" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="6dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    style="@style/Widget.Marketplace.SettingsLabel"
+                                    android:text="@string/settings_base_rate" />
+
+                                <com.google.android.material.textfield.TextInputLayout style="@style/Widget.Marketplace.SettingsField">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/etBaseRate"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:importantForAutofill="no"
+                                        android:inputType="numberDecimal"
+                                        android:maxLines="1" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    style="@style/Widget.Marketplace.SettingsLabel"
+                                    android:text="@string/settings_market_adjustment" />
+
+                                <com.google.android.material.textfield.TextInputLayout style="@style/Widget.Marketplace.SettingsField">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/etAdjustment"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:importantForAutofill="no"
+                                        android:inputType="numberDecimal|numberSigned"
+                                        android:maxLines="1" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:background="@drawable/bg_search_box"
+                            android:gravity="center_vertical"
+                            android:minHeight="56dp"
+                            android:orientation="horizontal"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/settings_manual_override"
+                                    android:textColor="?attr/colorOnSurface"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    style="@style/Widget.Marketplace.SettingsHint"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/settings_manual_override_desc" />
+                            </LinearLayout>
+
+                            <com.google.android.material.materialswitch.MaterialSwitch
+                                android:id="@+id/switchOverride"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:contentDescription="@string/settings_manual_override" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- 7. Vendor Whitelisting -->
+                    <LinearLayout style="@style/Widget.Marketplace.SettingsCard">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                style="@style/Widget.Marketplace.CardIcon"
+                                android:src="@drawable/ic_vendor_factory" />
+
+                            <TextView
+                                style="@style/Widget.Marketplace.CardTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:layout_weight="1"
+                                android:text="@string/settings_vendors_title" />
+
+                            <TextView
+                                android:id="@+id/btnManageList"
+                                style="@style/Widget.Marketplace.TextLink"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp"
+                                android:text="@string/settings_manage_list" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/llVendors"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:orientation="vertical" />
+
+                        <TextView
+                            android:id="@+id/tvVendorsEmpty"
+                            style="@style/Widget.Marketplace.SettingsHint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/settings_vendors_empty"
+                            android:visibility="gone" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAddVendor"
+                            style="@style/Widget.Marketplace.OutlineAction"
+                            android:text="@string/settings_add_restricted_vendor" />
+                    </LinearLayout>
+
+                    <!-- 8. Login & Account Details -->
+                    <LinearLayout style="@style/Widget.Marketplace.SettingsCard">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                style="@style/Widget.Marketplace.CardIcon"
+                                android:src="@drawable/ic_person" />
+
+                            <TextView
+                                style="@style/Widget.Marketplace.CardTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:text="@string/settings_account_title" />
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/Widget.Marketplace.SettingsLabel"
+                            android:text="@string/settings_full_name" />
+
+                        <TextView
+                            android:id="@+id/tvFullName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            style="@style/Widget.Marketplace.SettingsLabel"
+                            android:text="@string/settings_role" />
+
+                        <TextView
+                            android:id="@+id/tvRole"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            style="@style/Widget.Marketplace.SettingsLabel"
+                            android:text="@string/settings_email" />
+
+                        <TextView
+                            android:id="@+id/tvEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textColor="?attr/colorPrimary"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnChangePassword"
+                            style="@style/Widget.Marketplace.OutlineAction"
+                            android:layout_marginTop="16dp"
+                            android:text="@string/settings_change_password" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnSecurityQuestions"
+                            style="@style/Widget.Marketplace.OutlineAction"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/settings_security_questions" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <!-- Loading / empty / error overlay -->
+            <include
+                android:id="@+id/states"
+                layout="@layout/view_screen_states" />
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <!-- Sticky bottom bar -->
+    <LinearLayout
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaveAll"
+                style="@style/Widget.Marketplace.PrimaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_save_all" />
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progressSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:indicatorColor="?attr/colorOnPrimary"
+                app:indicatorSize="24dp"
+                app:trackThickness="3dp" />
+        </FrameLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancelChanges"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/settings_cancel_changes" />
+    </LinearLayout>
+</LinearLayout>

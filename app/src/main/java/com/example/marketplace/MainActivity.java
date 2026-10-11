@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        final int[] tabIds = {R.id.homeFragment, R.id.marketFragment, R.id.messagesFragment, R.id.settingsFragment};
+        final int[] tabIds = {R.id.homeFragment, R.id.marketFragment, R.id.messagesFragment, R.id.operatorSettingsFragment};
         final View[] tabViews = {binding.bottomNav.tabHome, binding.bottomNav.tabMarket,
                 binding.bottomNav.tabMessages, binding.bottomNav.tabSettings};
 
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         return destinationId == R.id.homeFragment
                 || destinationId == R.id.marketFragment
                 || destinationId == R.id.messagesFragment
-                || destinationId == R.id.settingsFragment;
+                || destinationId == R.id.operatorSettingsFragment;
     }
 
     @Nullable

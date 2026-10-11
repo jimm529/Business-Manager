@@ -299,4 +299,101 @@
     <string name="counter_error_rate">Enter a rate above 0.</string>
     <string name="counter_error_quantity">Enter a quantity above 0.</string>
     <string name="counter_error_notes">Notes can be at most 500 characters.</string>
+
+    <!-- Operator Settings -->
+    <string name="settings_title">Operator Settings</string>
+    <string name="settings_subtitle">Configure procurement protocols, logistics API integrations, and facility compliance thresholds.</string>
+    <string name="settings_empty">Your settings are not available yet.</string>
+    <string name="settings_saved">Settings saved.</string>
+    <string name="settings_cancel_changes">Cancel Changes</string>
+    <string name="settings_save_all">Save All Settings</string>
+    <string name="settings_error_facility_required">Facility name cannot be empty.</string>
+    <string name="settings_select_hint">Select</string>
+    <string name="settings_dialog_cancel">Cancel</string>
+
+    <string name="settings_profile_title">Procurement Profile</string>
+    <string name="settings_update_profile">UPDATE PROFILE</string>
+    <string name="settings_facility_name">FACILITY NAME</string>
+    <string name="settings_procurement_limit">PROCUREMENT LIMIT PER TRANSACTION</string>
+    <string name="settings_payment_terms">DEFAULT PAYMENT TERMS</string>
+    <string name="settings_billing_currency">BILLING CURRENCY</string>
+
+    <string name="settings_workflows_title">Approval Workflows</string>
+    <string name="settings_signoff_threshold">MANAGER SIGN-OFF THRESHOLD</string>
+    <string name="settings_signoff_badge">%1$s+</string>
+    <string name="settings_approvers">APPROVERS</string>
+    <string name="settings_approvers_empty">No approvers yet.</string>
+    <string name="settings_add_approver">+ Add Approver</string>
+    <string name="settings_pick_approver">Add approver</string>
+    <string name="settings_no_more_approvers">Everyone in your organization is already an approver.</string>
+    <string name="cd_drag_approver">Drag to reorder</string>
+    <string name="cd_remove_approver">Remove approver</string>
+
+    <string name="settings_materials_title">Material Preferences</string>
+    <string name="settings_min_purity">MINIMUM PURITY (%)</string>
+    <string name="settings_target_volume">TARGET VOLUME (MT/MO)</string>
+    <string name="settings_low_stock_title">Low Stock Alert</string>
+    <string name="settings_low_stock_desc">Notify me when inventory runs low.</string>
+
+    <string name="settings_logistics_title">Logistics Partners</string>
+    <string name="settings_logistics_empty">No logistics partners yet.</string>
+    <string name="settings_status_connected">CONNECTED</string>
+    <string name="settings_status_inactive">INACTIVE</string>
+    <string name="cd_partner_disconnect">Disconnect %1$s</string>
+    <string name="cd_partner_connect">Connect %1$s</string>
+
+    <string name="settings_security_title">Security &amp; Access</string>
+    <string name="settings_2fa_title">Two-Factor Authentication</string>
+    <string name="settings_2fa_desc">Ask for a verification code from an authenticator app when you sign in.</string>
+    <string name="settings_configure">Configure</string>
+    <string name="settings_2fa_on">ENABLED</string>
+    <string name="settings_2fa_enabled">Two-factor authentication is now on.</string>
+    <string name="settings_erp_label">ERP API KEY</string>
+    <string name="settings_erp_none">No ERP integration connected.</string>
+    <string name="settings_erp_integration">Integration: %1$s</string>
+    <string name="cd_copy_key">Copy API key</string>
+    <string name="cd_rotate_key">Rotate API key</string>
+
+    <string name="settings_pricing_title">Price Fixing</string>
+    <string name="settings_base_rate">BASE MATERIAL RATE (PER KG)</string>
+    <string name="settings_market_adjustment">MARKET ADJUSTMENT (%)</string>
+    <string name="settings_manual_override">Manual Price Override</string>
+    <string name="settings_manual_override_desc">Allow prices to be set by hand instead of the fixed rate.</string>
+
+    <string name="settings_vendors_title">Vendor Whitelisting</string>
+    <string name="settings_manage_list">Manage List</string>
+    <string name="settings_vendors_empty">No whitelisted vendors yet.</string>
+    <string name="settings_add_restricted_vendor">+ Add Restricted Vendor</string>
+    <string name="settings_compliance">%1$s%% compliance</string>
+
+    <string name="settings_account_title">Login &amp; Account Details</string>
+    <string name="settings_full_name">FULL NAME</string>
+    <string name="settings_role">ROLE</string>
+    <string name="settings_email">EMAIL ADDRESS</string>
+    <string name="settings_change_password">Change Password</string>
+    <string name="settings_security_questions">Update Security Questions</string>
+    <string name="settings_password_changed">Password changed.</string>
+
+    <string name="pw_title">Change Password</string>
+    <string name="pw_current">CURRENT PASSWORD</string>
+    <string name="pw_new">NEW PASSWORD</string>
+    <string name="pw_confirm">CONFIRM NEW PASSWORD</string>
+    <string name="pw_rules">At least 8 characters, with an uppercase letter, a number and a symbol.</string>
+    <string name="pw_update">Update Password</string>
+    <string name="pw_error_required">Fill in this field.</string>
+    <string name="pw_error_mismatch">The passwords do not match.</string>
+    <string name="pw_error_weak">Use at least 8 characters with an uppercase letter, a number and a symbol.</string>
+
+    <string name="tfa_title">Set up two-factor sign-in</string>
+    <string name="tfa_instructions">Add this key to your authenticator app, then enter the 6-digit code the app shows.</string>
+    <string name="tfa_secret_label">SETUP KEY</string>
+    <string name="tfa_code_label">6-DIGIT CODE</string>
+    <string name="tfa_verify">Verify and enable</string>
+    <string name="tfa_error_code">Enter the 6-digit code.</string>
+
+    <string name="settings_approver_label">%1$s (%2$s)</string>
+    <string name="settings_discard_title">Discard unsaved changes?</string>
+    <string name="settings_discard_message">Your edits have not been saved and will be lost.</string>
+    <string name="settings_discard_confirm">Discard</string>
+    <string name="settings_keep_editing">Keep editing</string>
 </resources>

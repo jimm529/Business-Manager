@@ -44,4 +44,9 @@
     <color name="google_green">#34A853</color>
     <color name="google_yellow">#FBBC05</color>
     <color name="google_red">#EA4335</color>
+
+    <!-- Operator Settings: dark ERP key banner -->
+    <color name="settingsBannerBackground">#0F172A</color>
+    <color name="settingsBannerText">#FFFFFF</color>
+    <color name="settingsBannerSubtext">#94A3B8</color>
 </resources>

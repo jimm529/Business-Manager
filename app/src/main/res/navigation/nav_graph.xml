@@ -145,11 +145,12 @@
             app:nullable="true" />
     </fragment>
 
+    <!-- Settings tab: Operator Settings -->
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.example.marketplace.ui.home.ComingSoonFragment"
-        android:label="@string/nav_settings"
-        tools:layout="@layout/fragment_coming_soon" />
+        android:id="@+id/operatorSettingsFragment"
+        android:name="com.example.marketplace.ui.settings.OperatorSettingsFragment"
+        android:label="@string/settings_title"
+        tools:layout="@layout/fragment_operator_settings" />
 
     <!-- Used when the server rejects the saved token (401) or the user logs out:
          show Login and forget every other screen. -->

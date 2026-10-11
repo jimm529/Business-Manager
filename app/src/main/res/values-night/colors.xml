@@ -32,4 +32,8 @@
     <color name="marketBadgeNeutralBackground">#273449</color>
     <color name="marketBadgeNeutralText">#CBD5E1</color>
     <color name="marketQuantityBackground">#1B2740</color>
+
+    <color name="settingsBannerBackground">#020617</color>
+    <color name="settingsBannerText">#F1F5F9</color>
+    <color name="settingsBannerSubtext">#94A3B8</color>
 </resources>

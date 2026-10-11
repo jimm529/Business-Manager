@@ -25,6 +25,12 @@ import com.example.marketplace.data.model.market.MarketplaceResponse;
 import com.example.marketplace.data.model.market.OrderRequest;
 import com.example.marketplace.data.model.market.OrderResponse;
 import com.example.marketplace.data.model.order.OrdersResponse;
+import com.example.marketplace.data.model.settings.ChangePasswordRequest;
+import com.example.marketplace.data.model.settings.MessageResponse;
+import com.example.marketplace.data.model.settings.OperatorSettingsResponse;
+import com.example.marketplace.data.model.settings.TwoFactorSetupResponse;
+import com.example.marketplace.data.model.settings.TwoFactorVerifyRequest;
+import com.google.gson.JsonObject;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -34,6 +40,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 /**
@@ -129,4 +136,24 @@ public interface ApiService {
     /** Buyer only: answers the deal with a new rate and quantity. */
     @POST("bids/{id}/counter")
     Call<BidActionResponse> counterBid(@Path("id") String bidId, @Body CounterOfferRequest request);
+
+    /** Operator only: every Operator Settings section plus the dropdown choices and account details. */
+    @GET("settings")
+    Call<OperatorSettingsResponse> getSettings();
+
+    /** Operator only: saves the sections in the body (a JSON object shaped like the settings sections). */
+    @PUT("settings")
+    Call<OperatorSettingsResponse> updateSettings(@Body JsonObject body);
+
+    /** Changes the signed-in person's password. */
+    @PUT("settings/password")
+    Call<MessageResponse> changePassword(@Body ChangePasswordRequest request);
+
+    /** Starts 2FA set-up: returns the secret for the authenticator app. */
+    @POST("settings/2fa/setup")
+    Call<TwoFactorSetupResponse> setUpTwoFactor();
+
+    /** Finishes 2FA set-up with the 6-digit code from the authenticator app. */
+    @POST("settings/2fa/verify")
+    Call<MessageResponse> verifyTwoFactor(@Body TwoFactorVerifyRequest request);
 }
