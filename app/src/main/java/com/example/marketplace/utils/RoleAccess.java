@@ -78,6 +78,7 @@ public final class RoleAccess {
     private static boolean isVendorOnly(int id) {
         return id == R.id.vendorRequestsFragment
                 || id == R.id.vendorSalesFragment
+                || id == R.id.vendorSettingsFragment
                 || id == R.id.vendorListingsFragment;
     }
 }

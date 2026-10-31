@@ -10,6 +10,8 @@ import com.example.marketplace.data.model.settings.OperatorSettingsResponse;
 import com.example.marketplace.data.model.settings.TwoFactorSetupResponse;
 import com.example.marketplace.data.model.settings.TwoFactorVerifyRequest;
 import com.example.marketplace.utils.Resource;
+import com.example.marketplace.utils.RoleAccess;
+import com.example.marketplace.utils.SessionManager;
 import com.google.gson.JsonObject;
 
 /** The Operator Settings calls: load, save, change password and set up two-factor sign-in. */
@@ -38,16 +40,28 @@ public class SettingsRepository {
 
     /** PUT settings/password. */
     public LiveData<Resource<MessageResponse>> changePassword(@NonNull ChangePasswordRequest request) {
-        return ApiResults.enqueue(ApiClient.getApiService().changePassword(request));
+        return ApiResults.enqueue(isVendor()
+                ? ApiClient.getApiService().changeAccountPassword(request)
+                : ApiClient.getApiService().changePassword(request));
     }
 
     /** POST settings/2fa/setup. */
     public LiveData<Resource<TwoFactorSetupResponse>> setUpTwoFactor() {
-        return ApiResults.enqueue(ApiClient.getApiService().setUpTwoFactor());
+        return ApiResults.enqueue(isVendor()
+                ? ApiClient.getApiService().setUpAccountTwoFactor()
+                : ApiClient.getApiService().setUpTwoFactor());
     }
 
     /** POST settings/2fa/verify. */
     public LiveData<Resource<MessageResponse>> verifyTwoFactor(@NonNull String code) {
-        return ApiResults.enqueue(ApiClient.getApiService().verifyTwoFactor(new TwoFactorVerifyRequest(code)));
+        TwoFactorVerifyRequest request = new TwoFactorVerifyRequest(code);
+        return ApiResults.enqueue(isVendor()
+                ? ApiClient.getApiService().verifyAccountTwoFactor(request)
+                : ApiClient.getApiService().verifyTwoFactor(request));
+    }
+
+    /** Vendors may not use the operator's settings routes, so password and 2FA go through the account routes. */
+    private static boolean isVendor() {
+        return RoleAccess.isVendor(SessionManager.getInstance().getRole());
     }
 }

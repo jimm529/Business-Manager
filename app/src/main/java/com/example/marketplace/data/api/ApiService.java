@@ -35,6 +35,7 @@ import com.example.marketplace.data.model.vendor.OrderRequestsResponse;
 import com.example.marketplace.data.model.vendor.SalesHistoryResponse;
 import com.example.marketplace.data.model.vendor.VendorLotsResponse;
 import com.example.marketplace.data.model.vendor.VendorProfileResponse;
+import com.example.marketplace.data.model.vendor.VendorSettingsResponse;
 import com.example.marketplace.data.model.vendor.RequestActionResponse;
 import com.example.marketplace.data.model.settings.ChangePasswordRequest;
 import com.example.marketplace.data.model.settings.MessageResponse;
@@ -173,6 +174,18 @@ public interface ApiService {
     @POST("settings/2fa/verify")
     Call<MessageResponse> verifyTwoFactor(@Body TwoFactorVerifyRequest request);
 
+    /** Changes the signed-in person's password (the account route, open to vendors too). */
+    @POST("auth/change-password")
+    Call<MessageResponse> changeAccountPassword(@Body ChangePasswordRequest request);
+
+    /** Starts 2FA set-up through the account route (open to vendors too). */
+    @POST("auth/2fa/setup")
+    Call<TwoFactorSetupResponse> setUpAccountTwoFactor();
+
+    /** Finishes 2FA set-up through the account route (open to vendors too). */
+    @POST("auth/2fa/verify")
+    Call<MessageResponse> verifyAccountTwoFactor(@Body TwoFactorVerifyRequest request);
+
     /** Operator only: the registered vendors. A null parameter is left out of the request. */
     @GET("vendors")
     Call<RegisteredVendorsResponse> getRegisteredVendors(@Query("search") String search,
@@ -229,4 +242,24 @@ public interface ApiService {
     /** Vendor only: the address of an order's document, for viewing or downloading. */
     @GET("vendor-portal/orders/{id}/document")
     Call<OrderDocumentResponse> getOrderDocument(@Path("id") String orderId, @Query("download") boolean download);
+
+    /** Vendor only: the vendor's whole Settings screen. */
+    @GET("vendor-portal/settings")
+    Call<VendorSettingsResponse> getVendorSettings();
+
+    /** Vendor only: saves entityName, taxId and headquartersAddress. */
+    @PUT("vendor-portal/settings/profile")
+    Call<MessageResponse> saveVendorProfile(@Body JsonObject body);
+
+    /** Vendor only: saves yield, capacity, typical purity and the listing defaults. */
+    @PUT("vendor-portal/settings/operational-preferences")
+    Call<MessageResponse> saveVendorPreferences(@Body JsonObject body);
+
+    /** Vendor only: saves the notification switches. */
+    @PUT("vendor-portal/settings/notifications")
+    Call<MessageResponse> saveVendorNotifications(@Body JsonObject body);
+
+    /** Vendor only: saves the signed-in user's name and job title. */
+    @PUT("vendor-portal/settings/account")
+    Call<MessageResponse> saveVendorAccount(@Body JsonObject body);
 }

@@ -16,6 +16,8 @@ import com.example.marketplace.data.model.settings.TwoFactorSetupResponse;
 import com.example.marketplace.data.repository.SettingsRepository;
 import com.example.marketplace.utils.Event;
 import com.example.marketplace.utils.Resource;
+import com.example.marketplace.utils.SessionManager;
+import com.example.marketplace.utils.RoleAccess;
 import com.example.marketplace.utils.ResourceLoader;
 
 import java.util.ArrayList;
@@ -71,7 +73,15 @@ public class SettingsViewModel extends ViewModel {
             }
             twoFactorVerify.setValue(resource);
         });
-        refresh();
+        // Vendors have no Operator Settings to load; their screen supplies the 2FA state itself.
+        if (!RoleAccess.isVendor(SessionManager.getInstance().getRole())) {
+            refresh();
+        }
+    }
+
+    /** Lets another screen (Vendor Settings) say whether 2FA is already on. */
+    public void setTwoFactorEnabled(boolean enabled) {
+        twoFactorEnabled.setValue(enabled);
     }
 
     // ---------------------------------------------------------------- what the screen observes

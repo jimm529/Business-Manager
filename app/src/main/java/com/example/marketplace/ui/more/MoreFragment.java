@@ -54,7 +54,7 @@ public class MoreFragment extends Fragment {
             bindMenuRow(binding.rowOrders.getRoot(), R.drawable.ic_history,
                     R.string.more_vendor_sales_title, R.string.more_vendor_sales_subtitle, R.id.action_more_to_vendorSales);
             bindMenuRow(binding.rowHistory.getRoot(), R.drawable.ic_gear,
-                    R.string.more_vendor_settings_title, R.string.more_vendor_settings_subtitle, 0);
+                    R.string.more_vendor_settings_title, R.string.more_vendor_settings_subtitle, R.id.action_more_to_vendorSettings);
             binding.rowSettings.getRoot().setVisibility(View.GONE);
         } else {
             bindMenuRow(binding.rowOrders.getRoot(), R.drawable.ic_orders,

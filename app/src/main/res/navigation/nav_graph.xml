@@ -63,6 +63,9 @@
             android:id="@+id/action_more_to_vendorSales"
             app:destination="@id/vendorSalesFragment" />
         <action
+            android:id="@+id/action_more_to_vendorSettings"
+            app:destination="@id/vendorSettingsFragment" />
+        <action
             android:id="@+id/action_more_to_orders"
             app:destination="@id/ordersFragment" />
         <action
@@ -238,6 +241,13 @@
         android:name="com.example.marketplace.ui.vendorsales.VendorSalesFragment"
         android:label="@string/sales_title"
         tools:layout="@layout/fragment_vendor_sales" />
+
+    <!-- Vendor Settings (vendor only), opened from the More menu -->
+    <fragment
+        android:id="@+id/vendorSettingsFragment"
+        android:name="com.example.marketplace.ui.vendorsettings.VendorSettingsFragment"
+        android:label="@string/vsettings_title"
+        tools:layout="@layout/fragment_vendor_settings" />
 
     <!-- Used when the server rejects the saved token (401) or the user logs out:
          show Login and forget every other screen. -->
