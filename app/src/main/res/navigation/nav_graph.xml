@@ -184,7 +184,30 @@
         android:id="@+id/registeredVendorsFragment"
         android:name="com.example.marketplace.ui.vendors.RegisteredVendorsFragment"
         android:label="@string/vendors_title"
-        tools:layout="@layout/fragment_registered_vendors" />
+        tools:layout="@layout/fragment_registered_vendors">
+        <action
+            android:id="@+id/action_vendors_to_inventory"
+            app:destination="@id/vendorInventoryFragment" />
+    </fragment>
+
+    <!-- A registered vendor's Inventory (operator only): profile, live lots, custom quote -->
+    <fragment
+        android:id="@+id/vendorInventoryFragment"
+        android:name="com.example.marketplace.ui.vendorinventory.VendorInventoryFragment"
+        android:label="@string/vinv_title"
+        tools:layout="@layout/fragment_vendor_inventory">
+        <argument
+            android:name="vendorId"
+            app:argType="string" />
+        <argument
+            android:name="vendorName"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_vendorInventory_to_chat"
+            app:destination="@id/chatFragment" />
+    </fragment>
 
     <!-- Opened from the More menu: Operator Settings -->
     <fragment

@@ -104,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < tabViews.length; i++) {
                 tabViews[i].setSelected(ids[i] == destination.getId());
             }
-            boolean onActionScreen = destination.getId() == tabsForRole().action;
+            boolean onActionScreen = destination.getId() == tabsForRole().action
+                    || destination.getId() == R.id.vendorInventoryFragment;
             binding.bottomNav.fabAction.setSelected(onActionScreen);
             binding.bottomNav.tabAction.setSelected(onActionScreen);
         });
@@ -145,7 +146,9 @@ public class MainActivity extends AppCompatActivity {
                 || destinationId == tabs.second
                 || destinationId == R.id.messagesFragment
                 || destinationId == R.id.moreFragment
-                || destinationId == tabs.action;
+                || destinationId == tabs.action
+                // A vendor's Inventory is opened from the Action (+) screen and keeps the bar.
+                || destinationId == R.id.vendorInventoryFragment;
     }
 
     @Nullable

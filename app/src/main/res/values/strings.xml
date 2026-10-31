@@ -608,4 +608,45 @@
     <string name="listing_error_shipping">Choose shipping terms.</string>
     <string name="listing_error_price">Enter a price above 0.</string>
     <string name="listing_error_certify">Please certify before publishing.</string>
+    <!-- Buyer: a registered vendor's Inventory -->
+    <string name="vinv_title">Inventory</string>
+    <string name="vinv_search_hint">Search this inventory...</string>
+    <string name="vinv_status_active">● ACTIVE</string>
+    <string name="vinv_status_pending">● PENDING</string>
+    <string name="vinv_status_inactive">● INACTIVE</string>
+    <string name="vinv_description">%1$s supplier based in %2$s.</string>
+    <string name="vinv_description_material_only">%1$s supplier.</string>
+    <string name="vinv_description_location_only">Supplier based in %1$s.</string>
+    <string name="vinv_rating">Rating</string>
+    <string name="vinv_platform">On Platform</string>
+    <string name="vinv_compliance">Compliance</string>
+    <string name="vinv_less_than_year">&lt; 1 Year</string>
+    <plurals name="vinv_years">
+        <item quantity="one">%d Year</item>
+        <item quantity="other">%d Years</item>
+    </plurals>
+    <string name="vinv_cert_active">Active</string>
+    <string name="vinv_cert_pending">Pending</string>
+    <string name="vinv_cert_expired">Expired</string>
+    <string name="vinv_current">Current Inventory</string>
+    <string name="vinv_current_sub">Live batch listings available</string>
+    <string name="cd_view_cards">Show cards</string>
+    <string name="cd_view_list">Show list</string>
+    <string name="vinv_available">AVAILABLE</string>
+    <string name="vinv_reserved">RESERVE HELD</string>
+    <string name="vinv_sold">SOLD</string>
+    <string name="vinv_quantity">QUANTITY</string>
+    <string name="vinv_purity">PURITY</string>
+    <string name="vinv_lot">LOT %1$s</string>
+    <string name="vinv_summary">%1$s · %2$s</string>
+    <string name="vinv_view_details">View Details</string>
+    <string name="vinv_empty">This vendor has no listings right now.</string>
+    <string name="vinv_search_empty">No listings match your search.</string>
+    <string name="vinv_quote_title">Request Custom Quote</string>
+    <string name="vinv_quote_sub">Direct procurement for specific specs</string>
+    <string name="vinv_untitled">Untitled lot</string>
+    <string name="vinv_details_title">Lot details</string>
+    <string name="vinv_details_message">Lot: %1$s\nMaterial: %2$s\nQuantity: %3$s\nPurity: %4$s\nAsking price: %5$s\nLocation: %6$s\nStatus: %7$s</string>
+    <string name="vinv_missing_vendor">This vendor could not be opened.</string>
+    <string name="vinv_loading">Loading listings...</string>
 </resources>

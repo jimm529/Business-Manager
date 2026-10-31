@@ -17,6 +17,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.marketplace.R;
+import com.example.marketplace.ui.vendorinventory.VendorInventoryFragment;
 import com.example.marketplace.data.model.vendor.RegisteredVendor;
 import com.example.marketplace.databinding.FragmentRegisteredVendorsBinding;
 import com.example.marketplace.utils.Formatters;
@@ -59,7 +60,15 @@ public class RegisteredVendorsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(this).get(RegisteredVendorsViewModel.class);
 
-        adapter = new RegisteredVendorsAdapter(vendor -> showComingSoon());
+        adapter = new RegisteredVendorsAdapter(vendor -> {
+            if (vendor.getId() == null) {
+                return;
+            }
+            Bundle inventoryArgs = new Bundle();
+            inventoryArgs.putString(VendorInventoryFragment.ARG_VENDOR_ID, vendor.getId());
+            inventoryArgs.putString(VendorInventoryFragment.ARG_VENDOR_NAME, vendor.getName());
+            NavHostFragment.findNavController(this).navigate(R.id.action_vendors_to_inventory, inventoryArgs);
+        });
         binding.rvVendors.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvVendors.setAdapter(adapter);
 

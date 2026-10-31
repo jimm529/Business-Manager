@@ -31,6 +31,8 @@ import com.example.marketplace.data.model.market.OrderRequest;
 import com.example.marketplace.data.model.market.OrderResponse;
 import com.example.marketplace.data.model.order.OrdersResponse;
 import com.example.marketplace.data.model.vendor.OrderRequestsResponse;
+import com.example.marketplace.data.model.vendor.VendorLotsResponse;
+import com.example.marketplace.data.model.vendor.VendorProfileResponse;
 import com.example.marketplace.data.model.vendor.RequestActionResponse;
 import com.example.marketplace.data.model.settings.ChangePasswordRequest;
 import com.example.marketplace.data.model.settings.MessageResponse;
@@ -202,4 +204,16 @@ public interface ApiService {
     /** Vendor only: publishes a new lot on the marketplace. */
     @POST("vendor-portal/listings/publish")
     Call<PublishListingResponse> publishListing(@Body PublishListingRequest request);
+
+    /** Operator only: one registered vendor's profile. */
+    @GET("vendors/{id}")
+    Call<VendorProfileResponse> getVendorProfile(@Path("id") String vendorId);
+
+    /** Every marketplace listing (the vendor's own are picked out on the phone). */
+    @GET("lots")
+    Call<VendorLotsResponse> getAllLots();
+
+    /** Operator only: opens (or finds) the conversation with one of their vendors. */
+    @POST("conversations/vendor/{vendorId}")
+    Call<ConversationResponse> openVendorConversation(@Path("vendorId") String vendorId);
 }

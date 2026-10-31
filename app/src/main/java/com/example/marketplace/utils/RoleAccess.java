@@ -69,6 +69,7 @@ public final class RoleAccess {
                 || id == R.id.ordersFragment
                 || id == R.id.purchaseHistoryFragment
                 || id == R.id.registeredVendorsFragment
+                || id == R.id.vendorInventoryFragment
                 || id == R.id.operatorSettingsFragment
                 || id == R.id.counterPriceFragment
                 || id == R.id.offerAcceptedFragment;
