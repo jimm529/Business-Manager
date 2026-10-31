@@ -52,7 +52,7 @@ public class MoreFragment extends Fragment {
         if (RoleAccess.isVendor(SessionManager.getInstance().getRole())) {
             // The vendor module has its own menu; these pages are built later.
             bindMenuRow(binding.rowOrders.getRoot(), R.drawable.ic_history,
-                    R.string.more_vendor_sales_title, R.string.more_vendor_sales_subtitle, 0);
+                    R.string.more_vendor_sales_title, R.string.more_vendor_sales_subtitle, R.id.action_more_to_vendorSales);
             bindMenuRow(binding.rowHistory.getRoot(), R.drawable.ic_gear,
                     R.string.more_vendor_settings_title, R.string.more_vendor_settings_subtitle, 0);
             binding.rowSettings.getRoot().setVisibility(View.GONE);

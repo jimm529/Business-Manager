@@ -30,7 +30,9 @@ import com.example.marketplace.data.model.market.MarketplaceResponse;
 import com.example.marketplace.data.model.market.OrderRequest;
 import com.example.marketplace.data.model.market.OrderResponse;
 import com.example.marketplace.data.model.order.OrdersResponse;
+import com.example.marketplace.data.model.vendor.OrderDocumentResponse;
 import com.example.marketplace.data.model.vendor.OrderRequestsResponse;
+import com.example.marketplace.data.model.vendor.SalesHistoryResponse;
 import com.example.marketplace.data.model.vendor.VendorLotsResponse;
 import com.example.marketplace.data.model.vendor.VendorProfileResponse;
 import com.example.marketplace.data.model.vendor.RequestActionResponse;
@@ -43,6 +45,8 @@ import com.example.marketplace.data.model.vendor.CreateVendorRequest;
 import com.example.marketplace.data.model.vendor.RegisteredVendorsResponse;
 import com.google.gson.JsonObject;
 
+import java.util.Map;
+
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -53,6 +57,7 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 /**
  * All backend calls. Paths are relative to the base URL, which already ends in "/api/",
@@ -216,4 +221,12 @@ public interface ApiService {
     /** Operator only: opens (or finds) the conversation with one of their vendors. */
     @POST("conversations/vendor/{vendorId}")
     Call<ConversationResponse> openVendorConversation(@Path("vendorId") String vendorId);
+
+    /** Vendor only: one page of the vendor's orders. Filters go in the map; missing ones are left out. */
+    @GET("vendor-portal/sales-history")
+    Call<SalesHistoryResponse> getSalesHistory(@QueryMap Map<String, String> filters);
+
+    /** Vendor only: the address of an order's document, for viewing or downloading. */
+    @GET("vendor-portal/orders/{id}/document")
+    Call<OrderDocumentResponse> getOrderDocument(@Path("id") String orderId, @Query("download") boolean download);
 }

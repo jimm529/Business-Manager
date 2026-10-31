@@ -60,6 +60,9 @@
         android:label="@string/more_title"
         tools:layout="@layout/fragment_more">
         <action
+            android:id="@+id/action_more_to_vendorSales"
+            app:destination="@id/vendorSalesFragment" />
+        <action
             android:id="@+id/action_more_to_orders"
             app:destination="@id/ordersFragment" />
         <action
@@ -228,6 +231,13 @@
         android:name="com.example.marketplace.ui.listing.VendorListingFragment"
         android:label="@string/nav_listings"
         tools:layout="@layout/fragment_vendor_listing" />
+
+    <!-- Vendor Sales History (vendor only), opened from the More menu -->
+    <fragment
+        android:id="@+id/vendorSalesFragment"
+        android:name="com.example.marketplace.ui.vendorsales.VendorSalesFragment"
+        android:label="@string/sales_title"
+        tools:layout="@layout/fragment_vendor_sales" />
 
     <!-- Used when the server rejects the saved token (401) or the user logs out:
          show Login and forget every other screen. -->
