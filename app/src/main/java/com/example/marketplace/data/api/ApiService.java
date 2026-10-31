@@ -25,6 +25,8 @@ import com.example.marketplace.data.model.market.MarketplaceResponse;
 import com.example.marketplace.data.model.market.OrderRequest;
 import com.example.marketplace.data.model.market.OrderResponse;
 import com.example.marketplace.data.model.order.OrdersResponse;
+import com.example.marketplace.data.model.vendor.OrderRequestsResponse;
+import com.example.marketplace.data.model.vendor.RequestActionResponse;
 import com.example.marketplace.data.model.settings.ChangePasswordRequest;
 import com.example.marketplace.data.model.settings.MessageResponse;
 import com.example.marketplace.data.model.settings.OperatorSettingsResponse;
@@ -167,4 +169,16 @@ public interface ApiService {
     /** Operator only: registers a new vendor. */
     @POST("vendors")
     Call<MessageResponse> createVendor(@Body CreateVendorRequest request);
+
+    /** Vendor only: the order requests (bids and orders) on this vendor's lots. */
+    @GET("vendor-portal/orders")
+    Call<OrderRequestsResponse> getVendorOrderRequests(@Query("limit") int limit);
+
+    /** Vendor only: accepts a request. */
+    @POST("vendor-portal/orders/{id}/accept")
+    Call<RequestActionResponse> acceptVendorRequest(@Path("id") String requestId);
+
+    /** Vendor only: rejects a request. */
+    @POST("vendor-portal/orders/{id}/reject")
+    Call<RequestActionResponse> rejectVendorRequest(@Path("id") String requestId);
 }

@@ -508,4 +508,47 @@
     <string name="vendor_col_value">VALUE</string>
     <string name="vendor_inventory_empty">No lots listed yet.</string>
     <string name="vendor_view_inventory">View All Inventory</string>
+    <!-- Vendor: Order Requests Ledger -->
+    <string name="requests_title">Order Requests Ledger</string>
+    <string name="requests_subtitle">Manage incoming procurement bids and supply chain requests.</string>
+    <string name="requests_search_hint">Search requests...</string>
+    <string name="requests_stat_active">ACTIVE REQUESTS</string>
+    <string name="requests_stat_quantity">TOTAL QUANTITY</string>
+    <string name="requests_stat_rate">AVERAGE RATE</string>
+    <string name="requests_stat_pending">PENDING REVIEW</string>
+    <string name="requests_stat_pending_sub">Awaiting your decision</string>
+    <string name="requests_unit_mt">MT</string>
+    <string name="requests_unit_kg">/kg</string>
+    <string name="requests_stat_focus">%1$s focus</string>
+    <string name="requests_status_pending">PENDING REVIEW</string>
+    <string name="requests_status_counter">COUNTER OFFER</string>
+    <string name="requests_status_accepted">ACCEPTED</string>
+    <string name="requests_status_rejected">REJECTED</string>
+    <string name="requests_material">MATERIAL</string>
+    <string name="requests_quantity_rate">QUANTITY / RATE</string>
+    <string name="requests_accept">Accept</string>
+    <string name="requests_reject">Reject</string>
+    <string name="requests_empty">No order requests yet. Buyers\' bids and orders will appear here.</string>
+    <string name="requests_empty_filtered">No requests match your search or filter.</string>
+    <string name="requests_load_more">Show more</string>
+    <string name="requests_unknown_buyer">Unknown buyer</string>
+    <string name="requests_filter_all">All requests</string>
+    <string name="requests_filter_pending">Pending review</string>
+    <string name="requests_filter_counter">Counter offer</string>
+    <string name="requests_filter_accepted">Accepted</string>
+    <string name="requests_filter_rejected">Rejected</string>
+    <string name="requests_accept_title">Accept this request?</string>
+    <string name="requests_accept_message">Accept %1$s from %2$s?</string>
+    <string name="requests_reject_title">Reject this request?</string>
+    <string name="requests_reject_message">Reject %1$s from %2$s?</string>
+    <string name="requests_accepted">Request accepted.</string>
+    <string name="requests_rejected">Request rejected.</string>
+    <string name="requests_insights_title">Active Marketplace Insights</string>
+    <string name="requests_insight_best">Highest offer is %1$s from %2$s</string>
+    <string name="requests_insight_largest">Largest request is %1$s MT of %2$s</string>
+    <string name="requests_insight_average">Average offered rate is %1$s across %2$d open requests.</string>
+    <plurals name="requests_insight_pending">
+        <item quantity="one">%d request is waiting for your decision</item>
+        <item quantity="other">%d requests are waiting for your decision</item>
+    </plurals>
 </resources>

@@ -196,9 +196,9 @@
     <!-- Vendor-only screens (the operator cannot open these). Placeholders until the pages are designed. -->
     <fragment
         android:id="@+id/vendorRequestsFragment"
-        android:name="com.example.marketplace.ui.home.ComingSoonFragment"
+        android:name="com.example.marketplace.ui.vendorrequests.VendorRequestsFragment"
         android:label="@string/nav_requests"
-        tools:layout="@layout/fragment_coming_soon" />
+        tools:layout="@layout/fragment_vendor_requests" />
 
     <fragment
         android:id="@+id/vendorListingsFragment"
