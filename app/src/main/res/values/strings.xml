@@ -467,4 +467,13 @@
     <string name="history_materials_mt">%1$s MT</string>
     <string name="history_quantity_mt">%1$s MT</string>
     <string name="history_empty">No past purchases yet.</string>
+    <!-- Role modules -->
+    <string name="nav_requests">Requests</string>
+    <string name="nav_listings">Listings</string>
+    <string name="no_access">You don\'t have access to that screen.</string>
+    <string name="more_vendor_sales_title">Sales History</string>
+    <string name="more_vendor_sales_subtitle">Your completed sales</string>
+    <string name="more_vendor_settings_title">Vendor Settings</string>
+    <string name="more_vendor_settings_subtitle">Company profile and preferences</string>
+    <string name="chat_vendor_bid_soon">Answering buyer offers from the vendor side is coming soon.</string>
 </resources>

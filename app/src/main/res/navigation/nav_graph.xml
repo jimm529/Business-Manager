@@ -188,6 +188,19 @@
         android:label="@string/settings_title"
         tools:layout="@layout/fragment_operator_settings" />
 
+    <!-- Vendor-only screens (the operator cannot open these). Placeholders until the pages are designed. -->
+    <fragment
+        android:id="@+id/vendorRequestsFragment"
+        android:name="com.example.marketplace.ui.home.ComingSoonFragment"
+        android:label="@string/nav_requests"
+        tools:layout="@layout/fragment_coming_soon" />
+
+    <fragment
+        android:id="@+id/vendorListingsFragment"
+        android:name="com.example.marketplace.ui.home.ComingSoonFragment"
+        android:label="@string/nav_listings"
+        tools:layout="@layout/fragment_coming_soon" />
+
     <!-- Used when the server rejects the saved token (401) or the user logs out:
          show Login and forget every other screen. -->
     <action

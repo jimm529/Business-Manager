@@ -22,9 +22,11 @@ import com.example.marketplace.data.model.auth.User;
 import com.example.marketplace.databinding.FragmentMoreBinding;
 import com.example.marketplace.utils.Formatters;
 import com.example.marketplace.utils.Resource;
+import com.example.marketplace.utils.RoleAccess;
 import com.example.marketplace.utils.Roles;
 import com.example.marketplace.utils.SessionManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * The fifth bottom tab: the person's profile card, three menu rows (Orders, Purchase History,
@@ -47,12 +49,21 @@ public class MoreFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         MoreViewModel viewModel = new ViewModelProvider(this).get(MoreViewModel.class);
 
-        bindMenuRow(binding.rowOrders.getRoot(), R.drawable.ic_orders,
-                R.string.more_orders_title, R.string.more_orders_subtitle, R.id.action_more_to_orders);
-        bindMenuRow(binding.rowHistory.getRoot(), R.drawable.ic_history,
-                R.string.more_history_title, R.string.more_history_subtitle, R.id.action_more_to_purchaseHistory);
-        bindMenuRow(binding.rowSettings.getRoot(), R.drawable.ic_gear,
-                R.string.more_settings_title, R.string.more_settings_subtitle, R.id.action_more_to_operatorSettings);
+        if (RoleAccess.isVendor(SessionManager.getInstance().getRole())) {
+            // The vendor module has its own menu; these pages are built later.
+            bindMenuRow(binding.rowOrders.getRoot(), R.drawable.ic_history,
+                    R.string.more_vendor_sales_title, R.string.more_vendor_sales_subtitle, 0);
+            bindMenuRow(binding.rowHistory.getRoot(), R.drawable.ic_gear,
+                    R.string.more_vendor_settings_title, R.string.more_vendor_settings_subtitle, 0);
+            binding.rowSettings.getRoot().setVisibility(View.GONE);
+        } else {
+            bindMenuRow(binding.rowOrders.getRoot(), R.drawable.ic_orders,
+                    R.string.more_orders_title, R.string.more_orders_subtitle, R.id.action_more_to_orders);
+            bindMenuRow(binding.rowHistory.getRoot(), R.drawable.ic_history,
+                    R.string.more_history_title, R.string.more_history_subtitle, R.id.action_more_to_purchaseHistory);
+            bindMenuRow(binding.rowSettings.getRoot(), R.drawable.ic_gear,
+                    R.string.more_settings_title, R.string.more_settings_subtitle, R.id.action_more_to_operatorSettings);
+        }
         binding.rowLogout.setOnClickListener(v -> confirmLogout());
 
         showSavedProfile();
@@ -65,7 +76,13 @@ public class MoreFragment extends Fragment {
         ((ImageView) row.findViewById(R.id.ivIcon)).setImageResource(icon);
         ((TextView) row.findViewById(R.id.tvTitle)).setText(title);
         ((TextView) row.findViewById(R.id.tvSubtitle)).setText(subtitle);
-        row.setOnClickListener(v -> NavHostFragment.findNavController(this).navigate(actionId));
+        row.setOnClickListener(v -> {
+            if (actionId == 0) {
+                Snackbar.make(binding.getRoot(), R.string.coming_soon, Snackbar.LENGTH_SHORT).show();
+            } else {
+                NavHostFragment.findNavController(this).navigate(actionId);
+            }
+        });
     }
 
     /** Name and role come from the saved login, so the card is never empty while the profile loads. */

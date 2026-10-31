@@ -21,6 +21,7 @@ import com.example.marketplace.databinding.FragmentChatBinding;
 import com.example.marketplace.utils.Event;
 import com.example.marketplace.utils.Resource;
 import com.example.marketplace.utils.ResourceMessages;
+import com.example.marketplace.utils.RoleAccess;
 import com.example.marketplace.utils.SessionManager;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.snackbar.Snackbar;
@@ -191,6 +192,11 @@ public class ChatFragment extends Fragment {
     private void openBid(@NonNull ChatMessage message) {
         NegotiationDetail bid = message.getBid();
         if (bid == null || bid.getBidId() == null) {
+            return;
+        }
+        if (RoleAccess.isVendor(SessionManager.getInstance().getRole())) {
+            // Answering offers is a buyer screen; the vendor's own version comes with the vendor pages.
+            Snackbar.make(binding.getRoot(), R.string.chat_vendor_bid_soon, Snackbar.LENGTH_SHORT).show();
             return;
         }
         Bundle args = new Bundle();

@@ -16,6 +16,7 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.marketplace.databinding.ActivityMainBinding;
+import com.example.marketplace.utils.RoleAccess;
 import com.example.marketplace.utils.SessionManager;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -70,60 +71,81 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        final int[] tabIds = {R.id.homeFragment, R.id.marketFragment, R.id.messagesFragment, R.id.moreFragment};
         final View[] tabViews = {binding.bottomNav.tabHome, binding.bottomNav.tabMarket,
                 binding.bottomNav.tabMessages, binding.bottomNav.tabMore};
 
-        // Tapping a tab opens it on top of Home, so Back always returns to Home and then leaves the app.
-        for (int i = 0; i < tabIds.length; i++) {
-            final int destinationId = tabIds[i];
-            tabViews[i].setOnClickListener(v -> {
-                NavDestination current = navController.getCurrentDestination();
-                if (current != null && current.getId() == destinationId) {
-                    return;
-                }
-                NavOptions options = new NavOptions.Builder()
-                        .setLaunchSingleTop(true)
-                        .setPopUpTo(R.id.homeFragment, false)
-                        .build();
-                navController.navigate(destinationId, null, options);
-            });
+        // Each tab opens the screen of the signed-in role, on top of Home, so Back always
+        // returns to Home and then leaves the app. The role is read at tap time, so a
+        // different person signing in later gets their own tabs without restarting the app.
+        for (int i = 0; i < tabViews.length; i++) {
+            final int slot = i;
+            tabViews[i].setOnClickListener(v -> openTopLevel(navController, tabIdsFor()[slot]));
         }
+        View.OnClickListener openAction = v -> openTopLevel(navController, tabsForRole().action);
+        binding.bottomNav.fabAction.setOnClickListener(openAction);
+        binding.bottomNav.tabAction.setOnClickListener(openAction);
 
-        // The round middle button opens Registered Vendors, the same way a tab opens.
-        View.OnClickListener openVendors = v -> {
-            NavDestination current = navController.getCurrentDestination();
-            if (current != null && current.getId() == R.id.registeredVendorsFragment) {
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            String role = SessionManager.getInstance().getRole();
+
+            // The two modules have different screens: send the person home if this one is not theirs.
+            if (SessionManager.getInstance().isLoggedIn() && !RoleAccess.canOpen(role, destination.getId())) {
+                binding.getRoot().post(() -> {
+                    controller.navigate(R.id.action_global_homeFragment);
+                    Snackbar.make(binding.getRoot(), R.string.no_access, Snackbar.LENGTH_LONG).show();
+                });
                 return;
             }
-            NavOptions options = new NavOptions.Builder()
-                    .setLaunchSingleTop(true)
-                    .setPopUpTo(R.id.homeFragment, false)
-                    .build();
-            navController.navigate(R.id.registeredVendorsFragment, null, options);
-        };
-        binding.bottomNav.fabAction.setOnClickListener(openVendors);
-        binding.bottomNav.tabAction.setOnClickListener(openVendors);
 
-        // The tab bar shows only on the main tabs, with the current tab highlighted.
-        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            applyTabs(role);
             boolean isTab = isTab(destination.getId());
             binding.bottomNav.getRoot().setVisibility(isTab ? View.VISIBLE : View.GONE);
-            boolean onActionScreen = destination.getId() == R.id.registeredVendorsFragment;
+            int[] ids = tabIdsFor();
+            for (int i = 0; i < tabViews.length; i++) {
+                tabViews[i].setSelected(ids[i] == destination.getId());
+            }
+            boolean onActionScreen = destination.getId() == tabsForRole().action;
             binding.bottomNav.fabAction.setSelected(onActionScreen);
             binding.bottomNav.tabAction.setSelected(onActionScreen);
-            for (int i = 0; i < tabIds.length; i++) {
-                tabViews[i].setSelected(tabIds[i] == destination.getId());
-            }
         });
     }
 
-    private static boolean isTab(int destinationId) {
+    private void openTopLevel(NavController navController, int destinationId) {
+        NavDestination current = navController.getCurrentDestination();
+        if (current != null && current.getId() == destinationId) {
+            return;
+        }
+        NavOptions options = new NavOptions.Builder()
+                .setLaunchSingleTop(true)
+                .setPopUpTo(R.id.homeFragment, false)
+                .build();
+        navController.navigate(destinationId, null, options);
+    }
+
+    private RoleAccess.TabSet tabsForRole() {
+        return RoleAccess.tabsFor(SessionManager.getInstance().getRole());
+    }
+
+    /** Home, second tab, Messages, More: the screen each tab opens for the current role. */
+    private int[] tabIdsFor() {
+        return new int[]{R.id.homeFragment, tabsForRole().second, R.id.messagesFragment, R.id.moreFragment};
+    }
+
+    /** Gives the second tab and the middle button the icon and name of the current role. */
+    private void applyTabs(@Nullable String role) {
+        RoleAccess.TabSet tabs = RoleAccess.tabsFor(role);
+        binding.bottomNav.ivTabSecond.setImageResource(tabs.secondIcon);
+        binding.bottomNav.tvTabSecond.setText(tabs.secondLabel);
+        binding.bottomNav.tvTabAction.setText(tabs.actionLabel);
+    }
+
+    private boolean isTab(int destinationId) {
+        RoleAccess.TabSet tabs = tabsForRole();
         return destinationId == R.id.homeFragment
-                || destinationId == R.id.marketFragment
+                || destinationId == tabs.second
                 || destinationId == R.id.messagesFragment
                 || destinationId == R.id.moreFragment
-                || destinationId == R.id.registeredVendorsFragment;
+                || destinationId == tabs.action;
     }
 
     @Nullable
