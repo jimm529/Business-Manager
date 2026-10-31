@@ -202,9 +202,9 @@
 
     <fragment
         android:id="@+id/vendorListingsFragment"
-        android:name="com.example.marketplace.ui.home.ComingSoonFragment"
+        android:name="com.example.marketplace.ui.listing.VendorListingFragment"
         android:label="@string/nav_listings"
-        tools:layout="@layout/fragment_coming_soon" />
+        tools:layout="@layout/fragment_vendor_listing" />
 
     <!-- Used when the server rejects the saved token (401) or the user logs out:
          show Login and forget every other screen. -->

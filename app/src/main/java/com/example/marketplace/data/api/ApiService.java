@@ -9,6 +9,11 @@ import com.example.marketplace.data.model.bid.BidsResponse;
 import com.example.marketplace.data.model.bid.CounterOfferRequest;
 import com.example.marketplace.data.model.bid.DocumentsResponse;
 import com.example.marketplace.data.model.common.HealthResponse;
+import com.example.marketplace.data.model.listing.ListingOptionsResponse;
+import com.example.marketplace.data.model.listing.ListingTemplatesResponse;
+import com.example.marketplace.data.model.listing.LocationsResponse;
+import com.example.marketplace.data.model.listing.PublishListingRequest;
+import com.example.marketplace.data.model.listing.PublishListingResponse;
 import com.example.marketplace.data.model.messages.ConversationResponse;
 import com.example.marketplace.data.model.messages.ConversationsResponse;
 import com.example.marketplace.data.model.messages.MessagesResponse;
@@ -181,4 +186,20 @@ public interface ApiService {
     /** Vendor only: rejects a request. */
     @POST("vendor-portal/orders/{id}/reject")
     Call<RequestActionResponse> rejectVendorRequest(@Path("id") String requestId);
+
+    /** Vendor only: the choices for the New Listing dropdowns. */
+    @GET("vendor-portal/listings/options")
+    Call<ListingOptionsResponse> getListingOptions();
+
+    /** Vendor only: earlier listings to copy. A null search leaves it out. */
+    @GET("vendor-portal/listings/templates")
+    Call<ListingTemplatesResponse> getListingTemplates(@Query("search") String search);
+
+    /** Vendor only: pickup places used before. */
+    @GET("vendor-portal/listings/locations")
+    Call<LocationsResponse> getListingLocations();
+
+    /** Vendor only: publishes a new lot on the marketplace. */
+    @POST("vendor-portal/listings/publish")
+    Call<PublishListingResponse> publishListing(@Body PublishListingRequest request);
 }
