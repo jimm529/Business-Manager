@@ -36,6 +36,9 @@
     <color name="marketBadgeNeutralText">#475569</color>
     <color name="marketQuantityBackground">#F0F4F8</color>
 
+    <!-- Vendor dashboard -->
+    <color name="vendorChartBar">#C8F5DF</color>
+
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 

@@ -476,4 +476,36 @@
     <string name="more_vendor_settings_title">Vendor Settings</string>
     <string name="more_vendor_settings_subtitle">Company profile and preferences</string>
     <string name="chat_vendor_bid_soon">Answering buyer offers from the vendor side is coming soon.</string>
+    <!-- Vendor dashboard -->
+    <string name="vendor_welcome">Welcome back,</string>
+    <string name="vendor_new_batch">New Batch</string>
+    <string name="vendor_stat_revenue">Total Revenue</string>
+    <string name="vendor_stat_batches">Active Batches</string>
+    <string name="vendor_stat_efficiency">Extraction Efficiency</string>
+    <string name="vendor_stat_compliance">Compliance Health</string>
+    <string name="vendor_batches_mt">%1$s MT</string>
+    <string name="vendor_growth">%1$s%%</string>
+    <string name="vendor_percent">%1$s%%</string>
+    <string name="vendor_compliance_active">ACTIVE / COMPLIANT</string>
+    <string name="vendor_compliance_pending">PENDING REVIEW</string>
+    <string name="vendor_compliance_expired">EXPIRED</string>
+    <string name="vendor_next_audit">Next Audit: %1$s</string>
+    <string name="vendor_market_performance">Market Performance</string>
+    <string name="vendor_chart_now">NOW</string>
+    <string name="vendor_chart_empty">No sales in the last months yet.</string>
+    <string name="vendor_negotiations">Active Negotiations</string>
+    <string name="vendor_view_all">View All</string>
+    <string name="vendor_badge_pending_bid">PENDING BID</string>
+    <string name="vendor_badge_counter">COUNTER OFFER</string>
+    <string name="vendor_negotiations_empty">No open negotiations.</string>
+    <string name="vendor_negotiation_chat_missing">There is no conversation for this deal yet.</string>
+    <string name="vendor_pipeline">Logistics Pipeline</string>
+    <string name="vendor_pipeline_empty">No orders in progress.</string>
+    <string name="vendor_inventory">Inventory Status</string>
+    <string name="vendor_col_id">ID</string>
+    <string name="vendor_col_material">MATERIAL</string>
+    <string name="vendor_col_purity">PURITY</string>
+    <string name="vendor_col_value">VALUE</string>
+    <string name="vendor_inventory_empty">No lots listed yet.</string>
+    <string name="vendor_view_inventory">View All Inventory</string>
 </resources>

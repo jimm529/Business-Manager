@@ -28,9 +28,14 @@
     <!-- The bottom-navigation tabs (Home, Market, Messages, More; the Action (+) button opens Registered Vendors) -->
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.marketplace.ui.home.HomeFragment"
+        android:name="com.example.marketplace.ui.home.HomeHostFragment"
         android:label="@string/nav_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home_host">
+        <!-- Vendor Home: open the conversation of a negotiation -->
+        <action
+            android:id="@+id/action_home_to_chat"
+            app:destination="@id/chatFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/marketFragment"

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Empty frame; HomeHostFragment puts the operator Home or the vendor Home inside it. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/homeContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />

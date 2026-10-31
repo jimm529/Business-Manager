@@ -36,4 +36,5 @@
     <color name="settingsBannerBackground">#020617</color>
     <color name="settingsBannerText">#F1F5F9</color>
     <color name="settingsBannerSubtext">#94A3B8</color>
+    <color name="vendorChartBar">#1F4D3B</color>
 </resources>
