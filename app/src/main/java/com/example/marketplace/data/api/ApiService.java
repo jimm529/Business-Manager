@@ -1,6 +1,7 @@
 package com.example.marketplace.data.api;
 
 import com.example.marketplace.data.model.auth.AuthResponse;
+import com.example.marketplace.data.model.auth.GoogleLoginRequest;
 import com.example.marketplace.data.model.auth.LoginRequest;
 import com.example.marketplace.data.model.auth.MeResponse;
 import com.example.marketplace.data.model.auth.RegisterRequest;
@@ -74,6 +75,10 @@ public interface ApiService {
 
     @POST("auth/login")
     Call<AuthResponse> login(@Body LoginRequest request);
+
+    /** Signs in with a Google ID token (the account must already exist on the server). */
+    @POST("auth/google")
+    Call<AuthResponse> googleLogin(@Body GoogleLoginRequest request);
 
     @POST("auth/register")
     Call<AuthResponse> register(@Body RegisterRequest request);

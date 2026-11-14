@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import com.example.marketplace.R;
 import com.example.marketplace.data.api.ApiClient;
 import com.example.marketplace.data.model.auth.AuthResponse;
+import com.example.marketplace.data.model.auth.GoogleLoginRequest;
 import com.example.marketplace.data.model.auth.LoginRequest;
 import com.example.marketplace.data.model.auth.MeResponse;
 import com.example.marketplace.data.model.auth.RegisterRequest;
@@ -32,6 +33,12 @@ public class AuthRepository {
 
     public LiveData<Resource<AuthResponse>> login(LoginRequest request) {
         return ApiResults.enqueue(ApiClient.getApiService().login(request), this::saveSession);
+    }
+
+    /** Signs in with the ID token Google gave the phone (POST auth/google). */
+    public LiveData<Resource<AuthResponse>> googleLogin(@NonNull String idToken, @NonNull String portal) {
+        return ApiResults.enqueue(ApiClient.getApiService().googleLogin(new GoogleLoginRequest(idToken, portal)),
+                this::saveSession);
     }
 
     public LiveData<Resource<AuthResponse>> register(RegisterRequest request) {

@@ -66,7 +66,7 @@ public class LoginFragment extends Fragment {
         View.OnClickListener notAvailable = v -> showMessage(getString(R.string.feature_unavailable));
         binding.btnSupport.setOnClickListener(notAvailable);
         binding.btnForgot.setOnClickListener(notAvailable);
-        binding.btnGoogle.setOnClickListener(notAvailable);
+        binding.btnGoogle.setOnClickListener(v -> signInWithGoogle());
 
         setUpServerConnectionTool();
 
@@ -75,6 +75,26 @@ public class LoginFragment extends Fragment {
             binding.layoutPassword.setError(errors.password == null ? null : getString(errors.password));
         });
         viewModel.getAuthResult().observe(getViewLifecycleOwner(), this::render);
+    }
+
+    /** Opens Google's account picker, then lets the server sign the person in with the token. */
+    private void signInWithGoogle() {
+        GoogleSignInHelper.start(requireActivity(), new GoogleSignInHelper.Callback() {
+            @Override
+            public void onToken(@NonNull String idToken) {
+                viewModel.loginWithGoogle(idToken);
+            }
+
+            @Override
+            public void onCancelled() { }
+
+            @Override
+            public void onFailure(int message) {
+                if (binding != null) {
+                    showMessage(getString(message));
+                }
+            }
+        });
     }
 
     /**

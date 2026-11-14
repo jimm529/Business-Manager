@@ -745,4 +745,7 @@
     <string name="notifications_title">Notifications</string>
     <string name="notifications_mark_all">Mark all read</string>
     <string name="notifications_empty">You are all caught up. New messages, offers and order updates will show here.</string>
+    <string name="google_not_configured">Google sign-in is not set up in this build.</string>
+    <string name="google_no_account">No Google account was found on this phone. Add one in Settings, then try again.</string>
+    <string name="google_failed">Google sign-in did not work. Please try again.</string>
 </resources>

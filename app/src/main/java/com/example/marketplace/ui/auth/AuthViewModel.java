@@ -2,6 +2,7 @@ package com.example.marketplace.ui.auth;
 
 import android.util.Patterns;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -79,6 +80,14 @@ public class AuthViewModel extends ViewModel {
             return;
         }
         submit(repository.login(new LoginRequest(cleanEmail, password, currentRole())));
+    }
+
+    /** Signs in with the token Google gave the phone; the server finds the account by its Google email. */
+    public void loginWithGoogle(@NonNull String idToken) {
+        if (isBusy()) {
+            return;
+        }
+        submit(repository.googleLogin(idToken, currentRole()));
     }
 
     public void register(@Nullable String fullName, @Nullable String jobTitle, @Nullable String email,

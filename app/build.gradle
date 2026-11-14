@@ -13,6 +13,8 @@ plugins {
 def debugBaseUrl = (project.findProperty('marketplaceBaseUrl') ?: 'http://localhost:5000/').toString()
 // ".invalid" is a reserved name that never resolves: release builds must set marketplaceReleaseBaseUrl.
 def releaseBaseUrl = (project.findProperty('marketplaceReleaseBaseUrl') ?: 'https://marketplace.invalid/').toString()
+// Google Sign-In needs the Web client ID of the Google Cloud project (see gradle.properties).
+def googleWebClientId = (project.findProperty('marketplaceGoogleWebClientId') ?: '').toString()
 
 android {
     namespace 'com.example.marketplace'
@@ -24,6 +26,7 @@ android {
         targetSdk 34
         versionCode 1
         versionName '1.0'
+        buildConfigField 'String', 'GOOGLE_WEB_CLIENT_ID', "\"${googleWebClientId}\""
     }
 
     buildTypes {
@@ -75,6 +78,11 @@ dependencies {
     implementation('io.socket:socket.io-client:2.1.0') {
         exclude group: 'org.json', module: 'json'
     }
+
+    // Sign in with Google
+    implementation 'androidx.credentials:credentials:1.3.0'
+    implementation 'androidx.credentials:credentials-play-services-auth:1.3.0'
+    implementation 'com.google.android.libraries.identity.googleid:googleid:1.1.1'
 
     // Encrypted storage for the login token
     implementation 'androidx.security:security-crypto:1.1.0-alpha06'
