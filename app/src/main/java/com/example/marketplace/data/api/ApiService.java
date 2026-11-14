@@ -108,6 +108,10 @@ public interface ApiService {
     @GET("purchase-history")
     Call<PurchaseHistoryResponse> getPurchaseHistory(@Query("limit") int limit, @Query("startDate") String startDate);
 
+    /** Buyer only: one page of past orders. The map holds page, limit and (optionally) status. */
+    @GET("purchase-history")
+    Call<PurchaseHistoryResponse> getPurchaseHistoryPage(@QueryMap Map<String, String> params);
+
     /** Buyer only: negotiations that are still open, newest activity first. */
     @GET("bids/active-deals")
     Call<ActiveDealsResponse> getActiveDeals();

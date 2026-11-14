@@ -789,4 +789,13 @@
     <string name="vendors_hint_certification">Certification (e.g. ISO 14001)</string>
     <string name="vendors_hint_manager">Lead manager name</string>
     <string name="vendors_hint_email">Secure email</string>
+    <string name="history_value">TOTAL VALUE</string>
+    <string name="history_empty_filtered">No purchases with this status.</string>
+    <string name="history_filter_all">All</string>
+    <string name="history_filter_completed">Completed</string>
+    <string name="history_filter_on_the_way">On the way</string>
+    <string name="history_filter_dispatched">Dispatched</string>
+    <string name="history_filter_processing">Processing</string>
+    <string name="history_filter_awaiting_docs">Awaiting docs</string>
+    <string name="history_filter_cancelled">Cancelled</string>
 </resources>
