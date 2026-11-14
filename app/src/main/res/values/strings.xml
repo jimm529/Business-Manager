@@ -742,4 +742,7 @@
     <string name="vsettings_error_capacity">Enter a capacity of 0 or more.</string>
     <string name="vsettings_error_name">Enter your full name.</string>
     <string name="vsettings_error_role">Enter your role.</string>
+    <string name="notifications_title">Notifications</string>
+    <string name="notifications_mark_all">Mark all read</string>
+    <string name="notifications_empty">You are all caught up. New messages, offers and order updates will show here.</string>
 </resources>

@@ -29,6 +29,7 @@ import com.example.marketplace.data.model.market.BookmarkResponse;
 import com.example.marketplace.data.model.market.MarketplaceResponse;
 import com.example.marketplace.data.model.market.OrderRequest;
 import com.example.marketplace.data.model.market.OrderResponse;
+import com.example.marketplace.data.model.notifications.NotificationsResponse;
 import com.example.marketplace.data.model.order.OrdersResponse;
 import com.example.marketplace.data.model.vendor.OrderDocumentResponse;
 import com.example.marketplace.data.model.vendor.OrderRequestsResponse;
@@ -53,6 +54,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
@@ -262,4 +264,16 @@ public interface ApiService {
     /** Vendor only: saves the signed-in user's name and job title. */
     @PUT("vendor-portal/settings/account")
     Call<MessageResponse> saveVendorAccount(@Body JsonObject body);
+
+    /** The signed-in person's newest notifications. */
+    @GET("notifications")
+    Call<NotificationsResponse> getNotifications();
+
+    /** Marks one notification as read; the body holds its key. */
+    @PATCH("notifications/read")
+    Call<MessageResponse> markNotificationRead(@Body JsonObject body);
+
+    /** Marks every current notification as read. */
+    @PATCH("notifications/read-all")
+    Call<MessageResponse> markAllNotificationsRead();
 }

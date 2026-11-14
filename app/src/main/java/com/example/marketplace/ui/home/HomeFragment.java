@@ -151,7 +151,7 @@ public class HomeFragment extends Fragment {
             });
             menu.show();
         });
-        binding.btnNotifications.setOnClickListener(v -> showComingSoon());
+        binding.btnNotifications.setOnClickListener(v -> NavHostFragment.findNavController(this).navigate(R.id.action_global_notifications));
         binding.btnSearch.setOnClickListener(v -> {
             binding.operatorContent.smoothScrollTo(0, 0);
             binding.etSearch.requestFocus();

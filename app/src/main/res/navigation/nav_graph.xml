@@ -249,6 +249,21 @@
         android:label="@string/vsettings_title"
         tools:layout="@layout/fragment_vendor_settings" />
 
+    <!-- Notifications (both roles): opened from the bell on any screen -->
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.example.marketplace.ui.notifications.NotificationsFragment"
+        android:label="@string/notifications_title"
+        tools:layout="@layout/fragment_notifications">
+        <action
+            android:id="@+id/action_notifications_to_chat"
+            app:destination="@id/chatFragment" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_notifications"
+        app:destination="@id/notificationsFragment" />
+
     <!-- Used when the server rejects the saved token (401) or the user logs out:
          show Login and forget every other screen. -->
     <action

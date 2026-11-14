@@ -111,7 +111,7 @@ public class VendorListingFragment extends Fragment {
 
     private void setUpHeader() {
         binding.btnBack.setOnClickListener(v -> NavHostFragment.findNavController(this).popBackStack());
-        binding.btnNotifications.setOnClickListener(v -> comingSoon());
+        binding.btnNotifications.setOnClickListener(v -> NavHostFragment.findNavController(this).navigate(R.id.action_global_notifications));
         binding.tvAvatar.setText(Formatters.initials(requireContext(), SessionManager.getInstance().getFullName()));
     }
 

@@ -111,7 +111,7 @@ public class OperatorSettingsFragment extends Fragment {
 
     private void setUpHeader() {
         binding.btnBack.setOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
-        binding.btnNotifications.setOnClickListener(v -> showComingSoon());
+        binding.btnNotifications.setOnClickListener(v -> NavHostFragment.findNavController(this).navigate(R.id.action_global_notifications));
 
         binding.tvAvatar.setText(Formatters.initials(requireContext(), SessionManager.getInstance().getFullName()));
         binding.tvAvatar.setOnClickListener(v -> {

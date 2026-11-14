@@ -105,8 +105,7 @@ public class VendorInventoryFragment extends Fragment {
 
     private void setUpHeader() {
         binding.btnBack.setOnClickListener(v -> NavHostFragment.findNavController(this).popBackStack());
-        binding.btnNotifications.setOnClickListener(v ->
-                Snackbar.make(binding.getRoot(), R.string.coming_soon, Snackbar.LENGTH_SHORT).show());
+        binding.btnNotifications.setOnClickListener(v -> NavHostFragment.findNavController(this).navigate(R.id.action_global_notifications));
         binding.tvAvatar.setText(Formatters.initials(requireContext(), SessionManager.getInstance().getFullName()));
     }
 
