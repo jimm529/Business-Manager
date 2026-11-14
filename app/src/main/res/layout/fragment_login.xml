@@ -233,21 +233,9 @@
                 style="@style/Widget.Marketplace.SocialButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
                 android:layout_weight="1"
                 android:text="@string/google"
                 app:icon="@drawable/ic_google" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSso"
-                style="@style/Widget.Marketplace.SocialButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_weight="1"
-                android:text="@string/sso"
-                app:icon="@drawable/ic_sso"
-                app:iconTint="?attr/colorOnSurface" />
         </LinearLayout>
 
         <!-- Push the footer to the bottom on tall screens -->

@@ -67,7 +67,6 @@ public class LoginFragment extends Fragment {
         binding.btnSupport.setOnClickListener(notAvailable);
         binding.btnForgot.setOnClickListener(notAvailable);
         binding.btnGoogle.setOnClickListener(notAvailable);
-        binding.btnSso.setOnClickListener(notAvailable);
 
         setUpServerConnectionTool();
 
