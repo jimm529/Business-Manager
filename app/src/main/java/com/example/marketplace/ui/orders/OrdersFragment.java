@@ -12,17 +12,15 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.marketplace.R;
-import com.example.marketplace.data.model.order.Order;
 import com.example.marketplace.databinding.FragmentOrdersBinding;
+import com.example.marketplace.ui.common.PageButtons;
 import com.example.marketplace.utils.Resource;
 import com.example.marketplace.utils.ResourceMessages;
 import com.google.android.material.color.MaterialColors;
 
-import java.util.List;
-
 /**
- * Orders & Tracking: every order from the server, with status chips (All, Pending, In Progress,
- * Delivered, Cancelled), pull-to-refresh and loading / empty / error messages.
+ * Orders & Tracking: summary cards, status chips (All, Pending, In Progress, Delivered, Cancelled), one card
+ * per order and page buttons, all from the server, with pull-to-refresh and loading / empty / error messages.
  */
 public class OrdersFragment extends Fragment {
 
@@ -90,32 +88,28 @@ public class OrdersFragment extends Fragment {
         return OrdersViewModel.Filter.ALL;
     }
 
-    private void render(Resource<List<Order>> resource) {
+    private void render(Resource<OrdersViewModel.Page> resource) {
         switch (resource.status) {
             case LOADING:
                 hideStates();
                 if (resource.data == null) {
-                    adapter.submitList(null);
+                    clearContent();
                     binding.states.progress.setVisibility(View.VISIBLE);
                 } else {
-                    adapter.submitList(resource.data);
+                    showData(resource.data);
                 }
                 break;
             case SUCCESS:
                 binding.swipeRefresh.setRefreshing(false);
                 hideStates();
-                List<Order> items = resource.data;
-                adapter.submitList(items);
-                if (items == null || items.isEmpty()) {
-                    boolean filtered = viewModel.getFilter() != OrdersViewModel.Filter.ALL;
-                    binding.states.tvEmpty.setText(filtered ? R.string.orders_empty_filtered : R.string.orders_empty);
-                    binding.states.emptyGroup.setVisibility(View.VISIBLE);
+                if (resource.data != null) {
+                    showData(resource.data);
                 }
                 break;
             case ERROR:
                 binding.swipeRefresh.setRefreshing(false);
                 hideStates();
-                adapter.submitList(null);
+                clearContent();
                 binding.states.tvError.setText(ResourceMessages.errorText(requireContext(), resource));
                 binding.states.errorGroup.setVisibility(View.VISIBLE);
                 break;
@@ -124,10 +118,44 @@ public class OrdersFragment extends Fragment {
         }
     }
 
+    private void clearContent() {
+        adapter.submitList(null);
+        binding.summary.setVisibility(View.GONE);
+        binding.pagination.setVisibility(View.GONE);
+        binding.tvListEmpty.setVisibility(View.GONE);
+    }
+
     private void hideStates() {
         binding.states.progress.setVisibility(View.GONE);
         binding.states.emptyGroup.setVisibility(View.GONE);
         binding.states.errorGroup.setVisibility(View.GONE);
+    }
+
+    private void showData(@NonNull OrdersViewModel.Page data) {
+        adapter.submitList(data.items);
+
+        binding.summary.setVisibility(View.VISIBLE);
+        binding.tvTotalOrders.setText(String.valueOf(data.totalOrders));
+        binding.tvInProgress.setText(String.valueOf(data.inProgress));
+        binding.tvDelivered.setText(String.valueOf(data.delivered));
+
+        boolean empty = data.items.isEmpty();
+        binding.tvListEmpty.setVisibility(empty ? View.VISIBLE : View.GONE);
+        binding.tvListEmpty.setText(viewModel.getFilter() == OrdersViewModel.Filter.ALL
+                ? R.string.orders_empty : R.string.orders_empty_filtered);
+
+        binding.pagination.setVisibility(empty ? View.GONE : View.VISIBLE);
+        if (!empty) {
+            int start = (data.page - 1) * OrdersViewModel.PAGE_SIZE + 1;
+            int end = start + data.items.size() - 1;
+            binding.tvShowing.setText(getString(R.string.sales_showing, start, end, data.matching));
+            PageButtons.build(binding.pager, data.page, data.totalPages, viewModel::goToPage);
+            binding.content.post(() -> {
+                if (binding != null && data.page > 1) {
+                    binding.content.smoothScrollTo(0, 0);
+                }
+            });
+        }
     }
 
     @Override
