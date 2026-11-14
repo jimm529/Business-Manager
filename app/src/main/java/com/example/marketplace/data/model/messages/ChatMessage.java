@@ -15,6 +15,8 @@ public class ChatMessage {
 
     @SerializedName("_id")
     private String id;
+    @SerializedName("conversation")
+    private String conversation;
     @SerializedName("senderRole")
     private String senderRole;
     @SerializedName("senderName")
@@ -31,6 +33,12 @@ public class ChatMessage {
     @Nullable
     public String getId() {
         return id;
+    }
+
+    /** The conversation this message belongs to (live messages carry it). */
+    @Nullable
+    public String getConversationId() {
+        return conversation;
     }
 
     @Nullable

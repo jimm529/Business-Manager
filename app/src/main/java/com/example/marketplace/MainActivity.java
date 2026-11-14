@@ -16,6 +16,7 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.marketplace.databinding.ActivityMainBinding;
+import com.example.marketplace.data.socket.SocketManager;
 import com.example.marketplace.utils.RoleAccess;
 import com.example.marketplace.utils.SessionManager;
 import com.google.android.material.snackbar.Snackbar;
@@ -87,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             String role = SessionManager.getInstance().getRole();
+            // Signed in: keep the live connection (new messages arrive at once). Signed out: close it.
+            if (SessionManager.getInstance().isLoggedIn()) {
+                SocketManager.getInstance().ensureConnected();
+            }
 
             // The two modules have different screens: send the person home if this one is not theirs.
             if (SessionManager.getInstance().isLoggedIn() && !RoleAccess.canOpen(role, destination.getId())) {

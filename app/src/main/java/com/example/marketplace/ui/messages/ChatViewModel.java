@@ -13,6 +13,7 @@ import com.example.marketplace.data.model.messages.ChatMessage;
 import com.example.marketplace.data.model.messages.MessagesResponse;
 import com.example.marketplace.data.model.messages.SendMessageResponse;
 import com.example.marketplace.data.repository.MessagesRepository;
+import com.example.marketplace.data.socket.SocketManager;
 import com.example.marketplace.utils.Event;
 import com.example.marketplace.utils.Resource;
 import com.example.marketplace.utils.ResourceLoader;
@@ -35,6 +36,9 @@ public class ChatViewModel extends ViewModel {
     @Nullable
     private String conversationId;
 
+    /** Messages that arrive live while this chat is open (from either side). */
+    private final SocketManager.MessageListener liveListener = this::onLiveMessage;
+
     public ChatViewModel() {
         messages.addSource(loader.asLiveData(), state -> {
             if (state.status == Resource.Status.SUCCESS) {
@@ -47,9 +51,43 @@ public class ChatViewModel extends ViewModel {
     /** Starts loading the conversation. Calling it again with the same id (e.g. after rotation) does nothing. */
     public void init(@NonNull String id) {
         if (!id.equals(conversationId)) {
+            if (conversationId != null) {
+                SocketManager.getInstance().leave(conversationId);
+            }
             conversationId = id;
             justSent.clear();
             refresh();
+            SocketManager.getInstance().addMessageListener(liveListener);
+            SocketManager.getInstance().join(id);
+        }
+    }
+
+    /** Adds a message that just arrived through the live connection, and tells the server it was seen. */
+    private void onLiveMessage(@NonNull ChatMessage message) {
+        if (conversationId == null || !conversationId.equals(message.getConversationId())
+                || containsId(justSent, message.getId())) {
+            return;
+        }
+        justSent.add(message);
+        publish();
+        // Someone is looking at this chat, so a new message in it counts as seen.
+        LiveData<Resource<com.example.marketplace.data.model.settings.MessageResponse>> call =
+                repository.markRead(conversationId);
+        call.observeForever(new Observer<Resource<com.example.marketplace.data.model.settings.MessageResponse>>() {
+            @Override
+            public void onChanged(Resource<com.example.marketplace.data.model.settings.MessageResponse> result) {
+                if (result.status != Resource.Status.LOADING) {
+                    call.removeObserver(this);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onCleared() {
+        SocketManager.getInstance().removeMessageListener(liveListener);
+        if (conversationId != null) {
+            SocketManager.getInstance().leave(conversationId);
         }
     }
 

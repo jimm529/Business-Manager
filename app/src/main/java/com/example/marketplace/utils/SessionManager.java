@@ -123,6 +123,7 @@ public class SessionManager {
 
     /** Signs out. Only the login data is removed; the chosen backend address is kept. */
     public synchronized void clear() {
+        com.example.marketplace.data.socket.SocketManager.getInstance().disconnect();
         prefs.edit()
                 .remove(KEY_TOKEN)
                 .remove(KEY_ROLE)

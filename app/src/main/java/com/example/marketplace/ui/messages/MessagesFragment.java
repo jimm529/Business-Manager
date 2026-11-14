@@ -37,6 +37,7 @@ public class MessagesFragment extends Fragment {
     private FragmentMessagesBinding binding;
     private MessagesViewModel viewModel;
     private ConversationsAdapter adapter;
+    private boolean resumedBefore;
 
     @Nullable
     @Override
@@ -65,6 +66,16 @@ public class MessagesFragment extends Fragment {
         viewModel.getConversations().observe(getViewLifecycleOwner(), this::render);
         viewModel.getTotalUnread().observe(getViewLifecycleOwner(), unread ->
                 binding.dotNotifications.setVisibility(unread != null && unread > 0 ? View.VISIBLE : View.GONE));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Coming back from a chat: what was read there is no longer unread here.
+        if (resumedBefore && viewModel != null) {
+            viewModel.refresh();
+        }
+        resumedBefore = true;
     }
 
     // ---------------------------------------------------------------- set-up

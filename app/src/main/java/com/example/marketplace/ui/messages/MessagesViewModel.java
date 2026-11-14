@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.marketplace.data.model.messages.Conversation;
 import com.example.marketplace.data.model.messages.ConversationsResponse;
 import com.example.marketplace.data.repository.MessagesRepository;
+import com.example.marketplace.data.socket.SocketManager;
 import com.example.marketplace.utils.Resource;
 import com.example.marketplace.utils.ResourceLoader;
 import com.example.marketplace.utils.SessionManager;
@@ -26,6 +27,9 @@ public class MessagesViewModel extends ViewModel {
     private final LiveData<Integer> totalUnread;
     private String query = "";
 
+    /** Reloads the list when the server says a conversation changed (a new message, a new unread count). */
+    private final SocketManager.ConversationListener liveListener = this::refresh;
+
     public MessagesViewModel() {
         conversations.addSource(loader.asLiveData(), response -> publish());
         totalUnread = Transformations.map(loader.asLiveData(), response -> {
@@ -38,7 +42,14 @@ public class MessagesViewModel extends ViewModel {
             }
             return total;
         });
+        SocketManager.getInstance().addConversationListener(liveListener);
+        SocketManager.getInstance().ensureConnected();
         refresh();
+    }
+
+    @Override
+    protected void onCleared() {
+        SocketManager.getInstance().removeConversationListener(liveListener);
     }
 
     /** The threads that match the search text. */

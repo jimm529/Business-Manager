@@ -144,6 +144,10 @@ public interface ApiService {
     @POST("conversations/{id}/documents")
     Call<DocumentsResponse> uploadDocument(@Path("id") String conversationId, @Part MultipartBody.Part file);
 
+    /** Marks the conversation's messages as seen by the signed-in person. */
+    @PATCH("conversations/{id}/read")
+    Call<MessageResponse> markConversationRead(@Path("id") String conversationId);
+
     /** Buyer only: all deals of this buyer (there is no single-deal call on the server). */
     @GET("bids")
     Call<BidsResponse> getBids();

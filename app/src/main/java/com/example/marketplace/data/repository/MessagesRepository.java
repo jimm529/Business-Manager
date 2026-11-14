@@ -10,6 +10,7 @@ import com.example.marketplace.data.model.messages.ConversationsResponse;
 import com.example.marketplace.data.model.messages.MessagesResponse;
 import com.example.marketplace.data.model.messages.SendMessageRequest;
 import com.example.marketplace.data.model.messages.SendMessageResponse;
+import com.example.marketplace.data.model.settings.MessageResponse;
 import com.example.marketplace.utils.Resource;
 
 import okhttp3.MultipartBody;
@@ -46,6 +47,11 @@ public class MessagesRepository {
     /** POST conversations/{id}/messages. */
     public LiveData<Resource<SendMessageResponse>> sendMessage(@NonNull String conversationId, @NonNull String text) {
         return ApiResults.enqueue(ApiClient.getApiService().sendMessage(conversationId, new SendMessageRequest(text)));
+    }
+
+    /** PATCH conversations/{id}/read: tells the server these messages were seen. */
+    public LiveData<Resource<MessageResponse>> markRead(@NonNull String conversationId) {
+        return ApiResults.enqueue(ApiClient.getApiService().markConversationRead(conversationId));
     }
 
     /** POST conversations/{id}/documents (multipart, part name "file"). */
