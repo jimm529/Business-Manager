@@ -29,7 +29,6 @@ import com.example.marketplace.utils.ResourceMessages;
 import com.example.marketplace.utils.SessionManager;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.color.MaterialColors;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -71,7 +70,7 @@ public class MarketFragment extends Fragment {
 
             @Override
             public void onPlaceOrderClick(@NonNull MarketProduct product) {
-                confirmOrder(product);
+                openPlaceOrder(product);
             }
         });
         binding.rvMarket.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -226,21 +225,15 @@ public class MarketFragment extends Fragment {
 
     // ------------------------------------------------------------- actions
 
-    private void confirmOrder(MarketProduct product) {
-        String noValue = getString(R.string.no_value);
-        String title = product.getTitle() == null ? getString(R.string.market_untitled_lot) : product.getTitle();
-        String quantity = Formatters.number(product.getQuantity());
-        String unit = product.getUnit() == null ? "" : product.getUnit();
-        String price = Formatters.currency(product.getCurrentBidPrice(), product.getCurrency(), 2);
-
-        new MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.market_order_title)
-                .setMessage(getString(R.string.market_order_message, title,
-                        quantity == null ? noValue : getString(R.string.order_quantity, quantity, unit).trim(),
-                        price == null ? noValue : getString(R.string.price_per_kg, price)))
-                .setNegativeButton(R.string.market_order_cancel, null)
-                .setPositiveButton(R.string.market_order_confirm, (dialog, which) -> viewModel.placeOrder(product))
-                .show();
+    /** Opens the full Place Order page for this lot. */
+    private void openPlaceOrder(MarketProduct product) {
+        String id = product.getId();
+        if (id == null) {
+            return;
+        }
+        Bundle args = new Bundle();
+        args.putString(PlaceOrderFragment.ARG_LOT_ID, id);
+        NavHostFragment.findNavController(this).navigate(R.id.action_market_to_placeOrder, args);
     }
 
     private void handleAction(@Nullable Event<MarketViewModel.ActionResult> event) {

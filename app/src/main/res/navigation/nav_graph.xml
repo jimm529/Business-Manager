@@ -41,7 +41,25 @@
         android:id="@+id/marketFragment"
         android:name="com.example.marketplace.ui.market.MarketFragment"
         android:label="@string/nav_market"
-        tools:layout="@layout/fragment_market" />
+        tools:layout="@layout/fragment_market">
+        <action
+            android:id="@+id/action_market_to_placeOrder"
+            app:destination="@id/placeOrderFragment" />
+    </fragment>
+
+    <!-- The full Place Order page for one lot (operator only) -->
+    <fragment
+        android:id="@+id/placeOrderFragment"
+        android:name="com.example.marketplace.ui.market.PlaceOrderFragment"
+        android:label="@string/po_title"
+        tools:layout="@layout/fragment_place_order">
+        <argument
+            android:name="lotId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_placeOrder_to_chat"
+            app:destination="@id/chatFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/messagesFragment"

@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.marketplace.data.api.ApiClient;
 import com.example.marketplace.data.model.market.BookmarkResponse;
+import com.example.marketplace.data.model.market.LotDetailResponse;
 import com.example.marketplace.data.model.market.MarketplaceResponse;
 import com.example.marketplace.data.model.market.OrderRequest;
 import com.example.marketplace.data.model.market.OrderResponse;
@@ -35,6 +36,16 @@ public class MarketRepository {
     /** Toggles the saved state of one lot (POST lots/{id}/bookmark). */
     public LiveData<Resource<BookmarkResponse>> toggleBookmark(@NonNull String lotId) {
         return ApiResults.enqueue(ApiClient.getApiService().toggleBookmark(lotId));
+    }
+
+    /** GET lots/{id}: one listing and its seller, fresh from the server. */
+    public LiveData<Resource<LotDetailResponse>> getLotDetail(@NonNull String lotId) {
+        return ApiResults.enqueue(ApiClient.getApiService().getLotDetail(lotId));
+    }
+
+    /** Places an order with the buyer's own quantity, price and notes (POST lots/{id}/offers). */
+    public LiveData<Resource<OrderResponse>> placeOrder(@NonNull String lotId, @NonNull OrderRequest request) {
+        return ApiResults.enqueue(ApiClient.getApiService().placeOrder(lotId, request));
     }
 
     /** Orders the lot at its listed price and quantity (POST lots/{id}/offers). */

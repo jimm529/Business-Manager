@@ -748,4 +748,31 @@
     <string name="google_not_configured">Google sign-in is not set up in this build.</string>
     <string name="google_no_account">No Google account was found on this phone. Add one in Settings, then try again.</string>
     <string name="google_failed">Google sign-in did not work. Please try again.</string>
+    <!-- Buyer: Place Order page -->
+    <string name="po_title">Place Order</string>
+    <string name="po_available">AVAILABLE</string>
+    <string name="po_asking">ASKING PRICE</string>
+    <string name="po_seller">Seller: %1$s</string>
+    <string name="po_seller_verified">Seller: %1$s · Verified</string>
+    <string name="po_your_order">Your order</string>
+    <string name="po_quantity_label">QUANTITY (MT)</string>
+    <string name="po_quantity_hint">Up to %1$s MT available</string>
+    <string name="po_price_label">YOUR PRICE (PER KG)</string>
+    <string name="po_price_hint">Asking price: %1$s / kg</string>
+    <string name="po_notes_label">NOTES (OPTIONAL)</string>
+    <string name="po_total">ORDER TOTAL</string>
+    <string name="po_asking_total">At the asking price</string>
+    <string name="po_info">The seller will answer your request. You can follow it in Messages.</string>
+    <string name="po_submit">Place order</string>
+    <string name="po_cancel">Cancel</string>
+    <string name="po_closed">This lot is no longer available for orders.</string>
+    <string name="po_lot_missing">This lot could not be found. It may have been removed.</string>
+    <string name="po_error_quantity">Enter a quantity above 0.</string>
+    <string name="po_error_quantity_max">The seller has only %1$s MT available.</string>
+    <string name="po_error_price">Enter a price above 0.</string>
+    <string name="po_error_notes">Notes can be at most 500 characters.</string>
+    <string name="po_success_title">Order sent</string>
+    <string name="po_success_message">Your request was sent to the seller. You will see their answer in Messages.</string>
+    <string name="po_open_chat">Open conversation</string>
+    <string name="po_back_market">Back to Market</string>
 </resources>

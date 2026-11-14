@@ -27,6 +27,7 @@ import com.example.marketplace.data.model.dashboard.PurchaseHistoryResponse;
 import com.example.marketplace.data.model.dashboard.VendorOverviewResponse;
 import com.example.marketplace.data.model.dashboard.VendorsResponse;
 import com.example.marketplace.data.model.market.BookmarkResponse;
+import com.example.marketplace.data.model.market.LotDetailResponse;
 import com.example.marketplace.data.model.market.MarketplaceResponse;
 import com.example.marketplace.data.model.market.OrderRequest;
 import com.example.marketplace.data.model.market.OrderResponse;
@@ -120,6 +121,10 @@ public interface ApiService {
     Call<MarketplaceResponse> getMarketLots(@Query("search") String search,
                                             @Query("materials") String materials,
                                             @Query("region") String region);
+
+    /** One listing with a short summary of its seller. */
+    @GET("lots/{id}")
+    Call<LotDetailResponse> getLotDetail(@Path("id") String lotId);
 
     /** Saves the lot for this buyer, or removes it when it was already saved. */
     @POST("lots/{id}/bookmark")

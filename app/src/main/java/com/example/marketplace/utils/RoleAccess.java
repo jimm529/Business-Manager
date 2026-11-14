@@ -66,6 +66,7 @@ public final class RoleAccess {
 
     private static boolean isOperatorOnly(int id) {
         return id == R.id.marketFragment
+                || id == R.id.placeOrderFragment
                 || id == R.id.ordersFragment
                 || id == R.id.purchaseHistoryFragment
                 || id == R.id.registeredVendorsFragment
