@@ -775,4 +775,18 @@
     <string name="po_success_message">Your request was sent to the seller. You will see their answer in Messages.</string>
     <string name="po_open_chat">Open conversation</string>
     <string name="po_back_market">Back to Market</string>
+    <string name="vendors_add_subtitle">Add a supplier to your network.</string>
+    <string name="vendors_add_section_company">COMPANY</string>
+    <string name="vendors_add_section_capacity">CAPACITY</string>
+    <string name="vendors_add_section_compliance">COMPLIANCE</string>
+    <string name="vendors_add_section_contact">POINT OF CONTACT</string>
+    <string name="vendors_add_volume_suffix">MT / month</string>
+    <string name="vendors_hint_company">Company name</string>
+    <string name="vendors_hint_license">Industrial license number</string>
+    <string name="vendors_hint_location">Location (headquarters)</string>
+    <string name="vendors_hint_material">Primary material</string>
+    <string name="vendors_hint_volume">Volume</string>
+    <string name="vendors_hint_certification">Certification (e.g. ISO 14001)</string>
+    <string name="vendors_hint_manager">Lead manager name</string>
+    <string name="vendors_hint_email">Secure email</string>
 </resources>

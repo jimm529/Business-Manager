@@ -1,18 +1,16 @@
 package com.example.marketplace.ui.vendors;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Filter;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
+import androidx.annotation.StringRes;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.marketplace.R;
@@ -22,65 +20,112 @@ import com.example.marketplace.data.model.vendor.RegisteredVendor;
 import com.example.marketplace.databinding.DialogAddVendorBinding;
 import com.example.marketplace.utils.Resource;
 import com.example.marketplace.utils.ResourceMessages;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * The "Register Vendor" form. It checks the boxes on the phone, then asks the view model to call
- * POST vendors. The list reloads by itself after a success; the server's own message shows inside the dialog.
+ * The "Register Vendor" sheet. It checks the boxes on the phone, then asks the view model to call
+ * POST vendors. The list reloads by itself after a success; the server's own message shows inside the sheet.
+ * The buttons stay at the bottom while the form scrolls.
  */
-public class AddVendorDialogFragment extends DialogFragment {
+public class AddVendorDialogFragment extends BottomSheetDialogFragment {
 
     public static final String TAG = "AddVendorDialog";
+
+    /** How much of the screen the sheet fills, so the page behind it still peeks out at the top. */
+    private static final float SHEET_HEIGHT_FRACTION = 0.92f;
 
     private DialogAddVendorBinding binding;
     private RegisteredVendorsViewModel viewModel;
 
-    @NonNull
+    @Nullable
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        viewModel = new ViewModelProvider(requireParentFragment()).get(RegisteredVendorsViewModel.class);
-        binding = DialogAddVendorBinding.inflate(LayoutInflater.from(requireContext()));
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        binding = DialogAddVendorBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
 
-        // A fresh dialog starts clean; after a rotation it keeps the running or failed call.
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        viewModel = new ViewModelProvider(requireParentFragment()).get(RegisteredVendorsViewModel.class);
+
+        // A fresh sheet starts clean; after a rotation it keeps the running or failed call.
         if (savedInstanceState == null) {
             viewModel.clearCreateState();
         }
 
-        setUpComplianceDropdown();
+        setUpComplianceChips();
+        binding.btnVendorClose.setOnClickListener(v -> dismiss());
         binding.btnVendorCancel.setOnClickListener(v -> dismiss());
         binding.btnVendorSubmit.setOnClickListener(v -> submit());
-        viewModel.getCreateState().observe(this, this::render);
+        clearErrorWhenTyping(binding.tilCompany);
+        clearErrorWhenTyping(binding.tilLicense);
+        clearErrorWhenTyping(binding.tilLocation);
+        clearErrorWhenTyping(binding.tilMaterial);
+        clearErrorWhenTyping(binding.tilVolume);
+        clearErrorWhenTyping(binding.tilManager);
+        clearErrorWhenTyping(binding.tilEmail);
 
-        return new MaterialAlertDialogBuilder(requireContext()).setView(binding.getRoot()).create();
+        viewModel.getCreateState().observe(getViewLifecycleOwner(), this::render);
     }
 
-    private void setUpComplianceDropdown() {
-        List<String> labels = new ArrayList<>();
-        labels.add(getString(R.string.vendors_compliance_compliant));
-        labels.add(getString(R.string.vendors_compliance_pending));
-        labels.add(getString(R.string.vendors_compliance_expired));
-        binding.ddComplianceStatus.setAdapter(new AllItemsAdapter(requireContext(), labels));
-        if (TextUtils.isEmpty(binding.ddComplianceStatus.getText())) {
-            binding.ddComplianceStatus.setText(labels.get(0), false);
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Open tall and fully, and let the keyboard push the form up instead of covering it.
+        if (getDialog() instanceof BottomSheetDialog) {
+            BottomSheetDialog dialog = (BottomSheetDialog) getDialog();
+            View sheet = dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (sheet != null) {
+                sheet.getLayoutParams().height = Math.round(
+                        getResources().getDisplayMetrics().heightPixels * SHEET_HEIGHT_FRACTION);
+                BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(sheet);
+                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                behavior.setSkipCollapsed(true);
+            }
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            }
         }
     }
 
-    /** The value the server expects for the label chosen in the dropdown. */
+    // ---------------------------------------------------------------- compliance status
+
+    /** Three choices as chips: Compliant (the first choice), Pending, Expired. */
+    private void setUpComplianceChips() {
+        if (binding.groupCompliance.getChildCount() > 0) {
+            return;
+        }
+        addComplianceChip(R.string.vendors_compliance_compliant, RegisteredVendor.COMPLIANCE_COMPLIANT, true);
+        addComplianceChip(R.string.vendors_compliance_pending, RegisteredVendor.COMPLIANCE_PENDING, false);
+        addComplianceChip(R.string.vendors_compliance_expired, RegisteredVendor.COMPLIANCE_EXPIRED, false);
+    }
+
+    private void addComplianceChip(@StringRes int label, @NonNull String value, boolean checked) {
+        Chip chip = (Chip) getLayoutInflater().inflate(R.layout.item_filter_chip, binding.groupCompliance, false);
+        chip.setId(View.generateViewId());
+        chip.setText(label);
+        chip.setTag(value);
+        binding.groupCompliance.addView(chip);
+        if (checked) {
+            binding.groupCompliance.check(chip.getId());
+        }
+    }
+
+    /** The value the server expects for the chip that is selected. */
     @NonNull
     private String complianceValue() {
-        String chosen = String.valueOf(binding.ddComplianceStatus.getText());
-        if (chosen.equals(getString(R.string.vendors_compliance_pending))) {
-            return RegisteredVendor.COMPLIANCE_PENDING;
-        }
-        if (chosen.equals(getString(R.string.vendors_compliance_expired))) {
-            return RegisteredVendor.COMPLIANCE_EXPIRED;
-        }
-        return RegisteredVendor.COMPLIANCE_COMPLIANT;
+        View chip = binding.groupCompliance.findViewById(binding.groupCompliance.getCheckedChipId());
+        Object tag = chip == null ? null : chip.getTag();
+        return tag instanceof String ? (String) tag : RegisteredVendor.COMPLIANCE_COMPLIANT;
     }
+
+    // ---------------------------------------------------------------- sending
 
     private void submit() {
         binding.tvVendorError.setVisibility(View.GONE);
@@ -93,45 +138,50 @@ public class AddVendorDialogFragment extends DialogFragment {
         String manager = value(binding.tilManager);
         String email = value(binding.tilEmail);
 
-        boolean valid = true;
-        valid &= requireText(binding.tilCompany, company);
-        valid &= requireText(binding.tilLicense, license);
-        valid &= requireText(binding.tilLocation, location);
-        valid &= requireText(binding.tilMaterial, material);
-        valid &= requireText(binding.tilManager, manager);
+        // The first box with a problem is the one the form scrolls to.
+        TextInputLayout firstBad = null;
+        firstBad = firstBad(firstBad, binding.tilCompany, requireText(binding.tilCompany, company));
+        firstBad = firstBad(firstBad, binding.tilLicense, requireText(binding.tilLicense, license));
+        firstBad = firstBad(firstBad, binding.tilLocation, requireText(binding.tilLocation, location));
+        firstBad = firstBad(firstBad, binding.tilMaterial, requireText(binding.tilMaterial, material));
 
         double volume = 0;
+        boolean volumeOk;
         if (volumeText.isEmpty()) {
             binding.tilVolume.setError(getString(R.string.vendors_error_required));
-            valid = false;
+            volumeOk = false;
         } else {
             try {
                 volume = Double.parseDouble(volumeText);
             } catch (NumberFormatException notANumber) {
                 volume = 0;
             }
-            if (volume <= 0) {
-                binding.tilVolume.setError(getString(R.string.vendors_error_volume));
-                valid = false;
-            } else {
-                binding.tilVolume.setError(null);
-            }
+            volumeOk = volume > 0;
+            binding.tilVolume.setError(volumeOk ? null : getString(R.string.vendors_error_volume));
         }
+        firstBad = firstBad(firstBad, binding.tilVolume, volumeOk);
 
+        firstBad = firstBad(firstBad, binding.tilManager, requireText(binding.tilManager, manager));
+
+        boolean emailOk;
         if (email.isEmpty()) {
             binding.tilEmail.setError(getString(R.string.vendors_error_required));
-            valid = false;
+            emailOk = false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.tilEmail.setError(getString(R.string.vendors_error_email));
-            valid = false;
+            emailOk = false;
         } else {
             binding.tilEmail.setError(null);
+            emailOk = true;
         }
+        firstBad = firstBad(firstBad, binding.tilEmail, emailOk);
 
-        if (valid) {
-            viewModel.createVendor(new CreateVendorRequest(company, license, location, material, volume,
-                    certification, complianceValue(), manager, email));
+        if (firstBad != null) {
+            firstBad.requestFocus();
+            return;
         }
+        viewModel.createVendor(new CreateVendorRequest(company, license, location, material, volume,
+                certification, complianceValue(), manager, email));
     }
 
     private void render(@NonNull Resource<MessageResponse> resource) {
@@ -139,6 +189,7 @@ public class AddVendorDialogFragment extends DialogFragment {
         binding.progressVendor.setVisibility(loading ? View.VISIBLE : View.GONE);
         binding.btnVendorSubmit.setEnabled(!loading);
         binding.btnVendorCancel.setEnabled(!loading);
+        binding.btnVendorClose.setEnabled(!loading);
         setCancelable(!loading);
 
         switch (resource.status) {
@@ -167,44 +218,40 @@ public class AddVendorDialogFragment extends DialogFragment {
         binding = null;
     }
 
+    // ---------------------------------------------------------------- helpers
+
     /** Shows or clears the "required" error of one box; returns true when the box is filled. */
     private boolean requireText(@NonNull TextInputLayout layout, @NonNull String text) {
         layout.setError(text.isEmpty() ? getString(R.string.vendors_error_required) : null);
         return !text.isEmpty();
     }
 
+    @Nullable
+    private static TextInputLayout firstBad(@Nullable TextInputLayout first, @NonNull TextInputLayout candidate,
+                                            boolean ok) {
+        return first != null || ok ? first : candidate;
+    }
+
+    private static void clearErrorWhenTyping(@NonNull TextInputLayout layout) {
+        if (layout.getEditText() != null) {
+            layout.getEditText().addTextChangedListener(new android.text.TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    layout.setError(null);
+                }
+
+                @Override
+                public void afterTextChanged(android.text.Editable s) { }
+            });
+        }
+    }
+
     @NonNull
     private static String value(@NonNull TextInputLayout layout) {
         return layout.getEditText() == null || layout.getEditText().getText() == null
                 ? "" : layout.getEditText().getText().toString().trim();
-    }
-
-    /** A dropdown list that always shows every choice, even after one has been picked. */
-    private static class AllItemsAdapter extends ArrayAdapter<String> {
-        private final List<String> all;
-
-        AllItemsAdapter(@NonNull android.content.Context context, @NonNull List<String> items) {
-            super(context, android.R.layout.simple_dropdown_item_1line, items);
-            this.all = new ArrayList<>(items);
-        }
-
-        @NonNull
-        @Override
-        public Filter getFilter() {
-            return new Filter() {
-                @Override
-                protected FilterResults performFiltering(CharSequence constraint) {
-                    FilterResults results = new FilterResults();
-                    results.values = all;
-                    results.count = all.size();
-                    return results;
-                }
-
-                @Override
-                protected void publishResults(CharSequence constraint, FilterResults results) {
-                    notifyDataSetChanged();
-                }
-            };
-        }
     }
 }
