@@ -27,10 +27,8 @@ import com.example.marketplace.data.model.settings.ApprovalWorkflows;
 import com.example.marketplace.data.model.settings.LogisticsPartner;
 import com.example.marketplace.data.model.settings.OperatorSettingsResponse;
 import com.example.marketplace.data.model.settings.SecuritySettings;
-import com.example.marketplace.data.model.settings.WhitelistedVendor;
 import com.example.marketplace.databinding.FragmentOperatorSettingsBinding;
 import com.example.marketplace.databinding.ItemSettingsPartnerBinding;
-import com.example.marketplace.databinding.ItemSettingsVendorBinding;
 import com.example.marketplace.utils.Formatters;
 import com.example.marketplace.utils.Resource;
 import com.example.marketplace.utils.ResourceMessages;
@@ -238,9 +236,6 @@ public class OperatorSettingsFragment extends Fragment {
         binding.btnConfigure2fa.setOnClickListener(v -> viewModel.startTwoFactorSetup());
         binding.btnCopyKey.setOnClickListener(v -> showComingSoon());
         binding.btnRotateKey.setOnClickListener(v -> showComingSoon());
-        binding.btnManageList.setOnClickListener(v -> showComingSoon());
-        binding.btnAddVendor.setOnClickListener(v -> showComingSoon());
-        binding.btnSecurityQuestions.setOnClickListener(v -> showComingSoon());
         binding.btnChangePassword.setOnClickListener(v -> {
             if (getChildFragmentManager().findFragmentByTag(ChangePasswordDialogFragment.TAG) == null) {
                 new ChangePasswordDialogFragment().show(getChildFragmentManager(), ChangePasswordDialogFragment.TAG);
@@ -337,9 +332,6 @@ public class OperatorSettingsFragment extends Fragment {
             setText(binding.etAdjustment, draft.marketAdjustment);
             binding.switchOverride.setChecked(draft.manualPriceOverride);
 
-            // 7. Vendor whitelisting
-            showVendors(response.getSettings().getWhitelistedVendors());
-
             // 8. Login and account details
             OperatorSettingsResponse.AccountDetails account = response.getAccountDetails();
             binding.tvFullName.setText(orDash(account.getFullName()));
@@ -435,27 +427,6 @@ public class OperatorSettingsFragment extends Fragment {
         binding.tvErpIntegration.setVisibility(hasIntegration ? View.VISIBLE : View.GONE);
         if (hasIntegration) {
             binding.tvErpIntegration.setText(getString(R.string.settings_erp_integration, integration));
-        }
-    }
-
-    private void showVendors(@NonNull List<WhitelistedVendor> vendors) {
-        binding.llVendors.removeAllViews();
-        binding.tvVendorsEmpty.setVisibility(vendors.isEmpty() ? View.VISIBLE : View.GONE);
-        LayoutInflater inflater = LayoutInflater.from(requireContext());
-        for (WhitelistedVendor vendor : vendors) {
-            ItemSettingsVendorBinding row = ItemSettingsVendorBinding.inflate(inflater, binding.llVendors, false);
-            row.tvVendorName.setText(orDash(vendor.getName()));
-            String score = Formatters.number(vendor.getComplianceScore());
-            row.tvVendorCompliance.setVisibility(score == null ? View.GONE : View.VISIBLE);
-            if (score != null) {
-                row.tvVendorCompliance.setText(getString(R.string.settings_compliance, score));
-            }
-            boolean hasBadge = !TextUtils.isEmpty(vendor.getStatusBadge());
-            row.tvVendorBadge.setVisibility(hasBadge ? View.VISIBLE : View.GONE);
-            if (hasBadge) {
-                row.tvVendorBadge.setText(vendor.getStatusBadge().toUpperCase(java.util.Locale.getDefault()));
-            }
-            binding.llVendors.addView(row.getRoot());
         }
     }
 

@@ -360,18 +360,12 @@
     <string name="settings_manual_override">Manual Price Override</string>
     <string name="settings_manual_override_desc">Allow prices to be set by hand instead of the fixed rate.</string>
 
-    <string name="settings_vendors_title">Vendor Whitelisting</string>
-    <string name="settings_manage_list">Manage List</string>
-    <string name="settings_vendors_empty">No whitelisted vendors yet.</string>
-    <string name="settings_add_restricted_vendor">+ Add Restricted Vendor</string>
-    <string name="settings_compliance">%1$s%% compliance</string>
 
     <string name="settings_account_title">Login &amp; Account Details</string>
     <string name="settings_full_name">FULL NAME</string>
     <string name="settings_role">ROLE</string>
     <string name="settings_email">EMAIL ADDRESS</string>
     <string name="settings_change_password">Change Password</string>
-    <string name="settings_security_questions">Update Security Questions</string>
     <string name="settings_password_changed">Password changed.</string>
 
     <string name="pw_title">Change Password</string>
