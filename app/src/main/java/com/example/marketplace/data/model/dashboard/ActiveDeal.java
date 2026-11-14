@@ -23,10 +23,16 @@ public class ActiveDeal {
     /** Milliseconds since 1970 when the deal closes; always null for now, the backend has no deadline. */
     @Nullable
     private final Long closingTime;
+    /** The supplier of this deal, used to open the chat with them. */
+    @Nullable
+    private final String vendorId;
+    @Nullable
+    private final String vendorName;
 
     public ActiveDeal(@Nullable String id, @Nullable String lotNumber, @Nullable String materialName,
                       @Nullable Double quantity, @Nullable Double pricePerUnit, @Nullable String status,
-                      Turn turnStatus, boolean offerSentByYou, @Nullable Long closingTime) {
+                      Turn turnStatus, boolean offerSentByYou, @Nullable Long closingTime,
+                      @Nullable String vendorId, @Nullable String vendorName) {
         this.id = id;
         this.lotNumber = lotNumber;
         this.materialName = materialName;
@@ -36,6 +42,8 @@ public class ActiveDeal {
         this.turnStatus = turnStatus;
         this.offerSentByYou = offerSentByYou;
         this.closingTime = closingTime;
+        this.vendorId = vendorId;
+        this.vendorName = vendorName;
     }
 
     @Nullable public String getId() { return id; }
@@ -47,6 +55,8 @@ public class ActiveDeal {
     public Turn getTurnStatus() { return turnStatus; }
     public boolean isOfferSentByYou() { return offerSentByYou; }
     @Nullable public Long getClosingTime() { return closingTime; }
+    @Nullable public String getVendorId() { return vendorId; }
+    @Nullable public String getVendorName() { return vendorName; }
 
     public boolean sameContentAs(ActiveDeal other) {
         return Objects.equals(lotNumber, other.lotNumber)

@@ -95,6 +95,7 @@ public class HomeFragment extends Fragment {
 
         binding.states.btnRetry.setOnClickListener(v -> viewModel.refresh());
 
+        viewModel.getChatTarget().observe(getViewLifecycleOwner(), this::openChat);
         viewModel.getProfile().observe(getViewLifecycleOwner(), this::renderProfile);
         viewModel.getVendorOverview().observe(getViewLifecycleOwner(), this::renderVendorOverview);
         viewModel.getVendorApprovals().observe(getViewLifecycleOwner(), this::renderVendorApprovals);
@@ -112,11 +113,11 @@ public class HomeFragment extends Fragment {
         binding.rvOrders.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvOrders.setAdapter(ordersAdapter);
 
-        // The Counter / Decline screens are built in a later step.
+        // Counter opens the chat with the deal's vendor; Decline is built in a later step.
         dealsAdapter = new ActiveDealsAdapter(new ActiveDealsAdapter.Listener() {
             @Override
             public void onCounter(@NonNull ActiveDeal deal) {
-                showComingSoon();
+                viewModel.openDealChat(deal);
             }
 
             @Override
@@ -127,7 +128,7 @@ public class HomeFragment extends Fragment {
         binding.rvDeals.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvDeals.setAdapter(dealsAdapter);
 
-        shipmentsAdapter = new IncomingShipmentsAdapter(shipment -> showComingSoon());
+        shipmentsAdapter = new IncomingShipmentsAdapter(shipment -> openOrders());
         binding.rvShipments.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvShipments.setAdapter(shipmentsAdapter);
 
@@ -183,7 +184,7 @@ public class HomeFragment extends Fragment {
         binding.btnNewListing.setOnClickListener(v -> showComingSoon());
         binding.btnOrderApprovals.setOnClickListener(v -> showComingSoon());
         binding.btnViewAllDeals.setOnClickListener(v -> showComingSoon());
-        binding.btnTrackAll.setOnClickListener(v -> showComingSoon());
+        binding.btnTrackAll.setOnClickListener(v -> openOrders());
     }
 
     private void setUpSearch() {
@@ -196,6 +197,30 @@ public class HomeFragment extends Fragment {
             }
             return false;
         });
+    }
+
+    /** The eye button of a shipment and Track All: the Orders & Tracking page. */
+    private void openOrders() {
+        NavHostFragment.findNavController(this).navigate(R.id.ordersFragment);
+    }
+
+    /** Chat with the deal's vendor; with no chat available, the message list and a note. */
+    private void openChat(@Nullable com.example.marketplace.utils.Event<DashboardViewModel.ChatTarget> event) {
+        DashboardViewModel.ChatTarget target = event == null ? null : event.getContentIfNotHandled();
+        if (target == null) {
+            return;
+        }
+        androidx.navigation.NavController nav = NavHostFragment.findNavController(this);
+        if (target.conversationId == null) {
+            Snackbar.make(binding.getRoot(), R.string.deal_chat_unavailable, Snackbar.LENGTH_LONG).show();
+            nav.navigate(R.id.messagesFragment);
+            return;
+        }
+        Bundle args = new Bundle();
+        args.putString(com.example.marketplace.ui.messages.ChatFragment.ARG_CONVERSATION_ID, target.conversationId);
+        args.putString(com.example.marketplace.ui.messages.ChatFragment.ARG_PARTICIPANT_NAME, target.vendorName);
+        args.putString(com.example.marketplace.ui.messages.ChatFragment.ARG_BATCH_NUMBER, target.lotNumber);
+        nav.navigate(R.id.action_home_to_chat, args);
     }
 
     private void showComingSoon() {

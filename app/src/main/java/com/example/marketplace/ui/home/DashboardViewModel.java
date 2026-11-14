@@ -2,11 +2,15 @@ package com.example.marketplace.ui.home;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.example.marketplace.data.model.auth.MeResponse;
 import com.example.marketplace.data.model.dashboard.ActiveDeal;
+import com.example.marketplace.data.model.messages.Conversation;
+import com.example.marketplace.data.model.messages.ConversationResponse;
 import com.example.marketplace.data.model.dashboard.DashboardSummary;
 import com.example.marketplace.data.model.dashboard.OrderApprovalsResponse;
 import com.example.marketplace.data.model.dashboard.PurchaseHistoryResponse;
@@ -15,6 +19,8 @@ import com.example.marketplace.data.model.dashboard.SupplierSummary;
 import com.example.marketplace.data.model.dashboard.VendorOverviewResponse;
 import com.example.marketplace.data.model.order.OrdersResponse;
 import com.example.marketplace.data.repository.DashboardRepository;
+import com.example.marketplace.data.repository.VendorInventoryRepository;
+import com.example.marketplace.utils.Event;
 import com.example.marketplace.utils.Resource;
 import com.example.marketplace.utils.ResourceLoader;
 import com.example.marketplace.utils.Roles;
@@ -46,6 +52,23 @@ public class DashboardViewModel extends ViewModel {
     private final ResourceLoader<List<ShipmentItem>> shipments = new ResourceLoader<>();
     private final ResourceLoader<List<SupplierSummary>> suppliers = new ResourceLoader<>();
 
+    /** Where to go after Counter was tapped: the chat with the deal's vendor, or the message list. */
+    public static class ChatTarget {
+        /** Null when no conversation could be opened. */
+        public final String conversationId;
+        public final String vendorName;
+        public final String lotNumber;
+
+        ChatTarget(String conversationId, String vendorName, String lotNumber) {
+            this.conversationId = conversationId;
+            this.vendorName = vendorName;
+            this.lotNumber = lotNumber;
+        }
+    }
+
+    private final MutableLiveData<Event<ChatTarget>> chatTarget = new MutableLiveData<>();
+    private boolean openingChat;
+
     /** True once the role-specific data has been requested at least once. */
     private boolean roleDataRequested;
 
@@ -61,6 +84,40 @@ public class DashboardViewModel extends ViewModel {
     public LiveData<Resource<List<ActiveDeal>>> getDeals() { return deals.asLiveData(); }
     public LiveData<Resource<List<ShipmentItem>>> getShipments() { return shipments.asLiveData(); }
     public LiveData<Resource<List<SupplierSummary>>> getSuppliers() { return suppliers.asLiveData(); }
+
+    public LiveData<Event<ChatTarget>> getChatTarget() { return chatTarget; }
+
+    /**
+     * Counter on a deal: finds (or starts) the conversation with that deal's vendor so the buyer can
+     * message them. If the vendor is not known or the chat cannot be opened, the target has no
+     * conversation and the screen falls back to the message list.
+     */
+    public void openDealChat(ActiveDeal deal) {
+        if (openingChat) {
+            return;
+        }
+        String vendorId = deal.getVendorId();
+        if (vendorId == null || vendorId.trim().isEmpty()) {
+            chatTarget.setValue(new Event<>(new ChatTarget(null, deal.getVendorName(), deal.getLotNumber())));
+            return;
+        }
+        openingChat = true;
+        LiveData<Resource<ConversationResponse>> call = VendorInventoryRepository.getInstance().openConversation(vendorId);
+        call.observeForever(new Observer<Resource<ConversationResponse>>() {
+            @Override
+            public void onChanged(Resource<ConversationResponse> result) {
+                if (result.status == Resource.Status.LOADING) {
+                    return;
+                }
+                call.removeObserver(this);
+                openingChat = false;
+                Conversation conversation = result.data == null ? null : result.data.getConversation();
+                String id = result.status == Resource.Status.SUCCESS && conversation != null
+                        ? conversation.getId() : null;
+                chatTarget.setValue(new Event<>(new ChatTarget(id, deal.getVendorName(), deal.getLotNumber())));
+            }
+        });
+    }
 
     /** True when the signed-in user is a vendor; false for operators. */
     public boolean isVendor() {

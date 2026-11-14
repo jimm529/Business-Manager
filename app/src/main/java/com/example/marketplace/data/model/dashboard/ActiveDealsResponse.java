@@ -39,6 +39,9 @@ public class ActiveDealsResponse {
         private String currentTurn;
         @SerializedName("lastActionBy")
         private String lastActionBy;
+        /** The supplier on the other side of the negotiation. */
+        @SerializedName("vendor")
+        private Vendor vendor;
 
         @Nullable public String getId() { return id != null ? id : mongoId; }
         @Nullable public String getLotId() { return lotId; }
@@ -49,5 +52,22 @@ public class ActiveDealsResponse {
         @Nullable public String getStatus() { return status; }
         @Nullable public String getCurrentTurn() { return currentTurn; }
         @Nullable public String getLastActionBy() { return lastActionBy; }
+        @Nullable public String getVendorId() { return vendor == null ? null : vendor.id; }
+        @Nullable public String getVendorName() {
+            if (vendor == null) {
+                return null;
+            }
+            return vendor.companyName != null && !vendor.companyName.trim().isEmpty()
+                    ? vendor.companyName : vendor.vendorName;
+        }
+    }
+
+    private static class Vendor {
+        @SerializedName("_id")
+        String id;
+        @SerializedName("companyName")
+        String companyName;
+        @SerializedName("vendorName")
+        String vendorName;
     }
 }

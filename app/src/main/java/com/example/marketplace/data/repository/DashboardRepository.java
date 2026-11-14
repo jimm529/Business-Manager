@@ -231,7 +231,7 @@ public class DashboardRepository {
         boolean sentByYou = "operator".equalsIgnoreCase(deal.getLastActionBy());
         String title = deal.getMaterial() != null ? deal.getMaterial() : deal.getBatchTitle();
         return new ActiveDeal(deal.getId(), deal.getLotId(), title, deal.getQuantityMT(), deal.getPricePerMT(),
-                deal.getStatus(), turn, sentByYou, null);
+                deal.getStatus(), turn, sentByYou, null, deal.getVendorId(), deal.getVendorName());
     }
 
     private static boolean isActiveOrder(@Nullable String status) {
