@@ -230,31 +230,45 @@ public class VendorSettingsFragment extends Fragment {
         camera.setImageTintList(android.content.res.ColorStateList.valueOf(MaterialColors.getColor(
                 binding.getRoot(), com.google.android.material.R.attr.colorOnSurfaceVariant)));
         camera.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-        upload.addView(camera, new LinearLayout.LayoutParams(dp(24), dp(24)));
+        upload.addView(camera, new LinearLayout.LayoutParams(dp(28), dp(28)));
         TextView label = new TextView(requireContext());
         label.setText(R.string.vsettings_upload);
-        label.setTextSize(10);
+        label.setTextSize(12);
+        label.setTypeface(label.getTypeface(), android.graphics.Typeface.BOLD);
+        label.setLetterSpacing(0.05f);
+        label.setGravity(android.view.Gravity.CENTER);
         label.setTextColor(MaterialColors.getColor(binding.getRoot(),
                 com.google.android.material.R.attr.colorOnSurfaceVariant));
-        label.setPadding(0, dp(4), 0, 0);
+        label.setPadding(0, dp(6), 0, 0);
         upload.addView(label);
         binding.facilityRow.addView(upload, tileParams(true));
 
+        // Each photo is a square card with rounded corners and a thin border, so every tile looks the same.
         for (int i = 0; i < Math.min(images.size(), MAX_FACILITY_IMAGES); i++) {
+            com.google.android.material.card.MaterialCardView card =
+                    new com.google.android.material.card.MaterialCardView(requireContext());
+            card.setRadius(dp(12));
+            card.setCardElevation(0);
+            card.setStrokeWidth(dp(1));
+            card.setStrokeColor(MaterialColors.getColor(binding.getRoot(),
+                    com.google.android.material.R.attr.colorOutline));
+            card.setCardBackgroundColor(MaterialColors.getColor(binding.getRoot(),
+                    com.google.android.material.R.attr.colorSurface));
             ImageView image = new ImageView(requireContext());
             image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            image.setBackgroundResource(R.drawable.bg_image_placeholder);
             image.setContentDescription(getString(R.string.cd_facility_photo));
-            image.setClipToOutline(true);
             Glide.with(image).load(images.get(i)).centerCrop().into(image);
-            binding.facilityRow.addView(image, tileParams(false));
+            card.addView(image, new android.widget.FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            binding.facilityRow.addView(card, tileParams(false));
         }
     }
 
+    /** Every tile is the same square, so the row stays tidy however many photos there are. */
     private LinearLayout.LayoutParams tileParams(boolean first) {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, dp(100), 1f);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp(104), dp(104));
         if (!first) {
-            params.setMarginStart(dp(8));
+            params.setMarginStart(dp(10));
         }
         return params;
     }
