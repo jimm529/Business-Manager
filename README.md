@@ -99,6 +99,6 @@ Do not add `/api`. If you restart the emulator, run `adb reverse` again.
 - Every screen handles loading, empty and error states, rotation and the back button
 
 ## Contributing
-- Push only to `https://github.com/jimm529/marketplace-android.git`, branch `main`
+- Push only to `https://github.com/jimm529/Business-Manager.git`, branch `main`
 - Stage with `git add app` (never `git add -A`) so `backend/` is not included
 - See [CLAUDE.md](https://github.com/jimm529/Business-Manager/blob/main/CLAUDE.md) for the full rules, including keeping AWS usage low
